@@ -1,0 +1,70 @@
+.container{
+    display: block;
+}
+section{
+    display: block;
+    height: 0;
+}
+table.tablesort thead tr .tablesorter-header {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE0IDIwIj48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTQgMTNsLTIuNS0yLjVMNyAxNWwtNC41LTQuNUwwIDEzbDcgN3pNMTQgNy41TDExLjUgMTAgNyA1LjUgMi41IDEwIDAgNy41bDctN3oiLz48L3N2Zz4=);
+    background-repeat: no-repeat;
+    background-position: center right;
+    cursor: pointer;
+    /*min-width: 1rem;*/
+}
+table.tablesort thead tr .tablesorter-headerDesc {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDE0IDE0Ij48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTQgOS41TDExLjUgMTIgNyA3LjUgMi41IDEyIDAgOS41bDctN3oiLz48L3N2Zz4=);
+}
+table.tablesort thead tr .tablesorter-headerAsc {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiIgdmlld0JveD0iMCAwIDE0IDE0Ij48cGF0aCBmaWxsPSIjZmZmIiBkPSJNMTQgNWwtMi41LTIuNS00LjUgNC41LTQuNS00LjVMMCA1IDcgMTJ6Ii8+PC9zdmc+);
+}
+.user-result-delete:hover{
+	/*text-decoration: underline;*/
+	cursor: pointer;
+}
+.alert{
+	margin-bottom: 0;
+}
+input.tablesorter-filter.disabled{
+	display: none;
+}
+th.tablesorter-header.sorter-false.tablesorter-headerUnSorted{
+    background-image: none;
+}
+input.tablesorter-filter, select.tablesorter-filter{
+	display: block;
+    /*width: 100%;*/
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.mCSB_horizontal.mCSB_inside>.mCSB_container {
+    margin-right: 0;
+    margin-bottom: 0;
+}
+.modal-dialog{
+    color: black;
+}
+footer{
+    display: none;
+}
+
+td.table-row-act{
+    padding: 2px;
+    text-align: center;
+}
+.subject-dropdown-menu, .user-result-delete{
+    font-size: 1.5em;
+}
+.subject_unvis{
+    background-color: #495057;
+}
