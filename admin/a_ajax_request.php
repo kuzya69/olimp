@@ -1,11 +1,7 @@
 <?php
-
 session_start();
-
 include_once('../db.php');
-
 include_once('../library.php');
-
 
 
 if($_POST['status'] == 0 && isset($_POST['u']) && isset($_POST['s'])){
@@ -20,7 +16,6 @@ if($_POST['status'] == 0 && isset($_POST['u']) && isset($_POST['s'])){
 	}
 
 	echo json_encode($result, JSON_UNESCAPED_UNICODE);
-
 	die();
 }
 
@@ -34,7 +29,6 @@ if($_POST['status'] == 11 && isset($_POST['s'])){
 	// $subject_info += ['message' => ""];
 
 	echo json_encode($subject_info, JSON_UNESCAPED_UNICODE);
-
  	die();
 }
 
@@ -52,7 +46,6 @@ if($_POST['status'] == 10 && isset($_POST['s']) && isset($_POST['d'])){
 		$update_status +=['message' => "Не удалось выполнить операцию"];
 	}
 	echo json_encode($update_status, JSON_UNESCAPED_UNICODE);
-
  	die();
 }
 
@@ -71,6 +64,41 @@ if($_POST['status'] == 12 && $_POST['s'] && $_POST['fd']){
 		$response += ['status' => 0, 'message' => "Не удалось обновить данные"];
 	}
 	echo json_encode($response, JSON_UNESCAPED_UNICODE);
+	die();
+}
+
+if($_POST['status'] == 13 && $_POST['fd']){
+	$form_data = $_POST['fd'];
+	$data = [];
+	$response = [];
+	foreach($form_data as $key=>$value){
+		$data[$value['name']] = $value['value'];
+	}
+	$save_subject_data = saveSubjectData($db, $data);
+	if(!empty($save_subject_data)){
+		$response += ['status' => 1, 'message' => "Данные успешно сохранены"];
+	}else{
+		$response += ['status' => 0, 'message' => "Не удалось сохранить данные"];
+	}
+	echo json_encode($response, JSON_UNESCAPED_UNICODE);
+	die();
+}
+
+if($_POST['status'] == 21 && $_POST['s']){
+	$sid = $_POST['s'];
+	$user_information = (!empty($_SESSION['logged_user']))?$_SESSION['logged_user']:[];
+	$questions_by_subject = getQuestionsBySubject($db, $sid, $user_information);
+
+	echo json_encode($questions_by_subject, JSON_UNESCAPED_UNICODE);
+	die();
+}
+
+if($_POST['status'] == 22 && $_POST['q']){
+	$qid = $_POST['q'];
+	$user_information = (!empty($_SESSION['logged_user']))?$_SESSION['logged_user']:[];
+	$question_info = getQuestionInfo($db, $qid, $user_information);
+
+	echo json_encode($question_info, JSON_UNESCAPED_UNICODE);
 	die();
 }
 

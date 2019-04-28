@@ -43,7 +43,7 @@ body {
 	text-align: justify;
 	width: 100%;
 	/*box-shadow: 0px 1px 0.3em #3cdc80;*/
-	tarnsition: all 1s ease-in-out 0s;
+	transition: all 1s ease-in-out 0s;
 }
 .navigation ul li{
 	position: relative;

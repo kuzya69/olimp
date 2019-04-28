@@ -62,9 +62,44 @@ td.table-row-act{
     padding: 2px;
     text-align: center;
 }
-.subject-dropdown-menu, .user-result-delete{
+.subject-dropdown-menu, 
+.user-result-delete,
+.question-dropdown-menu{
     font-size: 1.5em;
 }
 .subject_unvis{
     background-color: #495057;
+}
+.new-subject-button, 
+.new-question-button, 
+.download-questions-button{
+    width: 100%;
+}
+.col-new-quest-butt{
+    border-right: 1px solid #0062cc;
+}
+.col-new-quest-butt button{
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.col-down-quest-butt{
+    border-left: 1px solid #0062cc;
+}
+.col-down-quest-butt button{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.select-subject{
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.my-row{
+    margin-right: 0;
+    margin-left: 0;
+}
+.my-col{
+    padding-right: 0;
+    padding-left: 0;
 }

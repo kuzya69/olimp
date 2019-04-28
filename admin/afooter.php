@@ -55,6 +55,17 @@
 						// deltaFactor: 10000,
 					},
 				});
+
+				$("#table-questions-information").mCustomScrollbar({
+					axis:"x",
+					mouseWheel: {
+						// enable: true,
+						scrollAmount: 400,
+						// axis: "x",
+						// preventDefault: true,
+						// deltaFactor: 10000,
+					},
+				});
 			}
 			// (function($){
 			// 	$(window).on("load",function(){
@@ -153,6 +164,27 @@
 						widgets: [ "columns", "filter", "zebra" ],
 						headers: {
 							6: { sorter: false, filter: false }
+						},
+						widgetOptions : {
+							filter_cssFilter   : '',
+							filter_childRows   : false,
+							filter_hideFilters : false,
+							filter_ignoreCase  : true,
+							filter_searchFiltered : false,
+							filter_functions : {
+
+							}
+						},
+					});
+
+					//Добавление фильтарации
+					$("#questions-table-by-subject").tablesorter({
+						widthFixed : true,
+						widgets: [ "columns", "filter", "zebra" ],
+						headers: {
+							0: { sorter: true, filter: false },
+							1: { sorter: false, filter: false },
+							9: { sorter: false, filter: false }
 						},
 						widgetOptions : {
 							filter_cssFilter   : '',
@@ -280,6 +312,107 @@
 				// 	console.log(value['name']+"-"+value['value']);
 				// });
 			});
+
+			$('#create-subject-submit').on('click', function(){
+				var formData = $('.form-create-subject').serializeArray();
+				if($(".form-create-subject")[0].checkValidity()) {
+					$.ajax({
+						type: "POST",
+						data: {status: 13, fd: formData},
+						url: "a_ajax_request.php",
+						dataType : "json",   
+						success: function(data){
+							$(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+						},
+					});
+				}else {
+					console.log("invalid form")
+				};
+				// var fData = [];
+				// $.each(formData, function(index, value){
+				// 	fData[value['name']] = value['value'];
+				// });
+				// console.log(fData);
+
+				// e.preventDefault();
+				// var $form = $('.form-create-subject');
+
+				// check if the input is valid
+				// if(! $form.valid()) return false;
+			});
+
+			//Действия над вопросами
+			$('#select-subject').on('change', function(){
+				var sid = $(this).val();
+				// var sname = $(this).find("option:selected").text();
+				// console.log(sname);
+				var tableRow = $('#questions-table-by-subject tbody');
+				$.ajax({
+					type: "POST",
+					data: {status: 21, s: sid},
+					url: "a_ajax_request.php",
+					dataType: "json",
+					success: function(data){
+						tableRow.html("");
+						var countQuestion = 0;
+						data.forEach(function(item){
+							tableRow.append('<tr>'
+								+'<th>'+(++countQuestion)+'</th>'
+								+'<td><img src="../'+item['question_img']+'" alt="" width="100px"></td>'
+								+'<td>'+item['question']+'</td>'
+								+'<td>'+item['option_1']+'</td>'
+								+'<td>'+item['option_2']+'</td>'
+								+'<td>'+item['option_3']+'</td>'
+								+'<td>'+item['option_4']+'</td>'
+								+'<td>'+item['option_5']+'</td>'
+								+'<td>'+item['option_6']+'</td>'
+								+'<td class="table-row-act">'
+									+'<div class="dropdown">'
+										+'<a class="question-dropdown-menu" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+											+'<i class="fa fa-cog"></i>'
+										+'</a>'
+										+'<div class="dropdown-menu" data-qid="'+item['id']+'">'
+											+'<a class="dropdown-item question-edit" data-toggle="modal" data-target="#editQuestionModal" href="#">Редактировать</a>'
+											+'<a class="dropdown-item question-delete" href="#">Удалить</a>'
+										+'</div>'
+									+'</div>'
+								+'</td>'
+							+'</tr>');
+							// console.log(item['question']);
+						});
+						
+						//Обновить сортировку
+						$("#questions-table-by-subject").trigger('update');
+					}
+				});
+			});
+
+			//Действие над предметом
+			$("#questions-table-by-subject").on('click', '.question-edit', function(){
+				var qid = $(this).parent().data('qid');
+				$.ajax({
+					type: "POST",
+					data: {status: 22, q: qid},
+					url: "a_ajax_request.php",
+					dataType : "json",   
+					success: function(data){
+						console.log(data);
+						// $(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+						document.getElementById('inputEditQuestion').value = data['question'];
+						document.getElementById('inputEditOption1').value = (data['option_1'])?data['option_1']:"";
+						document.getElementById('inputEditOption2').value = (data['option_2'])?data['option_2']:"";
+						document.getElementById('inputEditOption3').value = (data['option_3'])?data['option_3']:"";
+						document.getElementById('inputEditOption4').value = (data['option_4'])?data['option_4']:"";
+						document.getElementById('inputEditOption5').value = (data['option_5'])?data['option_5']:"";
+						document.getElementById('inputEditOption6').value = (data['option_6'])?data['option_6']:"";
+						$('#edit-question-submit').data('id', qid);
+						// if(data['status'] == 1){
+							// thisElement.parent().parent().remove();
+						// }
+					},
+				});
+			});
+
 		</script>
 		<footer>
 			<!-- <div class="footer">

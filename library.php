@@ -392,6 +392,31 @@ function updateSubjectStatus($db, $subject_id, $display){
 }
 
 /**
+ * Сохранияет новый предмет
+ * @param  object $db объект базы данных
+ * @param  int $data массив данных
+ * @return  int возвращает количество затронутых строк          
+ */
+function saveSubjectData($db, $data){
+	$query_select = $db->prepare("SELECT max(`sort`) as `sort` FROM `subjects`");
+	$query_select->execute();
+	$max_sort = $query_select->fetchAll()[0]['sort'];
+
+	$query = $db->prepare("INSERT INTO `subjects` (`sort`, `name`, `description`, `time`, `amount`, 
+	`display`, `date_start`, `date_end`) VALUES (:s, :n, :d, :t, :a, :dis, :ds, :de)");
+	$query->bindValue(':s', $max_sort + 1);
+	$query->bindValue(':n', (string)trim(strip_tags(htmlspecialchars($data['name']))));
+	$query->bindValue(':d', (string)trim(strip_tags(htmlspecialchars($data['description']))));
+	$query->bindValue(':t', (int)trim($data['time']));
+	$query->bindValue(':a', (int)trim($data['amount']));
+	$query->bindValue(':dis', 1);
+	$query->bindValue(':ds', (string)trim(strip_tags($data['date_start'])));
+	$query->bindValue(':de', (string)trim(strip_tags($data['date_end'])));
+	$query->execute();
+	return $query->rowCount();
+}
+
+/**
  * Обновляет поля предмета
  * @param  object $db объект базы данных
  * @param  int $subject_id номер предмета
@@ -436,6 +461,41 @@ function getSubjects($db, $user_information=[]){
 	return $query->fetchAll();
 }
 
+/**
+ * Возвращает вопросы по определенному предмету
+ * @param  object $db         подключение к базе данных
+ * @param  int $subject_id id предмета
+ * @param  array $user_information    информация о пользователе
+ * @return array возвращает вопросы
+ */
+function getQuestionsBySubject($db, $subject_id, $user_information){
+    if (!empty($user_information) && $user_information["role"] == 9) {
+        $query = $db->prepare("SELECT `id`, `question_img`, `question`, `option_1`, `option_2`, `option_3`, `option_4`, `option_5`, `option_6` FROM `questions` WHERE `subject_id` = :sid");
+        $query->bindValue(':sid', (int)trim($subject_id));
+		$query->execute();
+		return $query->fetchAll();
+    }else{
+		return [];
+	}
+}
+
+/**
+ * Возвращает информацию о переданном вопросе
+ * @param  object $db объект базы данных
+ * @param  int $question_id номер предмета
+ * @param  array $user_information    информация о пользователе
+ * @return array     массив с данными о вопросе
+ */
+function getQuestionInfo($db, $question_id, $user_information=[]){
+	if (!empty($user_information) && $user_information["role"] == 9) {
+		$query = $db->prepare("SELECT `id`, `question_img`, `question`, `option_1`, `option_2`, `option_3`, `option_4`, `option_5`, `option_6` FROM `questions` WHERE `id` = :qid");
+		$query->bindValue(':qid', $question_id);
+		$query->execute();
+		return $question = $query->fetch();
+	}else{
+		return [];
+	}
+}
 
 /**
  * Проверка на прохождение теста пользоваетлем
