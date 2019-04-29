@@ -82,6 +82,12 @@ $subjects = getSubjects($db, []);
 			<div class="modal-body">
 				<form action="" method="POST"  class="form-edit-question">
 					<!-- <h1 class="h3 mb-3 font-weight-normal">Форма создания олимпиады</h1> -->
+					<div class="form-group" id="question-image-preview">
+                        <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+                        <!--Название элемента input определяет имя в массиве $_FILES--> 
+                        <label class="question-image-label" for="question-image">Загрузить картинку</label>
+                        <input class="question-image-input" name="question-image" id="question-image-input" type="file" lang="ru" accept="image/*"/>
+					</div>
 					<div class="form-group">
 						<label for="inputEditQuestion" class="col-form-label">Вопрос</label>
 						<textarea id="inputEditQuestion" class="form-control" placeholder="Введите вопрос" autofocus="" name="question" value="" rows="1"></textarea>
