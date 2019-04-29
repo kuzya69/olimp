@@ -151,6 +151,12 @@ text-align: center;
     background-color: #ffffff;
     color: #ecf0f1;
   }
+  @media(max-width: 575.98px) {
+    #question-image-preview {
+        width: 320px;
+        height: 118px;
+    }
+  }
   #question-image-preview input {
     line-height: 200px;
     font-size: 200px;
