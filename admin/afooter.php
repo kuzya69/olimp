@@ -386,6 +386,14 @@
 						$("#questions-table-by-subject").trigger('update');
 					}
 				});
+
+				// if(sid == 0){
+				// 	$('.new-question-button').data('target', '');
+				// 	alert($('.new-question-button').data('target'));
+				// }else{
+				// 	$('.new-question-button').data('target', '#newQuestionModal');
+				// 	alert($('.new-question-button').data('target'));
+				// }
 			});
 
 			//Действие над предметом
@@ -400,13 +408,13 @@
 						console.log(data);
 						// $(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
 						if(data['question_img'] !== null && data['question_img'] !== "" && data['question_img']){
-							document.getElementById('question-image-preview').style.backgroundImage = "url(../"+data['question_img']+")";
-							document.getElementById('question-image-preview').style.backgroundSize = "contain";
-							document.getElementById('question-image-preview').style.backgroundPosition = "center center";
-							document.getElementById('question-image-input').value = "";
+							document.getElementById('question-edit-image-preview').style.backgroundImage = "url(../"+data['question_img']+")";
+							document.getElementById('question-edit-image-preview').style.backgroundSize = "contain";
+							document.getElementById('question-edit-image-preview').style.backgroundPosition = "center center";
+							document.getElementById('question-edit-image-input').value = "";
 						}else{
-							document.getElementById('question-image-preview').style.backgroundImage = "none";
-							document.getElementById('question-image-input').value = "";
+							document.getElementById('question-edit-image-preview').style.backgroundImage = "none";
+							document.getElementById('question-edit-image-input').value = "";
 						}
 						document.getElementById('inputEditQuestion').value = data['question'];
 						document.getElementById('inputEditOption1').value = (data['option_1'])?data['option_1']:"";
@@ -423,11 +431,31 @@
 				});
 			});
 
+			// При нажатии на создание нового вопроса картинка, если есть, сбрасывается 
+			$('.new-question-button').on('click', function(){
+				document.getElementById('question-create-image-preview').style.backgroundImage = "none";
+				document.getElementById('question-create-image-input').value = "";
+			});
+
+
 			// $(document).ready(function() {
 				$.uploadPreview({
-					input_field: "#question-image-input",   // По умолчанию: .image-upload
-					preview_box: "#question-image-preview",  // По умолчанию: .image-preview
-					label_field: ".question-image-label",    // По умолчанию: .image-label
+					input_field: "#question-edit-image-input",   // По умолчанию: .image-upload
+					preview_box: "#question-edit-image-preview",  // По умолчанию: .image-preview
+					label_field: ".question-edit-image-label",    // По умолчанию: .image-label
+					label_default: "Выбрать картинку",   // По умолчанию: Choose File
+					label_selected: "Изменить картинку",  // По умолчанию: Change File
+					no_label: false,                // По умолчанию: false
+					success_callback: null          // По умолчанию: null
+					// input_field: ".question-image-input",
+					// preview_box: ".question-image-preview",
+					// label_field: ".question-image-label"
+				});
+
+				$.uploadPreview({
+					input_field: "#question-create-image-input",   // По умолчанию: .image-upload
+					preview_box: "#question-create-image-preview",  // По умолчанию: .image-preview
+					label_field: ".question-create-image-label",    // По умолчанию: .image-label
 					label_default: "Выбрать картинку",   // По умолчанию: Choose File
 					label_selected: "Изменить картинку",  // По умолчанию: Change File
 					no_label: false,                // По умолчанию: false

@@ -33,30 +33,40 @@ $subjects = getSubjects($db, []);
       </div>
 			<div class="modal-body">
 				<form action="add_question.php" method="POST"  class="form-create-question">
-					<!-- <h1 class="h3 mb-3 font-weight-normal">Форма создания олимпиады</h1> -->
-					<div class="form-group">
-						<label for="inputCreateName" class="col-form-label">Название</label>
-						<input type="text" id="inputCreateName" class="form-control" placeholder="Введите название" required autofocus="" name="name" value="">
+                    <!-- <h1 class="h3 mb-3 font-weight-normal">Форма создания олимпиады</h1> -->
+                    <div class="form-group" id="question-create-image-preview">
+                        <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+                        <!--Название элемента input определяет имя в массиве $_FILES--> 
+                        <label class="question-create-image-label" for="question-image">Загрузить картинку</label>
+                        <input class="question-create-image-input" name="question-image" id="question-create-image-input" type="file" lang="ru" accept="image/*"/>
 					</div>
 					<div class="form-group">
-						<label for="inputCreateDescription" class="col-form-label">Описание</label>
-						<textarea id="inputCreateDescription" class="form-control" placeholder="Введите описание" required autofocus="" name="description" value="" rows="3"></textarea>
+						<label for="inputCreateQuestion" class="col-form-label">Вопрос</label>
+						<textarea id="inputCreateQuestion" class="form-control" placeholder="Введите вопрос" autofocus="" name="question" value="" rows="1"></textarea>
 					</div>
 					<div class="form-group">
-						<label for="inputCreateTime" class="col-form-label">Время</label>
-						<input type="number" id="inputCreateTime" class="form-control" placeholder="Время на олимпиаду(мин.)" required name="time">
+						<label for="inputCreateOption1" class="col-form-label">Ответ</label>
+						<textarea id="inputCreateOption1" class="form-control" placeholder="Введите ответ" autofocus="" name="option1" value="" rows="1"></textarea>
 					</div>
 					<div class="form-group">
-						<label for="inputCreateAmount" class="col-form-label">Количество вопросов</label>
-						<input type="number" id="inputCreateAmount" class="form-control" placeholder="Введите количество вопросов" required name="amount">
+						<label for="inputCreateOption2" class="col-form-label">Ответ</label>
+						<textarea id="inputCreateOption2" class="form-control" placeholder="Введите ответ" autofocus="" name="option2" value="" rows="1"></textarea>
 					</div>
 					<div class="form-group">
-						<label for="inputCreateDateStart" class="col-form-label">Начало</label>
-						<input type="date" id="inputCreateDateStart" class="form-control" placeholder="дата начала" required name="date_start" value="">
+						<label for="inputCreateOption3" class="col-form-label">Ответ</label>
+						<textarea id="inputCreateOption3" class="form-control" placeholder="Введите ответ" autofocus="" name="option3" value="" rows="1"></textarea>
 					</div>
 					<div class="form-group">
-						<label for="inputCreateDateEnd" class="col-form-label">Конец</label>
-						<input type="date" id="inputCreateDateEnd" class="form-control" placeholder="дата конца" required name="date_end" value="">
+						<label for="inputCreateOption4" class="col-form-label">Ответ</label>
+						<textarea id="inputCreateOption4" class="form-control" placeholder="Введите ответ" autofocus="" name="option4" value="" rows="1"></textarea>
+					</div>
+					<div class="form-group">
+						<label for="inputCreateOption5" class="col-form-label">Ответ</label>
+						<textarea id="inputCreateOption5" class="form-control" placeholder="Введите ответ" autofocus="" name="option5" value="" rows="1"></textarea>
+					</div>
+					<div class="form-group">
+						<label for="inputCreateOption6" class="col-form-label">Ответ</label>
+						<textarea id="inputCreateOption6" class="form-control" placeholder="Введите ответ" autofocus="" name="option6" value="" rows="1"></textarea>
 					</div>
 
 					<input id="create-question-submit" type="button" class="btn btn-lg btn-primary btn-block" name="create-question-submit" value="Записать">
@@ -82,11 +92,11 @@ $subjects = getSubjects($db, []);
 			<div class="modal-body">
 				<form action="" method="POST"  class="form-edit-question">
 					<!-- <h1 class="h3 mb-3 font-weight-normal">Форма создания олимпиады</h1> -->
-					<div class="form-group" id="question-image-preview">
+					<div class="form-group" id="question-edit-image-preview">
                         <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
                         <!--Название элемента input определяет имя в массиве $_FILES--> 
-                        <label class="question-image-label" for="question-image">Загрузить картинку</label>
-                        <input class="question-image-input" name="question-image" id="question-image-input" type="file" lang="ru" accept="image/*"/>
+                        <label class="question-edit-image-label" for="question-image">Загрузить картинку</label>
+                        <input class="question-edit-image-input" name="question-image" id="question-edit-image-input" type="file" lang="ru" accept="image/*"/>
 					</div>
 					<div class="form-group">
 						<label for="inputEditQuestion" class="col-form-label">Вопрос</label>
