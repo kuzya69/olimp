@@ -221,7 +221,7 @@ var questions_data;
 						success: function(data){
                                                     var response = data.split("-");
                                                     $('.section-test').remove();
-                                                    $('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+'балла(ов)</h1><p>тест пройден за <b>'+response[1]+'</b>, верно <b>'+response[2]+'</b></p></div>');
+                                                    $('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+' балла(ов)</h1><p>тест пройден за <b>'+response[1]+'</b>, верно <b>'+response[2]+'</b></p></div>');
 //							$('.test-time p').html(data);
 						}
 					});
