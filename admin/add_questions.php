@@ -31,45 +31,75 @@ $subjects = getSubjects($db, []);
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-			<div class="modal-body">
-				<form action="add_question.php" method="POST"  class="form-create-question">
-                    <!-- <h1 class="h3 mb-3 font-weight-normal">Форма создания олимпиады</h1> -->
-                    <div class="form-group" id="question-create-image-preview">
-                        <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
-                        <!--Название элемента input определяет имя в массиве $_FILES--> 
-                        <label class="question-create-image-label" for="question-image">Загрузить картинку</label>
-                        <input class="question-create-image-input" name="question-image" id="question-create-image-input" type="file" lang="ru" accept="image/*"/>
+			<div class="modal-body modal-create">
+			<form action="upload_images.php" method="POST" class="form-create-question-image" enctype="multipart/form-data">
+					<!-- <h1 class="h3 mb-3 font-weight-normal">Форма создания олимпиады</h1> -->
+					<div class="form-group" id="question-create-image-preview">
+							<input type="hidden" name="sid" value="" />
+							<!-- <input type="hidden" name="qid" value="" /> -->
+							<input type="hidden" name="type" value="" />
+							<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+							<!--Название элемента input определяет имя в массиве $_FILES--> 
+							<label class="question-create-image-label" for="question-image">Загрузить картинку</label>
+							<input class="question-create-image-input" name="question-create-image" id="question-create-image-input" type="file" lang="ru" accept="image/*"/>
 					</div>
+					<input id="create-question-submit" type="submit" class="btn btn-lg btn-primary btn-block" data-id="" name="create-question-submit" value="Записать">
+				</form>
+				<form action="add_question.php" method="POST"  class="form-create-question">
 					<div class="form-group">
 						<label for="inputCreateQuestion" class="col-form-label">Вопрос</label>
 						<textarea id="inputCreateQuestion" class="form-control" placeholder="Введите вопрос" autofocus="" name="question" value="" rows="1"></textarea>
 					</div>
-					<div class="form-group">
-						<label for="inputCreateOption1" class="col-form-label">Ответ</label>
-						<textarea id="inputCreateOption1" class="form-control" placeholder="Введите ответ" autofocus="" name="option1" value="" rows="1"></textarea>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input id="inputCreateOptionType1" type="checkbox" name="create-type:1">
+							</div>
+						</div>
+						<textarea id="inputCreateOption1" class="form-control" placeholder="Введите ответ" autofocus="" name="option_1" value="" rows="1"></textarea>
 					</div>
-					<div class="form-group">
-						<label for="inputCreateOption2" class="col-form-label">Ответ</label>
-						<textarea id="inputCreateOption2" class="form-control" placeholder="Введите ответ" autofocus="" name="option2" value="" rows="1"></textarea>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input id="inputCreateOptionType2" type="checkbox" name="create-type:2">
+							</div>
+						</div>
+						<textarea id="inputCreateOption2" class="form-control" placeholder="Введите ответ" autofocus="" name="option_2" value="" rows="1"></textarea>
 					</div>
-					<div class="form-group">
-						<label for="inputCreateOption3" class="col-form-label">Ответ</label>
-						<textarea id="inputCreateOption3" class="form-control" placeholder="Введите ответ" autofocus="" name="option3" value="" rows="1"></textarea>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input id="inputCreateOptionType3" type="checkbox" name="create-type:3">
+							</div>
+						</div>
+						<textarea id="inputCreateOption3" class="form-control" placeholder="Введите ответ" autofocus="" name="option_3" value="" rows="1"></textarea>
 					</div>
-					<div class="form-group">
-						<label for="inputCreateOption4" class="col-form-label">Ответ</label>
-						<textarea id="inputCreateOption4" class="form-control" placeholder="Введите ответ" autofocus="" name="option4" value="" rows="1"></textarea>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input id="inputCreateOptionType4" type="checkbox" name="create-type:4">
+							</div>
+						</div>
+						<textarea id="inputCreateOption4" class="form-control" placeholder="Введите ответ" autofocus="" name="option_4" value="" rows="1"></textarea>
 					</div>
-					<div class="form-group">
-						<label for="inputCreateOption5" class="col-form-label">Ответ</label>
-						<textarea id="inputCreateOption5" class="form-control" placeholder="Введите ответ" autofocus="" name="option5" value="" rows="1"></textarea>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input id="inputCreateOptionType5" type="checkbox" name="create-type:5">
+							</div>
+						</div>
+						<textarea id="inputCreateOption5" class="form-control" placeholder="Введите ответ" autofocus="" name="option_5" value="" rows="1"></textarea>
 					</div>
-					<div class="form-group">
-						<label for="inputCreateOption6" class="col-form-label">Ответ</label>
-						<textarea id="inputCreateOption6" class="form-control" placeholder="Введите ответ" autofocus="" name="option6" value="" rows="1"></textarea>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input id="inputCreateOptionType6" type="checkbox" name="create-type:6">
+							</div>
+						</div>
+						<textarea id="inputCreateOption6" class="form-control" placeholder="Введите ответ" autofocus="" name="option_6" value="" rows="1"></textarea>
 					</div>
 
-					<input id="create-question-submit" type="button" class="btn btn-lg btn-primary btn-block" name="create-question-submit" value="Записать">
+					<!-- <input id="create-question-submit" type="button" class="btn btn-lg btn-primary btn-block" name="create-question-submit" value="Записать"> -->
 				</form>
 			</div>
       <!-- <div class="modal-footer">
@@ -89,44 +119,74 @@ $subjects = getSubjects($db, []);
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-			<div class="modal-body">
-				<form action="" method="POST"  class="form-edit-question">
+			<div class="modal-body modal-edit">
+				<form action="upload_images.php" method="POST" class="form-edit-question-image" enctype="multipart/form-data">
 					<!-- <h1 class="h3 mb-3 font-weight-normal">Форма создания олимпиады</h1> -->
 					<div class="form-group" id="question-edit-image-preview">
-                        <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
-                        <!--Название элемента input определяет имя в массиве $_FILES--> 
-                        <label class="question-edit-image-label" for="question-image">Загрузить картинку</label>
-                        <input class="question-edit-image-input" name="question-image" id="question-edit-image-input" type="file" lang="ru" accept="image/*"/>
+							<input type="hidden" name="sid" value="" />
+							<input type="hidden" name="qid" value="" />
+							<input type="hidden" name="type" value="" />
+							<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+							<!--Название элемента input определяет имя в массиве $_FILES--> 
+							<label class="question-edit-image-label" for="question-image">Загрузить картинку</label>
+							<input class="question-edit-image-input" name="question-edit-image" id="question-edit-image-input" type="file" lang="ru" accept="image/*"/>
 					</div>
+					<input id="edit-question-submit" type="submit" class="btn btn-lg btn-primary btn-block" data-id="" name="edit-question-submit" value="Записать">
+				</form>	
+				<form action="" method="POST" class="form-edit-question" enctype="multipart/form-data">
 					<div class="form-group">
 						<label for="inputEditQuestion" class="col-form-label">Вопрос</label>
 						<textarea id="inputEditQuestion" class="form-control" placeholder="Введите вопрос" autofocus="" name="question" value="" rows="1"></textarea>
 					</div>
-					<div class="form-group">
-						<label for="inputEditOption1" class="col-form-label">Ответ</label>
-						<textarea id="inputEditOption1" class="form-control" placeholder="Введите ответ" autofocus="" name="option1" value="" rows="1"></textarea>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input id="inputUpdateOptionType1" type="checkbox" name="update-type:1">
+							</div>
+						</div>
+						<textarea id="inputEditOption1" class="form-control" placeholder="Введите ответ" autofocus="" name="option_1" value="" rows="1"></textarea>
 					</div>
-					<div class="form-group">
-						<label for="inputEditOption2" class="col-form-label">Ответ</label>
-						<textarea id="inputEditOption2" class="form-control" placeholder="Введите ответ" autofocus="" name="option2" value="" rows="1"></textarea>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input id="inputUpdateOptionType2" type="checkbox" name="update-type:2">
+							</div>
+						</div>
+						<textarea id="inputEditOption2" class="form-control" placeholder="Введите ответ" autofocus="" name="option_2" value="" rows="1"></textarea>
 					</div>
-					<div class="form-group">
-						<label for="inputEditOption3" class="col-form-label">Ответ</label>
-						<textarea id="inputEditOption3" class="form-control" placeholder="Введите ответ" autofocus="" name="option3" value="" rows="1"></textarea>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input id="inputUpdateOptionType3" type="checkbox" name="update-type:3">
+							</div>
+						</div>
+						<textarea id="inputEditOption3" class="form-control" placeholder="Введите ответ" autofocus="" name="option_3" value="" rows="1"></textarea>
 					</div>
-					<div class="form-group">
-						<label for="inputEditOption4" class="col-form-label">Ответ</label>
-						<textarea id="inputEditOption4" class="form-control" placeholder="Введите ответ" autofocus="" name="option4" value="" rows="1"></textarea>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input id="inputUpdateOptionType4" type="checkbox" name="update-type:4">
+							</div>
+						</div>
+						<textarea id="inputEditOption4" class="form-control" placeholder="Введите ответ" autofocus="" name="option_4" value="" rows="1"></textarea>
 					</div>
-					<div class="form-group">
-						<label for="inputEditOption5" class="col-form-label">Ответ</label>
-						<textarea id="inputEditOption5" class="form-control" placeholder="Введите ответ" autofocus="" name="option5" value="" rows="1"></textarea>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input id="inputUpdateOptionType5" type="checkbox" name="update-type:5">
+							</div>
+						</div>
+						<textarea id="inputEditOption5" class="form-control" placeholder="Введите ответ" autofocus="" name="option_5" value="" rows="1"></textarea>
 					</div>
-					<div class="form-group">
-						<label for="inputEditOption6" class="col-form-label">Ответ</label>
-						<textarea id="inputEditOption6" class="form-control" placeholder="Введите ответ" autofocus="" name="option6" value="" rows="1"></textarea>
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<div class="input-group-text">
+								<input id="inputUpdateOptionType6" type="checkbox" name="update-type:6">
+							</div>
+						</div>
+						<textarea id="inputEditOption6" class="form-control" placeholder="Введите ответ" autofocus="" name="option_6" value="" rows="1"></textarea>
 					</div>
-					<input id="edit-question-submit" type="button" class="btn btn-lg btn-primary btn-block" data-id="" name="edit-question-submit" value="Записать">
+					<!-- <input id="edit-question-submit" type="button" class="btn btn-lg btn-primary btn-block" data-id="" name="edit-question-submit" value="Записать"> -->
 				</form>
       </div>
       <!-- <div class="modal-footer">
@@ -211,18 +271,18 @@ $subjects = getSubjects($db, []);
     <!-- <label for="selectSubject">Выбрать предмет</label> -->
 <!-- </div> -->
 <?php
-$row = 1;
-if (($handle = fopen("../temporary/file.csv", "r")) !== FALSE) {
-    while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-        $num = count($data);
-        echo "<p> $num полей в строке $row: <br /></p>\n";
-        $row++;
-        for ($c=0; $c < $num; $c++) {
-            echo $data[$c] . "<br />\n";
-        }
-    }
-    fclose($handle);
-}
+// $row = 1;
+// if (($handle = fopen("../temporary/file.csv", "r")) !== FALSE) {
+//     while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
+//         $num = count($data);
+//         echo "<p> $num полей в строке $row: <br /></p>\n";
+//         $row++;
+//         for ($c=0; $c < $num; $c++) {
+//             echo $data[$c] . "<br />\n";
+//         }
+//     }
+//     fclose($handle);
+// }
 
 include_once("afooter.php");
 ?>

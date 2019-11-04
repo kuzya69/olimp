@@ -194,7 +194,6 @@ function selectedOptions($db, $form_date){
 }
 
 
-
 /**
  * Записывает переданные данные в таблицу user_selected_options
  * @param  object $db объект базы данных
@@ -445,6 +444,61 @@ function updateSubjectData($db, $subject_id, $data){
 }
 
 /**
+ * Обновляет поля вопроса
+ * @param  object $db объект базы данных
+ * @param  int $question_id номер вопроса
+ * @param  int $subject_id номер предмета
+ * @param  int $data массив данных
+ * @return  int возвращает количество затронутых строк          
+ */
+function updateQuestionData($db, $question_id, $subject_id, $data){
+	$query = $db->prepare("UPDATE `questions` 
+	SET 
+		`question_img` = :qimg, 
+		`question` = :q,  
+		`answers` = :a,  
+		`subject_id` = :s,  
+		`option_1` = :o1,  
+		`option_2` = :o2,  
+		`option_3` = :o3,  
+		`option_4` = :o4,  
+		`option_5` = :o5,  
+		`option_6` = :o6  
+	WHERE `id` = :qid");
+	$query->bindValue(':qimg', (string)"images/".$subject_id."/".$subject_id."_".$question_id.".jpg");
+	$query->bindValue(':q', (string)trim(strip_tags(htmlspecialchars($data['question']))));
+	$query->bindValue(':a', (string)trim(strip_tags(htmlspecialchars($data['answers']))));
+	$query->bindValue(':o1', (string)trim(strip_tags(htmlspecialchars($data['option_1']))));
+	$query->bindValue(':o2', (string)trim(strip_tags(htmlspecialchars($data['option_2']))));
+	$query->bindValue(':o3', (string)trim(strip_tags(htmlspecialchars($data['option_3']))));
+	$query->bindValue(':o4', (string)trim(strip_tags(htmlspecialchars($data['option_4']))));
+	$query->bindValue(':o5', (string)trim(strip_tags(htmlspecialchars($data['option_5']))));
+	$query->bindValue(':o6', (string)trim(strip_tags(htmlspecialchars($data['option_6']))));
+	$query->bindValue(':s', (int) $subject_id);
+	$query->bindValue(':qid', (int) $question_id);
+	$query->execute();
+	return $query->rowCount();
+}
+
+function createNewQuestion($db, $question_id, $subject_id, $data){
+	$query = $db->prepare("INSERT INTO `questions` (`question_img`, `question`, `answers`, `subject_id`, `option_1`, `option_2`, `option_3`, `option_4`, `option_5`, `option_6`) 
+		VALUES (:qimg, :q, :a, :s, :o1, :o2, :o3, :o4, :o5, :o6)");
+	$query->bindValue(':qimg', (string)"images/".$subject_id."/".$subject_id."_".$question_id.".jpg");
+	$query->bindValue(':q', (string)trim(strip_tags(htmlspecialchars($data['question']))));
+	$query->bindValue(':a', (string)trim(strip_tags(htmlspecialchars($data['answers']))));
+	$query->bindValue(':s', (int) $subject_id);
+	$query->bindValue(':o1', (string)trim(strip_tags(htmlspecialchars($data['option_1']))));
+	$query->bindValue(':o2', (string)trim(strip_tags(htmlspecialchars($data['option_2']))));
+	$query->bindValue(':o3', (string)trim(strip_tags(htmlspecialchars($data['option_3']))));
+	$query->bindValue(':o4', (string)trim(strip_tags(htmlspecialchars($data['option_4']))));
+	$query->bindValue(':o5', (string)trim(strip_tags(htmlspecialchars($data['option_5']))));
+	$query->bindValue(':o6', (string)trim(strip_tags(htmlspecialchars($data['option_6']))));
+	// $query->bindValue(':qid', (int) $question_id);
+	$query->execute();
+	return $query->rowCount();
+}
+
+/**
  * Возвращает информацию о предметах
  * @param  object $db объект базы данных
  * @param  array $user_information    информация о пользователе
@@ -594,18 +648,76 @@ function can_upload($file){
 	return [true, 'Загрузка возможна'];
   }
   
-  /**
-   * Загрузить картинку (после проверки функцией can_upload)
-   * @param string $directory - директория в которую необходимо загрузить файл
-   * @param array $file - загружаемый файл
-   */
-  function make_upload($directory = 'mas', $file){
+/**
+ * Загрузить картинку (после проверки функцией can_upload)
+ * @param string $directory - директория в которую необходимо загрузить файл
+ * @param array $file - загружаемый файл
+ */
+function make_upload($directory = 'mas', $file){
 	$directory = '../images'.DIRECTORY_SEPARATOR.$directory;
 	// cоздадим папку если её нет
 	if( ! is_dir( $directory ) ) mkdir( $directory, 0777 );	
 	// формируем уникальное имя картинки: случайное число и name
 	$name = mt_rand(1000000, 9999999) .'.'. end(explode('.', $file['name']));
 	copy($file['tmp_name'], $directory.DIRECTORY_SEPARATOR.$name);
-  }
+}
+
+/**
+ * Рекурсивное создание папок
+ * @param string $dirName - путь к директории (dir/dir/dir)
+ * @param int $rights - права на файл
+ */
+function mkdir_recursive($dirName, $rights=0777){
+	$dirs = explode('/', $dirName);
+	$dir='';
+	foreach ($dirs as $part) {
+			$dir.=$part.'/';
+			if (!is_dir($dir) && strlen($dir)>0)
+					mkdir($dir, $rights);
+	}
+}
+
+/**
+ * Максимальный номер вопроса
+ * @param  object $db объект базы данных
+ * @return int возвращает максимальный id среди вопросов
+ */
+function getMaxQuestionId($db){
+	// $query = $db->prepare("SELECT max(`id`) as `id` FROM `questions`");
+	$query = $db->prepare("SELECT Auto_increment FROM information_schema.tables WHERE table_name=:tn AND table_schema=:ts");
+	$query->bindValue(':tn', (string) "questions");
+	$query->bindValue(':ts', (string) "tests_platform");
+	$query->execute();
+	$max_question_id = $query->fetch();
+	// print_r($max_question_id);die();
+	// return $max_question_id['id']+1;
+	return $max_question_id['Auto_increment'];
+}
+
+/**
+ * Удаляет выбранный файл
+ * @param string $path путь к удаляемому файлу
+ */
+function deleteFile($path){
+	// foreach ($files as $file) {
+		if (file_exists($path)) {
+			unlink($path);
+		} else {
+			return 0;
+		}
+	// }
+}
+
+/**
+ * Удаляет данные вопросе
+ * @param  object $db объект базы данных
+ * @param int $question_id id вопроса
+ */
+function deleteQuestionData($db, $question_id){
+	$query = $db->prepare("DELETE FROM `questions` WHERE `id` = :qid ");
+	$query->bindValue(':qid', (int)trim($question_id));
+	$query->execute();
+	return $query->rowCount();
+}
 
 ?>

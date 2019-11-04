@@ -396,7 +396,7 @@
 				// }
 			});
 
-			//Действие над предметом
+			//Действие над вопросом
 			$("#questions-table-by-subject").on('click', '.question-edit', function(){
 				var qid = $(this).parent().data('qid');
 				$.ajax({
@@ -466,6 +466,129 @@
 				});
 			// });
 
+			// Создание вопроса
+			$('.form-create-question-image').on('submit', (function(e) {
+				e.preventDefault();
+				
+				var selected_subject = $('#select-subject').val();
+				
+				if(selected_subject == 0){
+					alert("Выберите олимпиаду");
+				}else{
+					$(this).find('input[name=sid]').val(selected_subject);
+					$(this).find('input[name=type]').val('s');
+
+					var image = new FormData(this);
+					
+					$.ajax({
+						type:'POST', // Тип запроса
+						url: 'upload_images.php', // Скрипт обработчика
+						data: image, // Данные которые мы передаем
+						cache: false, // В запросах POST отключено по умолчанию, но перестрахуемся
+						contentType: false, // Тип кодирования данных мы задали в форме, это отключим
+						processData: false, // Отключаем, так как передаем файл
+						success:function(data){
+							data = data.split('-');
+							if(data[0] == 'success'){
+								var formData = $('.form-create-question').serializeArray();
+								// console.log(formData);
+								// console.log(data[1]);
+								// console.log(data[1]);
+								$.ajax({
+									type: 'POST',
+									url: 'a_ajax_request.php',
+									data: {status: 23, fd: formData, q: data[1], s: selected_subject},
+									dataType : "json",
+									success: function(data){
+										console.log(data);
+									},
+									error: function(){
+										console.log('error');
+									}
+								});
+							}
+							// printMessage('#result', data[0]);
+						},
+						error:function(data){
+							console.log('no');
+							console.log(data);
+						}
+					});
+				}
+			}));
+
+			$("#questions-table-by-subject").on('click', '.question-delete', function(){
+				var qid = $(this).parent().data('qid');
+				var selected_subject = $('#select-subject').val();
+				$.ajax({
+					type: 'POST',
+					url: 'a_ajax_request.php',
+					data: {status: 25, s: selected_subject, q: qid},
+					dataType: 'json',
+					success: function(data){
+						console.log("success");
+						console.log(data);
+					},
+					error: function(data){
+						console.log("error");
+					}
+				});
+			});
+
+			// Обновление вопроса
+			$('.form-edit-question-image').on('submit', (function(e) {
+				e.preventDefault();
+				
+				var selected_subject = $('#select-subject').val();
+				var selected_question = $('#edit-question-submit').data('id');
+
+				if(selected_subject == 0){
+					alert("Выберите олимпиаду");
+				}else{
+				
+					$(this).find('input[name=sid]').val(selected_subject);
+					$(this).find('input[name=qid]').val(selected_question);
+					$(this).find('input[name=type]').val('u');
+
+					var image = new FormData(this);
+					
+					$.ajax({
+						type:'POST', // Тип запроса
+						url: 'upload_images.php', // Скрипт обработчика
+						data: image, // Данные которые мы передаем
+						cache: false, // В запросах POST отключено по умолчанию, но перестрахуемся
+						contentType: false, // Тип кодирования данных мы задали в форме, это отключим
+						processData: false, // Отключаем, так как передаем файл
+						success:function(data){
+							data = data.split('-');
+							if(data[0] == 'success'){
+								var formData = $('.form-edit-question').serializeArray();
+								// console.log(formData);
+								$.ajax({
+									type: 'POST',
+									url: 'a_ajax_request.php',
+									data: {status: 24, fd: formData, q: selected_question, s: selected_subject},
+									dataType : "json",
+									success: function(data){
+										console.log(data);
+									},
+									error: function(){
+										console.log('error');
+									}
+								});
+								// $('#image').val('');
+								// $('#preview').remove();
+								// $('#templates').prepend("<div class='col-md-4 img-template my-col'><img src='templates/"+data[1]+".jpg' alt='' class='img-thumbnail my-image-prev'><span class='close' data-id='"+data[1]+"'>&times;</span></div>");
+							}
+							// printMessage('#result', data[0]);
+						},
+						error:function(data){
+							console.log('no');
+							console.log(data);
+						}
+					});
+				}
+			}));
 		</script>
 		<footer>
 			<!-- <div class="footer">
