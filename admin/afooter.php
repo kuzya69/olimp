@@ -82,6 +82,24 @@
 			// 	});
 			// })(jQuery);
 
+			function printMessage(destination, msg) {
+				$(destination).removeClass();
+				if (msg == 'success') {
+					$(destination).addClass('alert alert-success').text('Файл успешно загружен.');
+				}
+				if (msg == 'error') {
+					$(destination).addClass('alert alert-danger').text('Произошла ошибка при загрузке файла.');
+				}
+				if (msg == 'error_file_check') {
+					$(destination).addClass('alert alert-danger').text('Файл не выбран.');
+				}
+				if (msg == 'error_file_maxsize') {
+					$(destination).addClass('alert alert-danger').text('Файл слишком большой.');
+				}
+				if (msg == 'error_type') {
+					$(destination).addClass('alert alert-danger').text('Не верный тип файла (имя фаайла.jpg)');
+				}
+			}
 			// (function($){
 				// $(window).on("load",function(){
 
@@ -405,7 +423,17 @@
 					url: "a_ajax_request.php",
 					dataType : "json",   
 					success: function(data){
-						console.log(data);
+						// console.log(data);
+						var answers = data['answers'].split(",");
+						// console.log(answers);
+						for(let i=1; i<=6; i++){
+							$('#inputUpdateOptionType'+i).prop('checked', false);						
+						}
+						for(let i=1; i<=answers.length; i++){
+							$('#inputUpdateOptionType'+answers[i-1]).prop('checked', true);						
+						}
+
+
 						// $(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
 						if(data['question_img'] !== null && data['question_img'] !== "" && data['question_img']){
 							document.getElementById('question-edit-image-preview').style.backgroundImage = "url(../"+data['question_img']+")";
@@ -477,43 +505,57 @@
 				}else{
 					$(this).find('input[name=sid]').val(selected_subject);
 					$(this).find('input[name=type]').val('s');
-
+					
 					var image = new FormData(this);
 					
 					$.ajax({
-						type:'POST', // Тип запроса
-						url: 'upload_images.php', // Скрипт обработчика
-						data: image, // Данные которые мы передаем
-						cache: false, // В запросах POST отключено по умолчанию, но перестрахуемся
-						contentType: false, // Тип кодирования данных мы задали в форме, это отключим
-						processData: false, // Отключаем, так как передаем файл
-						success:function(data){
-							data = data.split('-');
-							if(data[0] == 'success'){
-								var formData = $('.form-create-question').serializeArray();
-								// console.log(formData);
-								// console.log(data[1]);
-								// console.log(data[1]);
-								$.ajax({
-									type: 'POST',
-									url: 'a_ajax_request.php',
-									data: {status: 23, fd: formData, q: data[1], s: selected_subject},
-									dataType : "json",
-									success: function(data){
-										console.log(data);
-									},
-									error: function(){
-										console.log('error');
+						type: 'POST',
+						url: 'a_ajax_request.php',
+						data: {status: 26},
+						dataType : "json",
+						success: function(data){
+							var selected_question = data;
+							$(this).find('input[name=qid]').val(selected_question);
+							// console.log("sel_q: " + selected_question);
+							$.ajax({
+								type:'POST', // Тип запроса
+								url: 'upload_images.php', // Скрипт обработчика
+								data: image, // Данные которые мы передаем
+								cache: false, // В запросах POST отключено по умолчанию, но перестрахуемся
+								contentType: false, // Тип кодирования данных мы задали в форме, это отключим
+								processData: false, // Отключаем, так как передаем файл
+								success:function(data){
+									data = data.split('-');
+									if(data[0] == 'success'){
+										
 									}
-								});
-							}
-							// printMessage('#result', data[0]);
+									// printMessage('#result', data[0]);
+								},
+								error:function(data){
+									// console.log('no');
+									// console.log(data);
+								}
+							});
+							var formData = $('.form-create-question').serializeArray();
+							$.ajax({
+								type: 'POST',
+								url: 'a_ajax_request.php',
+								data: {status: 23, fd: formData, q: selected_question, s: selected_subject},
+								dataType : "json",
+								success: function(data){
+									// console.log(data);
+								},
+								error: function(){
+									// console.log('error');
+								}
+							});
 						},
-						error:function(data){
-							console.log('no');
-							console.log(data);
+						error: function(){
+							// console.log('error');
 						}
 					});
+
+					
 				}
 			}));
 
@@ -526,11 +568,11 @@
 					data: {status: 25, s: selected_subject, q: qid},
 					dataType: 'json',
 					success: function(data){
-						console.log("success");
-						console.log(data);
+						// console.log("success");
+						// console.log(data);
 					},
 					error: function(data){
-						console.log("error");
+						// console.log("error");
 					}
 				});
 			});
@@ -562,20 +604,20 @@
 						success:function(data){
 							data = data.split('-');
 							if(data[0] == 'success'){
-								var formData = $('.form-edit-question').serializeArray();
-								// console.log(formData);
-								$.ajax({
-									type: 'POST',
-									url: 'a_ajax_request.php',
-									data: {status: 24, fd: formData, q: selected_question, s: selected_subject},
-									dataType : "json",
-									success: function(data){
-										console.log(data);
-									},
-									error: function(){
-										console.log('error');
-									}
-								});
+								// var formData = $('.form-edit-question').serializeArray();
+								// // console.log(formData);
+								// $.ajax({
+								// 	type: 'POST',
+								// 	url: 'a_ajax_request.php',
+								// 	data: {status: 24, fd: formData, q: selected_question, s: selected_subject},
+								// 	dataType : "json",
+								// 	success: function(data){
+								// 		console.log(data);
+								// 	},
+								// 	error: function(data){
+								// 		console.log('error');
+								// 	}
+								// });
 								// $('#image').val('');
 								// $('#preview').remove();
 								// $('#templates').prepend("<div class='col-md-4 img-template my-col'><img src='templates/"+data[1]+".jpg' alt='' class='img-thumbnail my-image-prev'><span class='close' data-id='"+data[1]+"'>&times;</span></div>");
@@ -583,10 +625,28 @@
 							// printMessage('#result', data[0]);
 						},
 						error:function(data){
-							console.log('no');
-							console.log(data);
+							// console.log('no');
+							// console.log(data);
 						}
 					});
+
+					var formData = $('.form-edit-question').serializeArray();
+					$.ajax({
+						type: 'POST',
+						url: 'a_ajax_request.php',
+						data: {status: 24, fd: formData, q: selected_question, s: selected_subject},
+						dataType : "json",
+						success: function(data){
+							// console.log(data);
+							if(data == 1){
+								// $('#editQuestionModalLabel').parent().parent().css('border', '1px solid rgb(77, 247, 46)');
+							}
+						},
+						error: function(data){
+							// console.log('error');
+						}
+					});
+
 				}
 			}));
 		</script>

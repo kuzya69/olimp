@@ -26,6 +26,7 @@ $data = $_POST;
 // 	echo "no";
 // }
 
+echo "Регистрация временно закрыта!"; include_once('footer.php'); die();
 
 if(isset($data['signup'])){
 
@@ -255,7 +256,7 @@ if(isset($data['signup'])){
 
 		$query->bindValue(':e', (string)trim(strip_tags(htmlspecialchars($data['email']))));
 
-		$query->bindValue(':e_st', 0);
+		$query->bindValue(':e_st', 1);
 
 		$query->bindValue(':token', (string)$token);
 	
@@ -286,14 +287,15 @@ if(isset($data['signup'])){
 		$query->execute();
 
 		unset($query);
-		$base_url = "http://www.olimpiada24.ru/";
-		$to=trim(strip_tags($data['email']));//"kurbanvim@mail.ru";//
-		$subject="Подтверждение электронной почты";
-		// $body = "ok";
-		$body='Здравствуйте! <br/> <br/> Мы должны убедиться в том, что вы человек. Пожалуйста, <a href="'.$base_url.'activation/'.$token.'">подтвердите адрес</a> вашей электронной почты, и можете начать использовать ваш аккаунт на сайте. <br/> <a href="'.$base_url.'activation/'.$token.'">Подтвердить</a>';
+		// $base_url = "http://www.olimpiada24.ru/";
+		// $to=trim(strip_tags($data['email']));//"kurbanvim@mail.ru";//
+		// $subject="Подтверждение электронной почты";
+		// // $body = "ok";
+		// $body='Здравствуйте! <br/> <br/> Мы должны убедиться в том, что вы человек. Пожалуйста, <a href="'.$base_url.'activation/'.$token.'">подтвердите адрес</a> вашей электронной почты, и можете начать использовать ваш аккаунт на сайте. <br/> <a href="'.$base_url.'activation/'.$token.'">Подтвердить</a>';
 
-		Send_Mail($to,$subject,$body);
-		echo '<div style="color: green;">Вы успешно зарегистрировались! <b>Необходимо подтвердить свою почту</b></div><hr>';
+		// Send_Mail($to,$subject,$body);
+		// echo '<div style="color: green;">Вы успешно зарегистрировались! <b>Необходимо подтвердить свою почту</b></div><hr>';
+		echo '<div style="color: green;">Вы успешно зарегистрировались!</div><hr>';
 		// header("HTTP/1.1 301 Moved Permanently");
 		// header('Location: login.php');
 

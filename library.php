@@ -542,7 +542,7 @@ function getQuestionsBySubject($db, $subject_id, $user_information){
  */
 function getQuestionInfo($db, $question_id, $user_information=[]){
 	if (!empty($user_information) && $user_information["role"] == 9) {
-		$query = $db->prepare("SELECT `id`, `question_img`, `question`, `option_1`, `option_2`, `option_3`, `option_4`, `option_5`, `option_6` FROM `questions` WHERE `id` = :qid");
+		$query = $db->prepare("SELECT `id`, `question_img`, `question`, `answers`, `option_1`, `option_2`, `option_3`, `option_4`, `option_5`, `option_6` FROM `questions` WHERE `id` = :qid");
 		$query->bindValue(':qid', $question_id);
 		$query->execute();
 		return $question = $query->fetch();

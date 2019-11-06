@@ -36,7 +36,7 @@ $subjects = getSubjects($db, []);
 					<!-- <h1 class="h3 mb-3 font-weight-normal">Форма создания олимпиады</h1> -->
 					<div class="form-group" id="question-create-image-preview">
 							<input type="hidden" name="sid" value="" />
-							<!-- <input type="hidden" name="qid" value="" /> -->
+							<input type="hidden" name="qid" value="" />
 							<input type="hidden" name="type" value="" />
 							<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
 							<!--Название элемента input определяет имя в массиве $_FILES--> 

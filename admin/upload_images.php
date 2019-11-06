@@ -73,7 +73,7 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] == 'u'){
     }
 }elseif(isset($_REQUEST['type']) && $_REQUEST['type'] == 's'){
     $subject_id = $_REQUEST['sid'];
-    $question_id = getMaxQuestionId($db);
+    $question_id = $_REQUEST['qid'];
     
     // print_r($_REQUEST);die();
     //путь к файлам шаблона

@@ -283,4 +283,9 @@ if((isset($_POST['status']) && $_POST['status'] == 25) && isset($_POST['q']) && 
 	}
 }
 
+if(isset($_POST['status']) && $_POST['status'] == 26){
+	print_r(getMaxQuestionId($db));
+	die();
+}
+
 ?>

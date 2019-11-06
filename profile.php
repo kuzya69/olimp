@@ -126,7 +126,7 @@ if(isset($_POST['profile'])){
 	<h1 class="h3 mb-3 font-weight-normal">Мой профиль</h1>
 
 	<label for="inputLogin" class="sr-only">Ваш логин</label>
-	<input type="text" id="inputLogin" class="form-control" placeholder="логин" autofocus="" name="username" value="<?php echo @$data['username'];?>">
+	<input type="text" id="inputLogin" class="form-control" placeholder="логин" autofocus="" disabled="disabled" name="username" value="<?php echo @$data['username'];?>">
 
 	<label for="inputEmail" class="sr-only">Ваш e-mail</label>
 	<input type="email" id="inputEmail" class="form-control" placeholder="e-mail" autofocus="" name="email" value="<?php echo @$data['email'];?>">
