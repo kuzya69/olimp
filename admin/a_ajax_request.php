@@ -105,6 +105,7 @@ if((isset($_POST['status']) && $_POST['status'] == 22) && isset($_POST['q'])){
 if((isset($_POST['status']) && $_POST['status'] == 23) && isset($_POST['fd']) && isset($_POST['q']) && isset($_POST['s'])){
 	$sid = $_POST['s'];
 	$qid = $_POST['q'];
+	$selected_img = $_POST['si'];
 	$form_data = $_POST['fd'];
 	// $image = $_POST['img'];
 	$answers = '';
@@ -155,6 +156,11 @@ if((isset($_POST['status']) && $_POST['status'] == 23) && isset($_POST['fd']) &&
 		$answers = substr($answers, 0, -1);
 	// }
 	// print_r($_data);
+	if($selected_img && !empty($selected_img)){
+		$data['image'] = "images/".$sid."/".$sid."_".$qid.".jpg";
+	}else{
+		$data['image'] = "";
+	}
 	$data['question'] = $_data['question'];
 	$data['answers'] = $answers;
 	$data['option_1'] = $_data['option_1'];
@@ -189,6 +195,7 @@ if((isset($_POST['status']) && $_POST['status'] == 24) && isset($_POST['fd']) &&
 	// print_r($_POST['fd']);die();
 	$sid = $_POST['s'];
 	$qid = $_POST['q'];
+	$selected_img = $_POST['si'];
 	$form_data = $_POST['fd'];
 	// $image = $_POST['img'];
 	$answers = '';
@@ -239,6 +246,11 @@ if((isset($_POST['status']) && $_POST['status'] == 24) && isset($_POST['fd']) &&
 		$answers = substr($answers, 0, -1);
 	// }
 	// print_r($_data);
+	if($selected_img && !empty($selected_img)){
+		$data['image'] = "images/".$sid."/".$sid."_".$qid.".jpg";
+	}else{
+		$data['image'] = "";
+	}
 	$data['question'] = $_data['question'];
 	$data['answers'] = $answers;
 	$data['option_1'] = $_data['option_1'];
@@ -290,7 +302,7 @@ if((isset($_POST['status']) && $_POST['status'] == 25) && isset($_POST['q']) && 
 	}else{
 		if(deleteQuestionData($db, $question_id) > 0){
 			// echo "success";
-			$response += ['status' => 1, 'message' => "Данные успешно удалены"];
+			$response += ['status' => 1, 'message' => "Картинка не была найдена, данные успешно удалены"];
 			// deleteFile('../images/'.$subject_id.'/'.$subject_id.'_'.$question_id.'jpg');
 		}else{
 			$response += ['status' => 0, 'message' => "Не удалось удалить данные"];

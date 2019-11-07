@@ -465,7 +465,7 @@ function updateQuestionData($db, $question_id, $subject_id, $data){
 		`option_5` = :o5,  
 		`option_6` = :o6  
 	WHERE `id` = :qid");
-	$query->bindValue(':qimg', (string)"images/".$subject_id."/".$subject_id."_".$question_id.".jpg");
+	$query->bindValue(':qimg', (string)$data['image']);
 	$query->bindValue(':q', (string)trim(strip_tags(htmlspecialchars($data['question']))));
 	$query->bindValue(':a', (string)trim(strip_tags(htmlspecialchars($data['answers']))));
 	$query->bindValue(':o1', (string)trim(strip_tags(htmlspecialchars($data['option_1']))));
@@ -483,7 +483,7 @@ function updateQuestionData($db, $question_id, $subject_id, $data){
 function createNewQuestion($db, $question_id, $subject_id, $data){
 	$query = $db->prepare("INSERT INTO `questions` (`question_img`, `question`, `answers`, `subject_id`, `option_1`, `option_2`, `option_3`, `option_4`, `option_5`, `option_6`) 
 		VALUES (:qimg, :q, :a, :s, :o1, :o2, :o3, :o4, :o5, :o6)");
-	$query->bindValue(':qimg', (string)"images/".$subject_id."/".$subject_id."_".$question_id.".jpg");
+	$query->bindValue(':qimg', (string)$data['image']);
 	$query->bindValue(':q', (string)trim(strip_tags(htmlspecialchars($data['question']))));
 	$query->bindValue(':a', (string)trim(strip_tags(htmlspecialchars($data['answers']))));
 	$query->bindValue(':s', (int) $subject_id);
