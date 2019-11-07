@@ -686,7 +686,7 @@ function getMaxQuestionId($db){
 	// $query = $db->prepare("SELECT max(`id`) as `id` FROM `questions`");
 	$query = $db->prepare("SELECT Auto_increment FROM information_schema.tables WHERE table_name=:tn AND table_schema=:ts");
 	$query->bindValue(':tn', (string) "questions");
-	$query->bindValue(':ts', (string) "tests_platform");
+	$query->bindValue(':ts', (string) "u0689399_tests_platform");
 	$query->execute();
 	$max_question_id = $query->fetch();
 	// print_r($max_question_id);die();

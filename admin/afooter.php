@@ -622,7 +622,7 @@
 				if(selected_subject == 0){
 					alert("Выберите олимпиаду");
 				}else{
-					var selectedImageEdit = document.getElementById('question-create-image-input').value;
+					var selectedImageEdit = document.getElementById('question-edit-image-input').value;
 					// input.onchange = function(e) { 
 					console.log("selectImg: "+selectedImageEdit);
 					// };
