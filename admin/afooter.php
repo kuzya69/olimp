@@ -503,10 +503,11 @@
 				if(selected_subject == 0){
 					alert("Выберите олимпиаду");
 				}else{
-					$(this).find('input[name=sid]').val(selected_subject);
-					$(this).find('input[name=type]').val('s');
+					// var self = this;
+					var thisElement = $(this);
+					thisElement.find('input[name=sid]').val(selected_subject);
+					thisElement.find('input[name=type]').val('s');
 					
-					var image = new FormData(this);
 					
 					$.ajax({
 						type: 'POST',
@@ -515,8 +516,15 @@
 						dataType : "json",
 						success: function(data){
 							var selected_question = data;
-							$(this).find('input[name=qid]').val(selected_question);
-							// console.log("sel_q: " + selected_question);
+							thisElement.find('input[name=qid]').val(selected_question);
+
+							var formImageData = document.getElementById("formCreateQuestionImage");
+							var image = new FormData(formImageData);
+							
+							// console.log("this" + $(this)[0]);
+							// console.log("file" + formImageData);
+							// console.log("sel_quest: " + selected_question);
+							// console.log("sel_qid: " + thisElement.find('input[name=qid]').val());
 							$.ajax({
 								type:'POST', // Тип запроса
 								url: 'upload_images.php', // Скрипт обработчика
@@ -542,10 +550,16 @@
 								url: 'a_ajax_request.php',
 								data: {status: 23, fd: formData, q: selected_question, s: selected_subject},
 								dataType : "json",
+								beforeSend: function() {
+									$('#createQuestionLoadSuccess').html('<img src="../icon/load.gif">');
+								},
 								success: function(data){
+									$(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+									$('#createQuestionLoadSuccess').html('<img src="../icon/success.png">');
 									// console.log(data);
 								},
 								error: function(){
+									$('#createQuestionLoadSuccess').html('<img src="../icon/danger.png">');
 									// console.log('error');
 								}
 							});
@@ -568,6 +582,7 @@
 					data: {status: 25, s: selected_subject, q: qid},
 					dataType: 'json',
 					success: function(data){
+						$(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
 						// console.log("success");
 						// console.log(data);
 					},
@@ -588,6 +603,9 @@
 					alert("Выберите олимпиаду");
 				}else{
 				
+					// input.onchange = function(e) { 
+					
+					// };
 					$(this).find('input[name=sid]').val(selected_subject);
 					$(this).find('input[name=qid]').val(selected_question);
 					$(this).find('input[name=type]').val('u');
@@ -636,13 +654,19 @@
 						url: 'a_ajax_request.php',
 						data: {status: 24, fd: formData, q: selected_question, s: selected_subject},
 						dataType : "json",
+						beforeSend: function() {
+							$('#createQuestionLoadSuccess').html('<img src="../icon/load.gif">');
+						},
 						success: function(data){
+							$(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+							$('#createQuestionLoadSuccess').html('<img src="../icon/success.png">');
 							// console.log(data);
 							if(data == 1){
 								// $('#editQuestionModalLabel').parent().parent().css('border', '1px solid rgb(77, 247, 46)');
 							}
 						},
 						error: function(data){
+							$('#createQuestionLoadSuccess').html('<img src="../icon/danger.png">');
 							// console.log('error');
 						}
 					});

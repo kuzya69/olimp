@@ -184,3 +184,8 @@ text-align: center;
     margin: auto;
     text-align: center;
 }
+
+#createQuestionLoadSuccess, #updateQuestionLoadSuccess {
+    margin-top: 3px;
+    margin-left: 5px;
+}

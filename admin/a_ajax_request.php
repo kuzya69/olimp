@@ -163,24 +163,24 @@ if((isset($_POST['status']) && $_POST['status'] == 23) && isset($_POST['fd']) &&
 	$data['option_4'] = $_data['option_4'];
 	$data['option_5'] = $_data['option_5'];
 	$data['option_6'] = $_data['option_6'];
-	// $response = [];
+	$response = [];
 	// print_r($data);die();
 	// echo"<br>";
 	// print_r($image);
 	// echo"<br>";
-	print_r(createNewQuestion($db, $qid, $sid, $data));
-	die();
+	$create_question_data = createNewQuestion($db, $qid, $sid, $data);
+	// die();
 	// foreach($form_data as $key=>$value){
 	// 	$data[$value['name']] = $value['value'];
 	// }
 	// $update_question_data = updateQuestionData($db, $qid, $data);
-	// if($update_question_data > 0){
-	// 	$response += ['status' => 1, 'message' => "Данные успешно обновлены"];
-	// }else{
-	// 	$response += ['status' => 0, 'message' => "Не удалось обновить данные"];
-	// }
-	// echo json_encode($response, JSON_UNESCAPED_UNICODE);
-	// die();
+	if($create_question_data > 0){
+		$response += ['status' => 1, 'message' => "Данные успешно сохранены"];
+	}else{
+		$response += ['status' => 0, 'message' => "Не удалось сохранить данные"];
+	}
+	echo json_encode($response, JSON_UNESCAPED_UNICODE);
+	die();
 }
 
 // print_r($_REQUEST);
@@ -247,44 +247,78 @@ if((isset($_POST['status']) && $_POST['status'] == 24) && isset($_POST['fd']) &&
 	$data['option_4'] = $_data['option_4'];
 	$data['option_5'] = $_data['option_5'];
 	$data['option_6'] = $_data['option_6'];
-	// $response = [];
+	$response = [];
 	// print_r($data);
 	// echo"<br>";
 	// print_r($image);
 	// echo"<br>";
-	print_r(updateQuestionData($db, $qid, $sid, $data));
-	die();
+	$update_question_data = updateQuestionData($db, $qid, $sid, $data);
+	
+	// die();
 	// foreach($form_data as $key=>$value){
 	// 	$data[$value['name']] = $value['value'];
 	// }
 	// $update_question_data = updateQuestionData($db, $qid, $data);
-	// if($update_question_data > 0){
-	// 	$response += ['status' => 1, 'message' => "Данные успешно обновлены"];
-	// }else{
-	// 	$response += ['status' => 0, 'message' => "Не удалось обновить данные"];
-	// }
-	// echo json_encode($response, JSON_UNESCAPED_UNICODE);
-	// die();
+	if($update_question_data > 0){
+		$response += ['status' => 1, 'message' => "Данные успешно обновлены"];
+	}else{
+		$response += ['status' => 0, 'message' => "Не удалось обновить данные"];
+	}
+	echo json_encode($response, JSON_UNESCAPED_UNICODE);
+	die();
 }
 
 if((isset($_POST['status']) && $_POST['status'] == 25) && isset($_POST['q']) && isset($_POST['s'])){
 	$question_id = $_POST['q'];
 	$subject_id = $_POST['s'];
-	if(unlink('..'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$subject_id.DIRECTORY_SEPARATOR.$subject_id.'_'.$question_id.'.jpg')){
-		// echo "file delete";
-		if(deleteQuestionData($db, $question_id) > 0){
-			echo "success";
-			// deleteFile('../images/'.$subject_id.'/'.$subject_id.'_'.$question_id.'jpg');
+	$response = [];
+	if(file_exists('..'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$subject_id.DIRECTORY_SEPARATOR.$subject_id.'_'.$question_id.'.jpg')){
+		if(unlink('..'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$subject_id.DIRECTORY_SEPARATOR.$subject_id.'_'.$question_id.'.jpg')){
+			// echo "file delete";
+			if(deleteQuestionData($db, $question_id) > 0){
+				// echo "success";
+				$response += ['status' => 1, 'message' => "Данные успешно удалены"];
+				// deleteFile('../images/'.$subject_id.'/'.$subject_id.'_'.$question_id.'jpg');
+			}else{
+				// echo "data is not delete";
+				$response += ['status' => 0, 'message' => "Не удалось удалить данные"];
+			}
 		}else{
-			echo "data is not delete";
+			// echo "file is not delete";
+			$response += ['status' => 0, 'message' => "Не удалось удалить картинку"];
 		}
 	}else{
-		echo "file is not delete";
+		if(deleteQuestionData($db, $question_id) > 0){
+			// echo "success";
+			$response += ['status' => 1, 'message' => "Данные успешно удалены"];
+			// deleteFile('../images/'.$subject_id.'/'.$subject_id.'_'.$question_id.'jpg');
+		}else{
+			$response += ['status' => 0, 'message' => "Не удалось удалить данные"];
+			// echo "data is not delete";
+		}
 	}
+
+	echo json_encode($response, JSON_UNESCAPED_UNICODE);
+	die();
+	// if(unlink('..'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$subject_id.DIRECTORY_SEPARATOR.$subject_id.'_'.$question_id.'.jpg')){
+	// 	// echo "file delete";
+	// 	if(deleteQuestionData($db, $question_id) > 0){
+	// 		echo "success";
+	// 		// deleteFile('../images/'.$subject_id.'/'.$subject_id.'_'.$question_id.'jpg');
+	// 	}else{
+	// 		echo "data is not delete";
+	// 	}
+	// }else{
+	// 	echo "file is not delete";
+	// }
 }
 
 if(isset($_POST['status']) && $_POST['status'] == 26){
-	print_r(getMaxQuestionId($db));
+	// print_r(getMaxQuestionId($db));
+	$response = getMaxQuestionId($db);
+	// die();
+
+	echo json_encode($response, JSON_UNESCAPED_UNICODE);
 	die();
 }
 

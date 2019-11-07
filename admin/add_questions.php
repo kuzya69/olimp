@@ -26,13 +26,13 @@ $subjects = getSubjects($db, []);
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="newQuestionModalLabel">Добавить вопрос</h5>
+        <h5 class="modal-title" id="newQuestionModalLabel">Добавить вопрос</h5><span id="createQuestionLoadSuccess"><img src="../icon/peace.png"></span>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
 			<div class="modal-body modal-create">
-			<form action="upload_images.php" method="POST" class="form-create-question-image" enctype="multipart/form-data">
+			<form action="upload_images.php" method="POST" class="form-create-question-image" id="formCreateQuestionImage" enctype="multipart/form-data">
 					<!-- <h1 class="h3 mb-3 font-weight-normal">Форма создания олимпиады</h1> -->
 					<div class="form-group" id="question-create-image-preview">
 							<input type="hidden" name="sid" value="" />
@@ -114,13 +114,13 @@ $subjects = getSubjects($db, []);
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editQuestionModalLabel">Редактировать вопрос</h5>
+        <h5 class="modal-title" id="editQuestionModalLabel">Редактировать вопрос</h5><span id="editQuestionLoadSuccess"></span>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
 			<div class="modal-body modal-edit">
-				<form action="upload_images.php" method="POST" class="form-edit-question-image" enctype="multipart/form-data">
+				<form action="upload_images.php" method="POST" class="form-edit-question-image" id="formEditQuestionImage" enctype="multipart/form-data">
 					<!-- <h1 class="h3 mb-3 font-weight-normal">Форма создания олимпиады</h1> -->
 					<div class="form-group" id="question-edit-image-preview">
 							<input type="hidden" name="sid" value="" />
@@ -198,23 +198,23 @@ $subjects = getSubjects($db, []);
 </div>
 
 <section>
-    <div class="row my-row">
-        <div class="col-12 my-col">
-            <select class="form-control select-subject" id="select-subject">
-                <option selected value="0">Выберите олимпиаду</option>
-                <?php foreach($subjects as $key=>$value){?>
-                    <option value="<?=$value['id']?>"><?=$value['name']?></option>
-                <?php } ?>
-            </select>
-        </div>
-        <div class="col-6 my-col col-new-quest-butt">
-            <button type="button" class="btn btn-primary new-question-button" data-toggle="modal" data-target="#newQuestionModal">Добавить вопрос</button>
-        </div>
-        <div class="col-6 my-col col-down-quest-butt">
-            <button type="button" class="btn btn-primary download-questions-button" data-toggle="modal" data-target="#downloadQuestionsModal">Загрузить вопросы</button>
-        </div>
-    </div>
-
+	<div class="row my-row">
+			<div class="col-12 my-col">
+					<select class="form-control select-subject" id="select-subject">
+							<option selected value="0">Выберите олимпиаду</option>
+							<?php foreach($subjects as $key=>$value){?>
+									<option value="<?=$value['id']?>"><?=$value['name']?></option>
+							<?php } ?>
+					</select>
+			</div>
+			<div class="col-6 my-col col-new-quest-butt">
+					<button type="button" class="btn btn-primary new-question-button" data-toggle="modal" data-target="#newQuestionModal">Добавить вопрос</button>
+			</div>
+			<div class="col-6 my-col col-down-quest-butt">
+					<button type="button" class="btn btn-primary download-questions-button" data-toggle="modal" data-target="#downloadQuestionsModal">Загрузить вопросы</button>
+			</div>
+	</div>
+	<div class="res-table-message"></div>
 	<div class="row">
 		<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
 			<div id="table-questions-information" class="table-responsive mCustomScrollbar" data-mcs-axis="" data-mcs-theme="">

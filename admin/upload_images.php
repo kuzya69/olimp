@@ -75,7 +75,7 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] == 'u'){
     $subject_id = $_REQUEST['sid'];
     $question_id = $_REQUEST['qid'];
     
-    // print_r($_REQUEST);die();
+    print_r($_REQUEST);
     //путь к файлам шаблона
     $images_dir = IMAGES_DIR.DIRECTORY_SEPARATOR.$subject_id;
     
