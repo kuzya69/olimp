@@ -375,6 +375,7 @@
 						tableRow.html("");
 						var countQuestion = 0;
 						data.forEach(function(item){
+							var answers = item['answers'].split(",");
 							tableRow.append('<tr>'
 								+'<th>'+(++countQuestion)+'</th>'
 								+'<td><img src="../'+item['question_img']+'" alt="" width="100px"></td>'
@@ -516,6 +517,7 @@
 						dataType : "json",
 						success: function(data){
 							var selected_question = data;
+							// alert(data);
 							thisElement.find('input[name=qid]').val(selected_question);
 
 							var selectedImage = document.getElementById('question-create-image-input').value;
@@ -575,6 +577,19 @@
 
 										$('#create-question-submit').data('id', "");
 										$('#question-create-image-preview').find('input[name=qid]').val("");
+										// $('#create-question-submit').('input[name=qid]').val("");
+										$('input[id="create-question-submit"]').removeClass('btn-primary');
+										$('input[id="create-question-submit"]').addClass('btn-secondary');
+										$('#create-question-submit').attr('disabled', true);
+										$('#create-question-submit').attr("id", "create-question-sabmit");	
+										function setIdSubmitButton() {
+											$('#create-question-sabmit').attr("id", "create-question-submit");
+											$('input[id="create-question-submit"]').removeClass('btn-secondary');
+											$('input[id="create-question-submit"]').addClass('btn-primary');
+											$('#create-question-submit').removeAttr('disabled');
+											$('#createQuestionLoadSuccess').html('<img src="../icon/peace.png">');
+										}
+										setTimeout(setIdSubmitButton, 8000);
 									}
 									// console.log(data);
 								},
@@ -625,12 +640,18 @@
 					var selectedImageEdit = document.getElementById('question-edit-image-input').value;
 					// input.onchange = function(e) { 
 					console.log("selectImg: "+selectedImageEdit);
+					console.log("selectImg type: "+typeof selectedImageEdit);
 					// };
 					$(this).find('input[name=sid]').val(selected_subject);
 					$(this).find('input[name=qid]').val(selected_question);
 					$(this).find('input[name=type]').val('u');
 
-					if(selectedImageEdit != ""){
+						if(!!selectedImageEdit || selectedImageEdit == " "){
+							console.log("save file");
+						}else{
+							console.log("no save file");
+						}
+					if(!!selectedImageEdit || selectedImageEdit == " "){
 						var image = new FormData(this);
 						$.ajax({
 							type:'POST', // Тип запроса

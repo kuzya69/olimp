@@ -452,30 +452,57 @@ function updateSubjectData($db, $subject_id, $data){
  * @return  int возвращает количество затронутых строк          
  */
 function updateQuestionData($db, $question_id, $subject_id, $data){
-	$query = $db->prepare("UPDATE `questions` 
-	SET 
-		`question_img` = :qimg, 
-		`question` = :q,  
-		`answers` = :a,  
-		`subject_id` = :s,  
-		`option_1` = :o1,  
-		`option_2` = :o2,  
-		`option_3` = :o3,  
-		`option_4` = :o4,  
-		`option_5` = :o5,  
-		`option_6` = :o6  
-	WHERE `id` = :qid");
-	$query->bindValue(':qimg', (string)$data['image']);
-	$query->bindValue(':q', (string)trim(strip_tags(htmlspecialchars($data['question']))));
-	$query->bindValue(':a', (string)trim(strip_tags(htmlspecialchars($data['answers']))));
-	$query->bindValue(':o1', (string)trim(strip_tags(htmlspecialchars($data['option_1']))));
-	$query->bindValue(':o2', (string)trim(strip_tags(htmlspecialchars($data['option_2']))));
-	$query->bindValue(':o3', (string)trim(strip_tags(htmlspecialchars($data['option_3']))));
-	$query->bindValue(':o4', (string)trim(strip_tags(htmlspecialchars($data['option_4']))));
-	$query->bindValue(':o5', (string)trim(strip_tags(htmlspecialchars($data['option_5']))));
-	$query->bindValue(':o6', (string)trim(strip_tags(htmlspecialchars($data['option_6']))));
-	$query->bindValue(':s', (int) $subject_id);
-	$query->bindValue(':qid', (int) $question_id);
+	if(!empty($data['image'])){
+		$query = $db->prepare("UPDATE `questions` 
+		SET 
+			`question_img` = :qimg, 
+			`question` = :q,  
+			`answers` = :a,  
+			`subject_id` = :s,  
+			`option_1` = :o1,  
+			`option_2` = :o2,  
+			`option_3` = :o3,  
+			`option_4` = :o4,  
+			`option_5` = :o5,  
+			`option_6` = :o6  
+		WHERE `id` = :qid");
+		$query->bindValue(':qimg', (string)$data['image']);
+		$query->bindValue(':q', (string)trim(strip_tags(htmlspecialchars($data['question']))));
+		$query->bindValue(':a', (string)trim(strip_tags(htmlspecialchars($data['answers']))));
+		$query->bindValue(':o1', (string)trim(strip_tags(htmlspecialchars($data['option_1']))));
+		$query->bindValue(':o2', (string)trim(strip_tags(htmlspecialchars($data['option_2']))));
+		$query->bindValue(':o3', (string)trim(strip_tags(htmlspecialchars($data['option_3']))));
+		$query->bindValue(':o4', (string)trim(strip_tags(htmlspecialchars($data['option_4']))));
+		$query->bindValue(':o5', (string)trim(strip_tags(htmlspecialchars($data['option_5']))));
+		$query->bindValue(':o6', (string)trim(strip_tags(htmlspecialchars($data['option_6']))));
+		$query->bindValue(':s', (int) $subject_id);
+		$query->bindValue(':qid', (int) $question_id);
+	}else{
+		$query = $db->prepare("UPDATE `questions` 
+		SET 
+			-- `question_img` = :qimg, 
+			`question` = :q,  
+			`answers` = :a,  
+			`subject_id` = :s,  
+			`option_1` = :o1,  
+			`option_2` = :o2,  
+			`option_3` = :o3,  
+			`option_4` = :o4,  
+			`option_5` = :o5,  
+			`option_6` = :o6  
+		WHERE `id` = :qid");
+		// $query->bindValue(':qimg', (string)$data['image']);
+		$query->bindValue(':q', (string)trim(strip_tags(htmlspecialchars($data['question']))));
+		$query->bindValue(':a', (string)trim(strip_tags(htmlspecialchars($data['answers']))));
+		$query->bindValue(':o1', (string)trim(strip_tags(htmlspecialchars($data['option_1']))));
+		$query->bindValue(':o2', (string)trim(strip_tags(htmlspecialchars($data['option_2']))));
+		$query->bindValue(':o3', (string)trim(strip_tags(htmlspecialchars($data['option_3']))));
+		$query->bindValue(':o4', (string)trim(strip_tags(htmlspecialchars($data['option_4']))));
+		$query->bindValue(':o5', (string)trim(strip_tags(htmlspecialchars($data['option_5']))));
+		$query->bindValue(':o6', (string)trim(strip_tags(htmlspecialchars($data['option_6']))));
+		$query->bindValue(':s', (int) $subject_id);
+		$query->bindValue(':qid', (int) $question_id);
+	}
 	$query->execute();
 	return $query->rowCount();
 }
@@ -524,7 +551,7 @@ function getSubjects($db, $user_information=[]){
  */
 function getQuestionsBySubject($db, $subject_id, $user_information){
     if (!empty($user_information) && $user_information["role"] == 9) {
-        $query = $db->prepare("SELECT `id`, `question_img`, `question`, `option_1`, `option_2`, `option_3`, `option_4`, `option_5`, `option_6` FROM `questions` WHERE `subject_id` = :sid");
+        $query = $db->prepare("SELECT `id`, `question_img`, `question`, `answers`, `option_1`, `option_2`, `option_3`, `option_4`, `option_5`, `option_6` FROM `questions` WHERE `subject_id` = :sid");
         $query->bindValue(':sid', (int)trim($subject_id));
 		$query->execute();
 		return $query->fetchAll();
@@ -686,7 +713,7 @@ function getMaxQuestionId($db){
 	// $query = $db->prepare("SELECT max(`id`) as `id` FROM `questions`");
 	$query = $db->prepare("SELECT Auto_increment FROM information_schema.tables WHERE table_name=:tn AND table_schema=:ts");
 	$query->bindValue(':tn', (string) "questions");
-	$query->bindValue(':ts', (string) "u0689399_tests_platform");
+	$query->bindValue(':ts', (string) "tests_platform");
 	$query->execute();
 	$max_question_id = $query->fetch();
 	// print_r($max_question_id);die();

@@ -155,11 +155,13 @@ if((isset($_POST['status']) && $_POST['status'] == 23) && isset($_POST['fd']) &&
 	// if($i >= 1){
 		$answers = substr($answers, 0, -1);
 	// }
-	// print_r($_data);
+	// print_r($selected_img);
 	if($selected_img && !empty($selected_img)){
 		$data['image'] = "images/".$sid."/".$sid."_".$qid.".jpg";
+		// echo "php save file";
 	}else{
 		$data['image'] = "";
+		// echo "php no save file";
 	}
 	$data['question'] = $_data['question'];
 	$data['answers'] = $answers;
@@ -248,8 +250,10 @@ if((isset($_POST['status']) && $_POST['status'] == 24) && isset($_POST['fd']) &&
 	// print_r($_data);
 	if($selected_img && !empty($selected_img)){
 		$data['image'] = "images/".$sid."/".$sid."_".$qid.".jpg";
+		// echo "php update file";
 	}else{
 		$data['image'] = "";
+		// echo "php no update file";
 	}
 	$data['question'] = $_data['question'];
 	$data['answers'] = $answers;
