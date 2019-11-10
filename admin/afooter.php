@@ -251,6 +251,7 @@
 					url: "a_ajax_request.php",
 					dataType : "json",   
 					success: function(data){
+						// console.log(data);
 						// $(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
 						document.getElementById('inputEditName').value = data['name'];
 						document.getElementById('inputEditDescription').value = data['description'];
@@ -374,8 +375,11 @@
 					success: function(data){
 						tableRow.html("");
 						var countQuestion = 0;
+						let tbody = document.getElementById("questions-table-by-subject").childNodes[4];
+						let inc = 0;
 						data.forEach(function(item){
-							var answers = item['answers'].split(",");
+							let answers = item['answers'].split(",");
+							// console.log(answers);
 							tableRow.append('<tr>'
 								+'<th>'+(++countQuestion)+'</th>'
 								+'<td><img src="../'+item['question_img']+'" alt="" width="100px"></td>'
@@ -398,6 +402,11 @@
 									+'</div>'
 								+'</td>'
 							+'</tr>');
+							for(let i=0; i<answers.length; i++){
+								// console.log(answers[i]);
+								tbody.childNodes[inc].childNodes[parseInt(answers[i])+2].classList.add("questions-select-true");
+							}
+							inc++;
 							// console.log(item['question']);
 						});
 						
@@ -639,18 +648,18 @@
 				}else{
 					var selectedImageEdit = document.getElementById('question-edit-image-input').value;
 					// input.onchange = function(e) { 
-					console.log("selectImg: "+selectedImageEdit);
-					console.log("selectImg type: "+typeof selectedImageEdit);
+					// console.log("selectImg: "+selectedImageEdit);
+					// console.log("selectImg type: "+typeof selectedImageEdit);
 					// };
 					$(this).find('input[name=sid]').val(selected_subject);
 					$(this).find('input[name=qid]').val(selected_question);
 					$(this).find('input[name=type]').val('u');
 
-						if(!!selectedImageEdit || selectedImageEdit == " "){
-							console.log("save file");
-						}else{
-							console.log("no save file");
-						}
+						// if(!!selectedImageEdit || selectedImageEdit == " "){
+						// 	console.log("save file");
+						// }else{
+						// 	console.log("no save file");
+						// }
 					if(!!selectedImageEdit || selectedImageEdit == " "){
 						var image = new FormData(this);
 						$.ajax({
