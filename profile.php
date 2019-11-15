@@ -23,6 +23,7 @@ if(isset($_POST['profile'])){
 			$data = [];
 		}
 	}
+	// print_r($users_info);
 	date_default_timezone_set('UTC');
 	$time_now = time() + (3 * 60 * 60);
 
@@ -47,7 +48,8 @@ if(isset($_POST['profile'])){
 		`leveloftraining` = :lot
 	WHERE `username` = :sun");
 
-	$query->bindValue(':un', (string)trim(strip_tags(htmlspecialchars($data['username']))));
+	// $query->bindValue(':un', (string)trim(strip_tags(htmlspecialchars($data['username'])))); // username не readonly
+	$query->bindValue(':un', (string)trim(strip_tags(htmlspecialchars($users_info['username'])))); //пока username readonly
 	$query->bindValue(':e', (string)trim(strip_tags(htmlspecialchars($data['email']))));
 	// $query->bindValue(':p', password_hash($data['password'], PASSWORD_DEFAULT));
 	$query->bindValue(':ln', (string)trim(strip_tags(htmlspecialchars($data['lastname']))));
@@ -126,7 +128,7 @@ if(isset($_POST['profile'])){
 	<h1 class="h3 mb-3 font-weight-normal">Мой профиль</h1>
 
 	<label for="inputLogin" class="sr-only">Ваш логин</label>
-	<input type="text" id="inputLogin" class="form-control" placeholder="логин" autofocus="" disabled="disabled" name="username" value="<?php echo @$data['username'];?>">
+	<input type="text" id="inputLogin" class="form-control" placeholder="логин" autofocus="" readonly name="username" value="<?php echo @$data['username'];?>">
 
 	<label for="inputEmail" class="sr-only">Ваш e-mail</label>
 	<input type="email" id="inputEmail" class="form-control" placeholder="e-mail" autofocus="" name="email" value="<?php echo @$data['email'];?>">

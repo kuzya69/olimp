@@ -382,7 +382,7 @@
 							// console.log(answers);
 							tableRow.append('<tr>'
 								+'<th>'+(++countQuestion)+'</th>'
-								+'<td><img src="../'+item['question_img']+'" alt="" width="100px"></td>'
+								+'<td><img class="question-img" src="../'+item['question_img']+'" alt=""></td>'
 								+'<td>'+item['question']+'</td>'
 								+'<td>'+item['option_1']+'</td>'
 								+'<td>'+item['option_2']+'</td>'
@@ -725,6 +725,18 @@
 
 				}
 			}));
+			$("#questions-table-by-subject").on('click', '.question-img', function(){
+				if($(this).hasClass('question-img')){
+					$(this).removeClass('question-img');
+					$(this).addClass('question-img-big');
+				}
+			});
+			$("#questions-table-by-subject").on('click', '.question-img-big', function(){
+				if($(this).hasClass('question-img-big')){
+					$(this).removeClass('question-img-big');
+					$(this).addClass('question-img');
+				}	
+			});
 		</script>
 		<footer>
 			<!-- <div class="footer">
