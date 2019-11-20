@@ -26,7 +26,9 @@ $data = $_POST;
 // 	echo "no";
 // }
 
-echo "Регистрация временно закрыта!"; include_once('footer.php'); die();
+echo "Регистрация временно закрыта!"; 
+include_once('footer.php'); 
+die();
 
 if(isset($data['signup'])){
 

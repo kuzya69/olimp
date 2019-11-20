@@ -182,7 +182,7 @@
 						widthFixed : true,
 						widgets: [ "columns", "filter", "zebra" ],
 						headers: {
-							6: { sorter: false, filter: false }
+							7: { sorter: false, filter: false }
 						},
 						widgetOptions : {
 							filter_cssFilter   : '',
@@ -257,6 +257,7 @@
 						document.getElementById('inputEditDescription').value = data['description'];
 						document.getElementById('inputEditTime').value = data['time'];
 						document.getElementById('inputEditAmount').value = data['amount'];
+						document.getElementById('inputEditUprefix').value = data['uprefix'];
 						document.getElementById('inputEditDateStart').value = data['date_start'];
 						document.getElementById('inputEditDateEnd').value = data['date_end'];
 						$('#edit-subject-submit').data('id', sid);
@@ -323,8 +324,9 @@
 							// tableRow.find('td:eq( 1 )').text(fData['description']);
 							tableRow.find('td:eq( 1 )').text(fData['time']);
 							tableRow.find('td:eq( 2 )').text(fData['amount']);
-							tableRow.find('td:eq( 3 )').text(fData['date_start']);
-							tableRow.find('td:eq( 4 )').text(fData['date_end']);
+							tableRow.find('td:eq( 3 )').text(fData['uprefix']);
+							tableRow.find('td:eq( 4 )').text(fData['date_start']);
+							tableRow.find('td:eq( 5 )').text(fData['date_end']);
 						}
 					},
 				});

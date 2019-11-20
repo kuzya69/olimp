@@ -401,13 +401,14 @@ function saveSubjectData($db, $data){
 	$query_select->execute();
 	$max_sort = $query_select->fetchAll()[0]['sort'];
 
-	$query = $db->prepare("INSERT INTO `subjects` (`sort`, `name`, `description`, `time`, `amount`, 
-	`display`, `date_start`, `date_end`) VALUES (:s, :n, :d, :t, :a, :dis, :ds, :de)");
+	$query = $db->prepare("INSERT INTO `subjects` (`sort`, `name`, `description`, `time`, `amount`, `uprefix`, 
+	`display`, `date_start`, `date_end`) VALUES (:s, :n, :d, :t, :a, :up, :dis, :ds, :de)");
 	$query->bindValue(':s', $max_sort + 1);
 	$query->bindValue(':n', (string)trim(strip_tags(htmlspecialchars($data['name']))));
 	$query->bindValue(':d', (string)trim(strip_tags(htmlspecialchars($data['description']))));
 	$query->bindValue(':t', (int)trim($data['time']));
 	$query->bindValue(':a', (int)trim($data['amount']));
+	$query->bindValue(':up', (string)trim(strip_tags(htmlspecialchars($data['uprefix']))));
 	$query->bindValue(':dis', 1);
 	$query->bindValue(':ds', (string)trim(strip_tags($data['date_start'])));
 	$query->bindValue(':de', (string)trim(strip_tags($data['date_end'])));
@@ -429,6 +430,7 @@ function updateSubjectData($db, $subject_id, $data){
 		`description` = :d,  
 		`time` = :t,  
 		`amount` = :a,  
+		`uprefix` = :up,  
 		`date_start` = :ds,  
 		`date_end` = :de  
 	WHERE `id` = :sid");
@@ -436,6 +438,7 @@ function updateSubjectData($db, $subject_id, $data){
 	$query->bindValue(':d', (string)trim(strip_tags(htmlspecialchars($data['description']))));
 	$query->bindValue(':t', (int)trim($data['time']));
 	$query->bindValue(':a', (int)trim($data['amount']));
+	$query->bindValue(':up', (string)trim(strip_tags(htmlspecialchars($data['uprefix']))));
 	$query->bindValue(':ds', (string)trim(strip_tags($data['date_start'])));
 	$query->bindValue(':de', (string)trim(strip_tags($data['date_end'])));
 	$query->bindValue(':sid', (int)trim($subject_id));

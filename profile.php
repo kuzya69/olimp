@@ -4,7 +4,6 @@ include_once('db.php');
 include_once('library.php');
 
 header('Content-Type: text/html; charset=utf-8');
-
 if(isset($_POST['profile'])){
 	if(!empty($_SESSION['logged_user'])){
 		$query = $db->prepare("SELECT * FROM `users` WHERE `id` = :uid");
@@ -23,7 +22,6 @@ if(isset($_POST['profile'])){
 			$data = [];
 		}
 	}
-	// print_r($users_info);
 	date_default_timezone_set('UTC');
 	$time_now = time() + (3 * 60 * 60);
 
@@ -69,17 +67,18 @@ if(isset($_POST['profile'])){
 	$update_flag = $query->rowCount();
 	unset($query);
 
-	if(!empty($data['password']) && $data['password'] == $data['repassword']){
-		$query = $db->prepare("UPDATE `users` 
-		SET 
-			`password` = :p 
-		WHERE `username` = :sun");
-		$query->bindValue(':p', password_hash($data['password'], PASSWORD_DEFAULT));
-		$query->bindValue(':sun', (string)trim($_SESSION['logged_user']['username']));
-		$query->execute();
-		$update_flag = $query->rowCount();
-		unset($query);
-	}
+	//Сохраниение пароля так как стоит readonly, закоментировано
+	// if(!empty($data['password']) && $data['password'] == $data['repassword']){
+	// 	$query = $db->prepare("UPDATE `users` 
+	// 	SET 
+	// 		`password` = :p 
+	// 	WHERE `username` = :sun");
+	// 	$query->bindValue(':p', password_hash($data['password'], PASSWORD_DEFAULT));
+	// 	$query->bindValue(':sun', (string)trim($_SESSION['logged_user']['username']));
+	// 	$query->execute();
+	// 	$update_flag = $query->rowCount();
+	// 	unset($query);
+	// }
 
 	$query = $db->prepare("SELECT * FROM `users` WHERE `username` = :un");
 	$query->bindValue(':un', $data['username']);
@@ -134,10 +133,10 @@ if(isset($_POST['profile'])){
 	<input type="email" id="inputEmail" class="form-control" placeholder="e-mail" autofocus="" name="email" value="<?php echo @$data['email'];?>">
 
 	<label for="inputPassword" class="sr-only">Ваш пароль</label>
-	<input type="password" id="inputPassword" class="form-control" placeholder="пароль" name="password">
+	<input type="password" id="inputPassword" class="form-control" placeholder="пароль" readonly name="password">
 
 	<label for="inputRepassword" class="sr-only">Повтарите пароль</label>
-	<input type="password" id="inputRepassword" class="form-control" placeholder="повтор пароля" name="repassword">
+	<input type="password" id="inputRepassword" class="form-control" placeholder="повтор пароля" readonly name="repassword">
 
 	<label for="inputLastName" class="sr-only">Фамилия</label>
 	<input type="text" id="inputLastName" class="form-control" placeholder="фамилия" name="lastname" value="<?php echo @$data['lastname'];?>">

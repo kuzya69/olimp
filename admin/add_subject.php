@@ -40,6 +40,10 @@ $test_results = getSubjects($db, $user_information);
 						<input type="number" id="inputCreateAmount" class="form-control" placeholder="Введите количество вопросов" required name="amount">
 					</div>
 					<div class="form-group">
+						<label for="inputCreateUprefix" class="col-form-label">Укажите префикс</label>
+						<input type="text" id="inputCreateUprefix" class="form-control" placeholder="Префикс для данного предмета" name="uprefix" value="">
+					</div>
+					<div class="form-group">
 						<label for="inputCreateDateStart" class="col-form-label">Начало</label>
 						<input type="date" id="inputCreateDateStart" class="form-control" placeholder="дата начала" required name="date_start" value="">
 					</div>
@@ -88,6 +92,10 @@ $test_results = getSubjects($db, $user_information);
 						<input type="number" id="inputEditAmount" class="form-control" placeholder="Введите количество вопросов" name="amount" value="">
 					</div>
 					<div class="form-group">
+						<label for="inputEditUprefix" class="col-form-label">Укажите префикс</label>
+						<input type="text" id="inputEditUprefix" class="form-control" placeholder="Префикс для данного предмета" name="uprefix" value="">
+					</div>
+					<div class="form-group">
 						<label for="inputEditDateStart" class="col-form-label">Начало</label>
 						<input type="date" id="inputEditDateStart" class="form-control" placeholder="дата начала" name="date_start" value="">
 					</div>
@@ -117,6 +125,7 @@ $test_results = getSubjects($db, $user_information);
 							<th scope="col" class="filter-select" data-placeholder="Выберите название">Название предмета</th>
 							<th scope="col" class="filter-select" data-placeholder="Выберите минуты">Минут</th>
 							<th scope="col" class="filter-select" data-placeholder="Выберите количество вопросов">Вопросов</th>
+							<th scope="col" class="filter-select" data-placeholder="Префикс логина для текущего предмета">Префикс</th>
 							<th scope="col" class="filter-match" data-placeholder="Введите дату начало">Начало</th>
 							<th scope="col" class="filter-match" data-placeholder="Введите дату конца">Конец</th>
 							<th scope="col">Действие</th>
@@ -135,6 +144,7 @@ $test_results = getSubjects($db, $user_information);
 							<td><?=$value['name']?></td>
 							<td><?=$value['time']?></td>
 							<td><?=$value['amount']?></td>
+							<td><?=$value['uprefix']?></td>
 							<td><?=$value['date_start']?></td>
 							<td><?=$value['date_end']?></td>
 							<td class="table-row-act">
