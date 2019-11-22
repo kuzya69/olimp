@@ -34,7 +34,7 @@ if(!empty($_GET) && !empty($_GET['id'])){
 	$subject_info = getSubjectInfo($db, $subject_id, $_SESSION['logged_user']);
 	$pos = strpos($username, "U");
 	$prefix = substr($username, 0, $pos);
-	if($subject_info['uprefix'] || isset($subject_info['uprefix'])){
+	if($subject_info['uprefix'] && isset($subject_info['uprefix'])){
 		if($subject_info['uprefix'] == $prefix){
 			$success = true;	
 		}else{
@@ -75,11 +75,11 @@ if(!empty($_GET) && !empty($_GET['id'])){
 			$subject_time_sec = '00';
 		}
 		//--------------------------------//
-//        echo $subject_time.":";
-//        echo $subject_time_hour.":";
-//        echo $subject_time_min.":";
-//        echo $subject_time_sec;
-		
+    //    echo $subject_time." - ";
+    //    echo $subject_time_hour.":";
+    //    echo $subject_time_min.":";
+    //    echo $subject_time_sec;
+		// die();
 		date_default_timezone_set('UTC');
 		$time = time() + (3 * 60 * 60);
 		$current_date = date('Y-m-d', $time);
@@ -139,6 +139,8 @@ if(!empty($_GET) && !empty($_GET['id'])){
 			<p class="col-5 col-sm-5 col-md-3 col-lg-3"></p>
 			<div class="col-1 col-sm-1 col-md-7 col-lg-7"></div>
 			<div class="col-6 col-sm-6 col-md-2 col-lg-2">
+				<span class="test-hour"><?=$subject_time_hour?></span>
+				<span class="time-delimiter">:</span>
 				<span class='test-minutes'><?=$subject_time_min?></span>
 				<span class="test-delimiter">:</span>	
 				<span class='test-seconds'><?=$subject_time_sec?></span>

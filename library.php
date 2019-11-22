@@ -285,14 +285,14 @@ function fixStartDelete($db, $user_id, $subject_id){
  */
 function getTestTime($db, $subject_id){
     date_default_timezone_set('UTC');
-    $time_now = time() + (3 * 60 * 60);
+    $time_now = time();// + (3 * 60 * 60);
     
     $query = $db->prepare("SELECT `start_time` FROM `user_selected_options` WHERE `user_id`=:uid AND `subject_id`=:sid");
     $query->bindValue(':uid', (int)trim($_SESSION['logged_user']['id']));
     $query->bindValue(':sid', (int)trim($subject_id));
     $query->execute();
     $user_test_time = $query->fetch();
-    return date('i:s', $time_now - $user_test_time['start_time']);
+    return date('H:i:s', $time_now - $user_test_time['start_time']);
 }
 
 
@@ -424,6 +424,7 @@ function saveSubjectData($db, $data){
  * @return  int возвращает количество затронутых строк          
  */
 function updateSubjectData($db, $subject_id, $data){
+	$pref = trim(strip_tags(htmlspecialchars($data['uprefix'])));
 	$query = $db->prepare("UPDATE `subjects` 
 	SET 
 		`name` = :n, 
@@ -438,7 +439,7 @@ function updateSubjectData($db, $subject_id, $data){
 	$query->bindValue(':d', (string)trim(strip_tags(htmlspecialchars($data['description']))));
 	$query->bindValue(':t', (int)trim($data['time']));
 	$query->bindValue(':a', (int)trim($data['amount']));
-	$query->bindValue(':up', (string)trim(strip_tags(htmlspecialchars($data['uprefix']))));
+	$query->bindValue(':up', $pref ? (string)$pref : null);
 	$query->bindValue(':ds', (string)trim(strip_tags($data['date_start'])));
 	$query->bindValue(':de', (string)trim(strip_tags($data['date_end'])));
 	$query->bindValue(':sid', (int)trim($subject_id));

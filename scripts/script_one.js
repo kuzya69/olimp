@@ -171,8 +171,10 @@ var questions_data;
 			timeFlag = 0;
 		}
 
+		var hourElem = $('.test-hour');
 		var minElem = $('.test-minutes');
 		var secElem = $('.test-seconds');
+		var hourVal = parseInt(hourElem.html());
 		var minVal = parseInt(minElem.html());
 		var secVal = parseInt(secElem.html());
 		// var timeDelimeter = $('.test-delimiter').html();
@@ -194,9 +196,9 @@ var questions_data;
 					data: {submit: submit, id: id, formData: formData, timeLeft: timeLeft},
 					url: "ajax_request.php",
 					success: function(data){
-                                            var response = data.split("-");
-                                            $('.section-test').remove();
-                                            $('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+' балла(ов)</h1><p>тест пройден за '+response[1]+', верно '+response[2]+'</p></div>');
+						var response = data.split("-");
+						$('.section-test').remove();
+						$('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+' балла(ов)</h1><p>тест пройден за '+response[1]+', верно '+response[2]+'</p></div>');
 //						$('.test-time p').html(data);
 					}
 				});
@@ -208,29 +210,48 @@ var questions_data;
 
 		// console.log(+secVal);
 		function calcTime() {
-			var formData = $('.form-for-test').serializeArray();
-			var timeLeft = minElem.html()+":"+secElem.html();
 			if(+secVal < 1){
 				if(+minVal < 1){
-					$('.test-time-start').addClass('start-timer');
-					// $( ".form-for-test" ).submit();
-					$.ajax({
-						type: "POST",
-						data: {submit: submit, id: id, formData: formData, timeLeft: timeLeft},
-						url: "ajax_request.php",
-						success: function(data){
-                                                    var response = data.split("-");
-                                                    $('.section-test').remove();
-                                                    $('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+' балла(ов)</h1><p>тест пройден за <b>'+response[1]+'</b>, верно <b>'+response[2]+'</b></p></div>');
-//							$('.test-time p').html(data);
-						}
-					});
-					submitFlag = 1;
+					if(+hourVal < 1){
+						hourVal = 0;
+						hourElem.html(hourVal);
+						minVal = 0;
+						minElem.html(minVal);
+						secVal = 0;
+						secElem.html(secVal);
+						var formData = $('.form-for-test').serializeArray();
+						var timeLeft = hourElem.html()+":"+minElem.html()+":"+secElem.html();
+						$('.test-time-start').addClass('start-timer');
+						// $( ".form-for-test" ).submit();
+						$.ajax({
+							type: "POST",
+							data: {submit: submit, id: id, formData: formData, timeLeft: timeLeft},
+							url: "ajax_request.php",
+							success: function(data){
+								var response = data.split("-");
+								$('.section-test').remove();
+								$('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+' балла(ов)</h1><p>тест пройден за <b>'+response[1]+'</b>, верно <b>'+response[2]+'</b></p></div>');
+	//							$('.test-time p').html(data);
+							}
+						});
+						submitFlag = 1;
+					}else{
+						hourElem.html(hourVal);
+						hourVal -= 1;
+						minVal = 0;
+						minElem.html(minVal);
+						secVal = 0;
+						secElem.html(secVal);
+						timerId = setTimeout(calcTime, 1000);
+						minVal = 59;
+						secVal = 59;	
+					}
 				}
 				else{
-					secVal = 0;
+					hourElem.html(hourVal);
 					minElem.html(minVal);
 					minVal -= 1;
+					secVal = 0;
 					secElem.html(secVal);
 					// if(timerId === ''){
 						timerId = setTimeout(calcTime, 1000);
@@ -239,6 +260,7 @@ var questions_data;
 				}
 			}
 			else{
+				hourElem.html(hourVal);
 				minElem.html(minVal);
 				secElem.html(secVal);
 				secVal -= 1;
