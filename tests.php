@@ -134,6 +134,7 @@ if(!empty($_GET) && !empty($_GET['id'])){
 			<li class="breadcrumb-item active" aria-current="page">Тест</li>
 		</ol>
 	</nav>
+	<div class="res-table-message"></div>
 	<div class="test-time-block">
 		<div class="test-time row">
 			<p class="col-5 col-sm-5 col-md-3 col-lg-3"></p>

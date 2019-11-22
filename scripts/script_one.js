@@ -61,7 +61,6 @@
 //============================//
 
 
-
 //***для кнопки наверх***//
 $(document).ready(function(){
 	// hide #back-top first
@@ -181,6 +180,51 @@ var questions_data;
 		var submit = 'submit';
 		// var timeLeft = minVal+":"+secVal;
 
+		window.onmouseout = handler;
+		var countMousOutWindow = 4;
+		function handler(event) {
+			if (event.type == 'mouseout') {
+				if(event.relatedTarget == null){
+					
+					// alert("Во время прохождеия теста, нельзя выходить за пределы окна браузера!");
+					$(".res-table-message").append('<div class="alert alert-danger alert-dismissible fade show" role="alert">'
+					+
+					'Во время прохождеия теста, нельзя выходить за пределы окна браузера! Еще <span class="badge badge-pill badge-danger">'
+					+
+					(--countMousOutWindow)
+					+
+					'</span> попытка(и) и тест будет заверщен!'
+					+
+					'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+					if(countMousOutWindow == 0){
+						// hourVal = 0;
+						// hourElem.html(hourVal);
+						// minVal = 0;
+						// minElem.html(minVal);
+						// secVal = 0;
+						// secElem.html(secVal);
+						var formData = $('.form-for-test').serializeArray();
+						var timeLeft = hourElem.html()+":"+minElem.html()+":"+secElem.html();
+						$('.test-time-start').addClass('start-timer');
+						// $( ".form-for-test" ).submit();
+						$.ajax({
+							type: "POST",
+							data: {submit: submit, id: id, formData: formData, timeLeft: timeLeft},
+							url: "ajax_request.php",
+							success: function(data){
+								var response = data.split("-");
+								$('.section-test').remove();
+								$('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+' балла(ов)</h1><p>тест пройден за <b>'+response[1]+'</b>, верно <b>'+response[2]+'</b></p></div>');
+	//							$('.test-time p').html(data);
+								window.onmouseout = '';
+							}
+						});
+						clearTimeout(timerId);
+						submitFlag = 1;
+					}
+				} 
+			}
+		}
 		$( ".section-test" ).on('click', '.submit-test', function() {
 			if(submitFlag !== 1){
 				// $('.test-time-start').removeClass('start-timer');
@@ -204,7 +248,10 @@ var questions_data;
 				});
 				clearTimeout(timerId);
 				submitFlag = 1;
+				window.onmouseout = '';
 			}
+
+
 			// $(".submit-test").removeClass('submit-test');
 		});
 
@@ -234,7 +281,9 @@ var questions_data;
 	//							$('.test-time p').html(data);
 							}
 						});
+						clearTimeout(timerId);
 						submitFlag = 1;
+						window.onmouseout = '';
 					}else{
 						hourElem.html(hourVal);
 						hourVal -= 1;
