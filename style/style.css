@@ -294,6 +294,7 @@ div.section-test{
 	/*background-color: rgba(243, 187, 86, 0.58);*/
 	/*color: #000;*/
 	/*border: 0.1em solid transparent;*/
+	margin-bottom: 15px;
 }
 div.section-page{
 	/*border: 0.1em solid black;*/
@@ -1036,7 +1037,7 @@ a:hover{
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 3;
 }
 .res-table-message > div {
     /* box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.205); */
