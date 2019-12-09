@@ -112,7 +112,7 @@ $c_date = $date->getTimestamp();
 			if($count_subjects == 3):
 			?>
 			
-			<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+			<!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3">
 				<div class="card my-card text-white bg-dark mb-3">
 					<div class="card-header my-card-header my-card-header-blue">
 						<div class="my-card-header-1">
@@ -132,7 +132,7 @@ $c_date = $date->getTimestamp();
 						<a href="http://dstu.ru/fakultety/fakultet-kompjuternykh-tekhnologii-vychislitelnoi-tekhniki-i-ehnergetiki/kafedra-programmnogo-obespechenija-vychislitelnoi-tekhniki-i-avtomatizirovannykh-sistem/" class="card-link">Перейти...</a>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			
 			<?php 
 			endif;

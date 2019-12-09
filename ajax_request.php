@@ -64,7 +64,7 @@ if($_POST || isset($_POST)){
 			die();
 		}else{
 			// echo "Не удалось получить данные!";
-			echo "Не удалось получить данные! Возможно, вы даже не попытались пройти тест. -".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+			echo "Не удалось получить данные! Возможно, вы даже не попытались пройти тест1. -".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
 			die();
 		}
 	}
