@@ -754,7 +754,14 @@ function deleteQuestionData($db, $question_id){
 	return $query->rowCount();
 }
 
-function getQuestionsByUser($user_id, $subcject_id){
+/**
+ * Получить ответы выбранные пользователем по предмету, по определенному пользователю
+ * @param  object $db объект базы данных
+ * @param int $user_id id вопроса
+ * @param int $subject_id id вопроса
+ * @return array возвращает балл, выбранные ответы, время и количество ответов
+ */
+function getQuestionsByUser($db, $user_id, $subject_id){
 	$query = $db->prepare("SELECT `selected`, `ball`, `amount`, `start_time`, `end_time`, `time_left` FROM `user_selected_options` WHERE `user_id` = :uid AND `subject_id` = :sid");
 	$query->bindValue(':uid', (int)trim($user_id));
 	$query->bindValue(':sid', (int)trim($subject_id));
