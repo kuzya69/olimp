@@ -718,7 +718,7 @@ function getMaxQuestionId($db){
 	// $query = $db->prepare("SELECT max(`id`) as `id` FROM `questions`");
 	$query = $db->prepare("SELECT Auto_increment FROM information_schema.tables WHERE table_name=:tn AND table_schema=:ts");
 	$query->bindValue(':tn', (string) "questions");
-	$query->bindValue(':ts', (string) "tests_platform");
+	$query->bindValue(':ts', (string) "u0689399_tests_platform");
 	$query->execute();
 	$max_question_id = $query->fetch();
 	// print_r($max_question_id);die();
@@ -729,13 +729,14 @@ function getMaxQuestionId($db){
 /**
  * Удаляет выбранный файл
  * @param string $path путь к удаляемому файлу
+ * @return int возвращает true или false
  */
 function deleteFile($path){
 	// foreach ($files as $file) {
 		if (file_exists($path)) {
 			unlink($path);
 		} else {
-			return 0;
+			return false;
 		}
 	// }
 }
@@ -744,12 +745,22 @@ function deleteFile($path){
  * Удаляет данные вопросе
  * @param  object $db объект базы данных
  * @param int $question_id id вопроса
+ * @return int возвращает количество удаленных строк
  */
 function deleteQuestionData($db, $question_id){
 	$query = $db->prepare("DELETE FROM `questions` WHERE `id` = :qid ");
 	$query->bindValue(':qid', (int)trim($question_id));
 	$query->execute();
 	return $query->rowCount();
+}
+
+function getQuestionsByUser($user_id, $subcject_id){
+	$query = $db->prepare("SELECT `selected`, `ball`, `amount`, `start_time`, `end_time`, `time_left` FROM `user_selected_options` WHERE `user_id` = :uid AND `subject_id` = :sid");
+	$query->bindValue(':uid', (int)trim($user_id));
+	$query->bindValue(':sid', (int)trim($subject_id));
+	$query->execute();
+	$user_selected_options = $query->fetchAll();
+	return $user_selected_options;
 }
 
 ?>
