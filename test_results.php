@@ -6,7 +6,7 @@ include_once('db.php');
 
 
 
-$query = $db->prepare("SELECT `subjects`.`name`, `user_selected_options`.`ball`, `subjects`.`amount` as `s_amount`, `user_selected_options`.`amount` as `uso_amount`, `start_time`,`end_time` FROM `subjects` LEFT JOIN `user_selected_options` ON `subjects`.`id` = `user_selected_options`.`subject_id` WHERE `user_selected_options`.`user_id` = :uid");
+$query = $db->prepare("SELECT `subjects`.`name`, `user_selected_options`.`ball`, `subjects`.`amount` as `s_amount`, `user_selected_options`.`amount` as `uso_amount`, `user_selected_options`.`start_time` as `start_time`,`user_selected_options`.`end_time` as `end_time` FROM `subjects` LEFT JOIN `user_selected_options` ON `subjects`.`id` = `user_selected_options`.`subject_id` WHERE `user_selected_options`.`user_id` = :uid");
 
 $query->bindValue(':uid', $_SESSION['logged_user']['id']);
 
@@ -14,9 +14,9 @@ $query->execute();
 
 $test_results = $query->fetchAll();
 
+// print_r($test_results);
 
-
-//date_default_timezone_set('UTC');
+date_default_timezone_set('UTC');
 
 //$time_now = time() + (3 * 60 * 60);
 
@@ -78,7 +78,7 @@ $test_results = $query->fetchAll();
 
 					<td><?=$value['uso_amount']."/".$value['s_amount']?></td>
 
-					<td><?=date('i:s', ($value['end_time'] - $value['start_time']))?></td>
+					<td><?=date('H:i:s', $value['end_time'] - $value['start_time'])?></td>
 
 				</tr>
 

@@ -221,11 +221,11 @@ function saveUserLog($db, $selected_options, $subject_id, $ball, $true_select_op
 			}
 		}unset($i);
 	}unset($key);unset($value);
-	date_default_timezone_set('UTC');
-	$time_now = time();// + (3 * 60 * 60);
+	
+	$time_now = getNowTime();// + (3 * 60 * 60);
 	// $time_future = time() + (3 * 60 * 60) + (30 * 60);
 
-	$query = $db->prepare("UPDATE `user_selected_options` SET `selected` = :s, `ball` = :b, `amount` = :a, `time_left` = :tl, `end_time` = :ntime WHERE `user_id` = :uid AND `subject_id` = :sid AND `end_time` >= :ntime");
+	$query = $db->prepare("UPDATE `user_selected_options` SET `selected` = :s, `ball` = :b, `amount` = :a, `time_left` = :tl WHERE `user_id` = :uid AND `subject_id` = :sid AND `end_time` >= :ntime");
 	$query->bindValue(':s', (string)trim(strip_tags(htmlspecialchars($answer_string))));
 	$query->bindValue(':b', (int)trim($ball));
 	$query->bindValue(':a', (int)trim($true_select_opt));
@@ -247,10 +247,10 @@ function saveUserLog($db, $selected_options, $subject_id, $ball, $true_select_op
  * @return  int возвращает количество затронутых строк  
  */
 function fixStartTest($db, $user_id, $subject_id, $test_time=30){
-	date_default_timezone_set('UTC');
-	$time_now = time();// + (3 * 60 * 60);
-	$time_future = time()  + ($test_time * 60 + 10); //+ (3 * 60 * 60)
+	$time_now = getNowTime();// + (3 * 60 * 60);
+	$time_future = $time_now  + ($test_time * 60 + 10); //+ (3 * 60 * 60)
 
+	// print_r(date("H:i:s", $time_future - $time_now));die();
 	$query = $db->prepare("INSERT INTO `user_selected_options` (`user_id`,
 		`subject_id`, `start_time`, `end_time`, `date_create`) VALUES (:uid, :sid, :stime, :etime, :dc)");
 	$query->bindValue(':uid', (int)trim($user_id));
@@ -284,9 +284,7 @@ function fixStartDelete($db, $user_id, $subject_id){
  * @return date
  */
 function getTestTime($db, $subject_id){
-    date_default_timezone_set('UTC');
-    $time_now = time();// + (3 * 60 * 60);
-    
+    $time_now = getNowTime();// + (3 * 60 * 60);
     $query = $db->prepare("SELECT `start_time` FROM `user_selected_options` WHERE `user_id`=:uid AND `subject_id`=:sid");
     $query->bindValue(':uid', (int)trim($_SESSION['logged_user']['id']));
     $query->bindValue(':sid', (int)trim($subject_id));
@@ -749,6 +747,15 @@ function deleteQuestionData($db, $question_id){
 	$query->bindValue(':qid', (int)trim($question_id));
 	$query->execute();
 	return $query->rowCount();
+}
+
+/**
+ * Возвращает текущее время
+ */
+function getNowTime(){
+	date_default_timezone_set('UTC');
+	$time_now = time();
+	return $time_now;
 }
 
 ?>

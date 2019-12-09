@@ -183,6 +183,7 @@ var questions_data;
 		var submit = 'submit';
 		// var timeLeft = minVal+":"+secVal;
 
+		//Проверка выхода за пределы активного акна
 		document.onmouseleave = handler;
 		var countMousOutWindow = 11;
 		function handler(event) {
@@ -191,16 +192,16 @@ var questions_data;
 				if(event.relatedTarget == null){
 					
 					// alert("Во время прохождеия теста, нельзя выходить за пределы окна браузера!");
-					$(".res-table-message").append('<div class="alert alert-danger alert-dismissible fade show" role="alert">'
-					+
-					'Во время прохождения теста, нельзя выходить за пределы окна браузера! Еще <span class="badge badge-pill badge-danger">'
-					+
-					(--countMousOutWindow)
-					+
-					'</span> попытка(и) и тест будет завершен!'
-					+
-					'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-					if(countMousOutWindow == 0){
+					// $(".res-table-message").append('<div class="alert alert-danger alert-dismissible fade show" role="alert">'
+					// +
+					// 'Во время прохождения теста, нельзя выходить за пределы окна браузера! Еще <span class="badge badge-pill badge-danger">'
+					// +
+					// (--countMousOutWindow)
+					// +
+					// '</span> попытка(и) и тест будет завершен!'
+					// +
+					// '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+					// if(countMousOutWindow == 0){
 						// hourVal = 0;
 						// hourElem.html(hourVal);
 						// minVal = 0;
@@ -219,15 +220,16 @@ var questions_data;
 							url: "ajax_request.php",
 							success: function(data){
 								var response = data.split("-");
-								$('.section-test').remove();
-								$('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+'</h1><p>тест пройден за <b>'+response[1]+'</b>, верно <b>'+response[2]+'</b></p></div>');
+								console.log(response);
+								// $('.section-test').remove();
+								// $('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+'</h1><p>тест пройден за <b>'+response[1]+'</b>, верно <b>'+response[2]+'</b></p></div>');
 	//							$('.test-time p').html(data);
-								document.onmouseleave = '';
+								// document.onmouseleave = '';
 							}
 						});
-						clearTimeout(timerId);
-						submitFlag = 1;
-					}
+						// clearTimeout(timerId);
+						// submitFlag = 1;
+					// }
 				} 
 			}
 		}

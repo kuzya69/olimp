@@ -155,6 +155,7 @@ $test_results = getSubjects($db, $user_information);
 
 									<div class="dropdown-menu" data-sid="<?=$value['id']?>">
 										<a class="dropdown-item subject-edit" data-toggle="modal" data-target="#editSubjectModal" href="#">Редактировать</a>
+										<a class="dropdown-item subject-clone" href="#">Склонировать</a>
 										<?php if($value['display'] == 0):?>
 										<a class="dropdown-item subject-delete" data-vis=1 href="#">Показать</a>
 										<?php else:?>

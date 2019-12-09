@@ -242,7 +242,7 @@
 				}
 			});
 
-			//Действие над предметом
+			//Действие над предметом - редактирование 
 			$(".subject-edit").on('click', function(){
 				var sid = $(this).parent().data('sid');
 				$.ajax({
@@ -268,6 +268,33 @@
 				});
 			});
 
+			//Действие над предметом - клонирование 
+			$(".subject-clone").on('click', function(){
+				var sid = $(this).parent().data('sid');
+				$.ajax({
+					type: "POST",
+					data: {status: 14, s: sid},
+					url: "a_ajax_request.php",
+					dataType : "json",   
+					success: function(data){
+						// console.log(data);
+						// $(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+						document.getElementById('inputEditName').value = data['name'];
+						document.getElementById('inputEditDescription').value = data['description'];
+						document.getElementById('inputEditTime').value = data['time'];
+						document.getElementById('inputEditAmount').value = data['amount'];
+						document.getElementById('inputEditUprefix').value = data['uprefix'];
+						document.getElementById('inputEditDateStart').value = data['date_start'];
+						document.getElementById('inputEditDateEnd').value = data['date_end'];
+						$('#edit-subject-submit').data('id', sid);
+						// if(data['status'] == 1){
+							// thisElement.parent().parent().remove();
+						// }
+					},
+				});
+			});
+
+			//Действие над предметом - скрыть/показать 
 			$("#all-subjects-table").on('click', '.subject-delete', function(){
 				var thisElem = $(this);
 				var sid = $(this).parent().data('sid');
