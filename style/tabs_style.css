@@ -1,0 +1,212 @@
+.test-tabs-btn {
+  width: 100%;
+  padding: 7px 30px 7px 30px;
+  /*margin: 0 2px 0 0;*/
+  text-decoration: none;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  background: #343a40;
+  border-bottom: 3px solid #34495e;
+  border-radius: 0px;
+  transition-property: border-bottom .6s linear 0s;
+  -moz-transition: border-bottom .6s linear 0s;
+  -webkit-transition: border-bottom .6s linear 0s;
+  -o-transition: border-bottom .6s linear 0s;
+}
+.test-tabs-btn:hover{
+  color: #fff;
+  text-decoration: none;
+}
+
+.test-tabs-btn.active {
+  border-bottom: 3px solid #2ecc71;
+  color: #2ecc71;
+}
+.test-tabs-main{
+/*    margin-left: 0;
+    margin-right: 0;*/
+    /*width:100%;*/
+}
+.test-tabs-main li{
+    /*width: 32.7%;*/
+}
+.test-tabs-second{
+/*    margin-left: 0;
+    margin-right: 0;*/
+    /*width:100%;*/
+}
+.test-tabs-second li{
+    /*width:49.5%;*/
+}
+.test-button-group-tabs{
+    margin-left: 0;
+    margin-right: 0;
+}
+.test-button-group-tabs li {
+  display: inline-block;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  zoom: 1;
+  background: #7f8c8d;
+}
+
+.test-button-group-tabs li .test-tabs-btn {
+  float: left;
+  /*margin-left: -4px;*/
+}
+
+.test-button-group-tabs>.test-tabs-btn:first-child,
+.test-button-group-tabs li:first-child .test-tabs-btn {
+  margin-left: 0;
+}
+
+.test-button-group-tabs>.test-tabs-btn:last-child,
+.test-button-group-tabs li:last-child>.test-tabs-btn {
+  margin-right: 0;
+}
+
+.test-tabs-btn input{
+	/*display: none;*/
+}
+
+
+.badge-danger{
+	color: #fff;
+	background-color: #e14a39;
+}
+.badge-success{
+	color: #fff;
+	background-color: #61bc6d;
+}
+.badge-primary{
+	color: #fff;
+	background-color: #2b82c9;
+}
+.badge-warning{
+  color: #fff;
+  background-color: #f1c40f;
+}
+.tab-btn-success {
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	color: #fff;
+	background-color: #61bc6d;
+	border-color: #61bc6d;
+	line-height: 0.5;
+}
+.tab-btn-success:hover {
+	background-color: #61ca6d;
+	border-color: #61ca6d
+}
+.tab-btn-success:not(:disabled):not(.disabled):active {
+	background-color: #61af6d;
+	border-color: #61af6d;
+}
+.tab-btn-primary {
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	color: #fff;
+	background-color: #2b82c9;
+	border-color: #2b82c9;
+	line-height: 0.5;
+}
+.tab-btn-primary:hover{
+	background-color: #2b82ef;
+	border-color: #2b82ef;
+}
+.tab-btn-primary:not(:disabled):not(.disabled):active{
+	background-color: #2b82a9;
+	border-color: #2b82a9;
+}
+.tab-btn-danger {
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	color: #fff;
+	background-color: #e14a39;
+	border-color: #e14a39;
+	line-height: 0.5;
+}
+.tab-btn-danger:hover {
+	background-color: #f14a39;
+	border-color: #f14a39;
+}
+.tab-btn-danger:not(:disabled):not(.disabled):active {
+	background-color: #dd4a39;
+	border-color: #dd4a39;
+}
+
+.tab-btn-warning {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  color: #fff;
+  background-color: #f1c40f;
+  border-color: #f1c40f;
+  line-height: 0.5;
+}
+.tab-btn-warning:hover {
+  background-color: #ffdf0f;
+  border-color: #ffdf0f
+}
+.tab-btn-warning:not(:disabled):not(.disabled):active {
+  background-color: #d0a00f;
+  border-color: #d0a00f;
+}
+
+/*Для кнопок выбора*/
+
+/*input[type="radio"][id="blue"]:checked ~ .red, input[type="radio"][id="blue"]:checked ~ .green {
+  width:0;
+  height:0;
+  padding:0;
+  margin:0;
+  opacity:0;
+}
+
+input[type="radio"][id="red"]:checked ~ .blue, input[type="radio"][id="red"]:checked ~ .green {
+  width:0;
+  height:0;
+  padding:0;
+  margin:0;
+  opacity:0;
+}
+
+input[type="radio"][id="green"]:checked ~ .blue, input[type="radio"][id="green"]:checked ~ .red {
+  width:0;
+  height:0;
+  padding:0;
+  margin:0;
+  opacity:0;
+}
+*/
+
+
+/*<h1>FILTER BY COLOR</h1>
+<div class="container"> 
+  <input type="radio" id="blue" name="color" />
+  <label for="blue">BLUE</label>
+  <input type="radio" id="red" name="color"/>
+  <label for="red">RED</label>
+  <input type="radio" id="green" name="color"/>
+  <label for="green">GREEN</label>
+  <input type="radio" id="reset" name="color"/>
+  <label for="reset">RESET</label>
+
+  <div class="tile blue">1</div>
+  <div class="tile red">2</div>
+  <div class="tile blue">3</div>
+  <div class="tile green">4</div>
+  <div class="tile blue">5</div>
+  <div class="tile red">6</div>
+  <div class="tile red">7</div>
+  <div class="tile green">8</div>
+  <div class="tile blue">9</div>
+  <div class="tile green">10</div>
+  <div class="tile red">11</div>
+  <div class="tile green">12</div>
+  <div class="tile blue">13</div>
+  <div class="tile blue">14</div>
+  <div class="tile green">15</div>
+  <div class="tile red">16</div>
+</div>*/
