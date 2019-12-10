@@ -132,6 +132,7 @@ var questions_data;
 					data: {start: start, id: id},
 					url: "ajax_request.php",
 					dataType : "json",   
+					async: false,
 					success: function(data){
 						// alert("ok");
 						// questions_data = data;
@@ -186,54 +187,54 @@ var questions_data;
 			}
 	
 			//Проверка выхода за пределы активного акна
-			document.onmouseleave = handler;
-			var countMousOutWindow = 11;
-			function handler(event) {
-				// console.log(event.type + ": "+event.relatedTarget+": "+event.target);
-				if (event.type == 'mouseleave') {
-					if(event.relatedTarget == null){
+			// document.onmouseleave = handler;
+		// 	var countMousOutWindow = 11;
+		// 	function handler(event) {
+		// 		// console.log(event.type + ": "+event.relatedTarget+": "+event.target);
+		// 		if (event.type == 'mouseleave') {
+		// 			if(event.relatedTarget == null){
 						
-						// alert("Во время прохождеия теста, нельзя выходить за пределы окна браузера!");
-						// $(".res-table-message").append('<div class="alert alert-danger alert-dismissible fade show" role="alert">'
-						// +
-						// 'Во время прохождения теста, нельзя выходить за пределы окна браузера! Еще <span class="badge badge-pill badge-danger">'
-						// +
-						// (--countMousOutWindow)
-						// +
-						// '</span> попытка(и) и тест будет завершен!'
-						// +
-						// '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-						// if(countMousOutWindow == 0){
-							// hourVal = 0;
-							// hourElem.html(hourVal);
-							// minVal = 0;
-							// minElem.html(minVal);
-							// secVal = 0;
-							// secElem.html(secVal);
-							var _formData = $('.form-for-test').serializeArray();
-							var formData = (_formData.length > 0) ? _formData : [];
+		// 				// alert("Во время прохождеия теста, нельзя выходить за пределы окна браузера!");
+		// 				// $(".res-table-message").append('<div class="alert alert-danger alert-dismissible fade show" role="alert">'
+		// 				// +
+		// 				// 'Во время прохождения теста, нельзя выходить за пределы окна браузера! Еще <span class="badge badge-pill badge-danger">'
+		// 				// +
+		// 				// (--countMousOutWindow)
+		// 				// +
+		// 				// '</span> попытка(и) и тест будет завершен!'
+		// 				// +
+		// 				// '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+		// 				// if(countMousOutWindow == 0){
+		// 					// hourVal = 0;
+		// 					// hourElem.html(hourVal);
+		// 					// minVal = 0;
+		// 					// minElem.html(minVal);
+		// 					// secVal = 0;
+		// 					// secElem.html(secVal);
+		// 					var _formData = $('.form-for-test').serializeArray();
+		// 					var formData = (_formData.length > 0) ? _formData : [];
 							
-							var timeLeft = hourElem.html()+":"+minElem.html()+":"+secElem.html();
-							$('.test-time-start').addClass('start-timer');
-							// $( ".form-for-test" ).submit();
-							$.ajax({
-								type: "POST",
-								data: {submit: submit, id: id, formData: formData, timeLeft: timeLeft},
-								url: "ajax_request.php",
-								success: function(data){
-									var response = data.split("-");
-									// $('.section-test').remove();
-									// $('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+'</h1><p>тест пройден за <b>'+response[1]+'</b>, верно <b>'+response[2]+'</b></p></div>');
-		//							$('.test-time p').html(data);
+		// 					var timeLeft = hourElem.html()+":"+minElem.html()+":"+secElem.html();
+		// 					$('.test-time-start').addClass('start-timer');
+		// 					// $( ".form-for-test" ).submit();
+		// 					$.ajax({
+		// 						type: "POST",
+		// 						data: {update: "update", id: id, formData: formData, timeLeft: timeLeft},
+		// 						url: "ajax_request.php",
+		// 						success: function(data){
+		// 							// var response = data.split("-");
+		// 							// $('.section-test').remove();
+		// 							// $('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+'</h1><p>тест пройден за <b>'+response[1]+'</b>, верно <b>'+response[2]+'</b></p></div>');
+		// //							$('.test-time p').html(data);
 									// document.onmouseleave = '';
-								}
-							});
-							// clearTimeout(timerId);
-							// submitFlag = 1;
-						// }
-					} 
-				}
-			}
+		// 						}
+		// 					});
+		// 					// clearTimeout(timerId);
+		// 					// submitFlag = 1;
+		// 				// }
+		// 			} 
+		// 		}
+		// 	}
 			$( ".section-test" ).on('click', '.submit-test', function() {
 				if(submitFlag !== 1){
 					// $('.test-time-start').removeClass('start-timer');
@@ -259,13 +260,52 @@ var questions_data;
 					});
 					clearTimeout(timerId);
 					submitFlag = 1;
-					document.onmouseleave = '';
+					// document.onmouseleave = '';
 				}
 	
 	
 				// $(".submit-test").removeClass('submit-test');
 			});
 	
+			$( ".section-test" ).on('click', '.next', function() {
+				if(submitFlag !== 1){
+					var _formData = $('.form-for-test').serializeArray();
+					var formData = (_formData.length > 0) ? _formData : [];
+					var timeLeft = minElem.html()+":"+secElem.html();
+					$.ajax({
+						type: "POST",
+						data: {update: "update", id: id, formData: formData, timeLeft: timeLeft},
+						url: "ajax_request.php"
+					});
+				}
+			});
+
+			$( ".section-test" ).on('click', '.prev', function() {
+				if(submitFlag !== 1){
+					var _formData = $('.form-for-test').serializeArray();
+					var formData = (_formData.length > 0) ? _formData : [];
+					var timeLeft = minElem.html()+":"+secElem.html();
+					$.ajax({
+						type: "POST",
+						data: {update: "update", id: id, formData: formData, timeLeft: timeLeft},
+						url: "ajax_request.php"
+					});
+				}
+			});
+
+			$( ".section-test" ).on('click', '.all-questions>ul>li', function() {
+				if(submitFlag !== 1){
+					var _formData = $('.form-for-test').serializeArray();
+					var formData = (_formData.length > 0) ? _formData : [];
+					var timeLeft = minElem.html()+":"+secElem.html();
+					$.ajax({
+						type: "POST",
+						data: {update: "update", id: id, formData: formData, timeLeft: timeLeft},
+						url: "ajax_request.php"
+					});
+				}
+			});
+
 			// console.log(+secVal);
 			function calcTime() {
 				if(+secVal < 1){
@@ -285,7 +325,7 @@ var questions_data;
 							// $( ".form-for-test" ).submit();
 							$.ajax({
 								type: "POST",
-								data: {submit: submit, id: id, formData: formData, timeLeft: timeLeft},
+								data: {update_time: "update_time", id: id, formData: formData, timeLeft: timeLeft},
 								url: "ajax_request.php",
 								success: function(data){
 									var response = data.split("-");
@@ -296,7 +336,7 @@ var questions_data;
 							});
 							clearTimeout(timerId);
 							submitFlag = 1;
-							document.onmouseleave = '';
+							// document.onmouseleave = '';
 						}else{
 							hourElem.html(hourVal);
 							hourVal -= 1;

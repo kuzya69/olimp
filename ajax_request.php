@@ -30,9 +30,6 @@ if($_POST || isset($_POST)){
 		$true_select_opt = 0;
 		$current_questions = [];
 		$user_id = $_SESSION['logged_user']['id'];
-		// print_r($_POST);
-		// print_r($_POST['formData']);
-		// print_r($_POST['timeLeft']);
 		if((!empty($_POST['formData']) || isset($_POST['formData'])) && ($_POST['timeLeft'] || isset($_POST['timeLeft']))){
 			$form_data = $_POST['formData'];
 			$subject_info = getSubjectInfo($db, $subject_id, $_SESSION['logged_user']);
@@ -43,17 +40,6 @@ if($_POST || isset($_POST)){
 			$true_select_opt = trueSlectedOptions($db, $selected_options);
 			$ball = ball($current_questions, $true_select_opt);
 			$save_user_log = saveUserLog($db, $selected_options, $subject_id, $ball, $true_select_opt, $_POST['timeLeft']);
-			// echo "current_questions: ";
-			// print_r($current_questions);
-			// echo "selected_options: ";
-			// print_r($selected_options);
-			// echo "; true_select_opt: ";
-			// print_r($true_select_opt);
-			// echo "; ball: ";
-			// print_r($ball);
-			// echo "; save_user_log: ";
-			// print_r($save_user_log);
-			// echo "| ";
 			if($save_user_log > 0){
 				echo $ball." балла(ов)-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
 			}else{
@@ -64,7 +50,63 @@ if($_POST || isset($_POST)){
 			die();
 		}else{
 			// echo "Не удалось получить данные!";
-			echo "Не удалось получить данные! Возможно, вы даже не попытались пройти тест1. -".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+			echo "Не удалось получить данные! Возможно, вы даже не попытались пройти тест!. -".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+			die();
+		}
+	}
+
+	if(isset($_POST['update']) && isset($_POST['id']) && $_POST['update'] == 'update'){
+		$subject_id = $_POST['id'];
+		$true_select_opt = 0;
+		$current_questions = [];
+		$user_id = $_SESSION['logged_user']['id'];
+		if((!empty($_POST['formData']) || isset($_POST['formData'])) && ($_POST['timeLeft'] || isset($_POST['timeLeft']))){
+			$form_data = $_POST['formData'];
+			$subject_info = getSubjectInfo($db, $subject_id, $_SESSION['logged_user']);
+			$subject_amount = $subject_info['amount'];
+			$current_questions = mixArray($db, $subject_id, $subject_amount);
+			$selected_options = selectedOptions($db, $form_data);
+			$true_select_opt = trueSlectedOptions($db, $selected_options);
+			$ball = ball($current_questions, $true_select_opt);
+			$save_user_log = saveUserLog($db, $selected_options, $subject_id, $ball, $true_select_opt, $_POST['timeLeft']);
+			if($save_user_log > 0){
+				echo true;
+			}else{
+				// echo "Не удалось сохранить результат!";
+				echo false;
+			}
+			die();
+		}else{
+			// echo "Не удалось получить данные!";
+			echo false;
+			die();
+		}
+	}
+
+	if(isset($_POST['update_time']) && isset($_POST['id']) && $_POST['update_time'] == 'update_time'){
+		$subject_id = $_POST['id'];
+		$true_select_opt = 0;
+		$current_questions = [];
+		$user_id = $_SESSION['logged_user']['id'];
+		if((!empty($_POST['formData']) || isset($_POST['formData'])) && ($_POST['timeLeft'] || isset($_POST['timeLeft']))){
+			$form_data = $_POST['formData'];
+			$subject_info = getSubjectInfo($db, $subject_id, $_SESSION['logged_user']);
+			$subject_amount = $subject_info['amount'];
+			$current_questions = mixArray($db, $subject_id, $subject_amount);
+			$selected_options = selectedOptions($db, $form_data);
+			$true_select_opt = trueSlectedOptions($db, $selected_options);
+			$ball = ball($current_questions, $true_select_opt);
+			$save_user_log = saveUserLog($db, $selected_options, $subject_id, $ball, $true_select_opt, $_POST['timeLeft']);
+			if($save_user_log > 0){
+				echo $ball." балла(ов)-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+			}else{
+				// echo "Не удалось сохранить результат!";
+				echo "Не удалось сохранить результат!-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+			}
+			die();
+		}else{
+			// echo "Не удалось получить данные!";
+			echo "Не удалось получить данные! Возможно, вы даже не попытались пройти тест!. -".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
 			die();
 		}
 	}
