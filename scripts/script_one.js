@@ -252,9 +252,10 @@ var questions_data;
 						data: {submit: submit, id: id, formData: formData, timeLeft: timeLeft},
 						url: "ajax_request.php",
 						success: function(data){
-							var response = data.split("-");
+							// var response = data.split("-");
+							var response = JSON.parse(data);
 							$('.section-test').remove();
-							$('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+'</h1><p>тест пройден за '+response[1]+', верно '+response[2]+'</p></div>');
+							$('section').append('<div class="section-result text-center mt-5 mb-5"><h1>Ваш результат '+response[0]+' балл(а)ов</h1><p>тест пройден за '+response[1]+', верно '+response[2]+'</p></div>');
 	//						$('.test-time p').html(data);
 						}
 					});
@@ -328,9 +329,10 @@ var questions_data;
 								data: {update_time: "update_time", id: id, formData: formData, timeLeft: timeLeft},
 								url: "ajax_request.php",
 								success: function(data){
-									var response = data.split("-");
+									// var response = data.split("-");
+									var response = JSON.parse(data);
 									$('.section-test').remove();
-									$('section').append('<div class="section-result text-center mt-5 mb-5"><h1>'+response[0]+'</h1><p>тест пройден за <b>'+response[1]+'</b>, верно <b>'+response[2]+'</b></p></div>');
+									$('section').append('<div class="section-result text-center mt-5 mb-5"><h1>Ваш результат '+response[0]+' балл(а)ов</h1><p>тест пройден за <b>'+response[1]+'</b>, верно <b>'+response[2]+'</b></p></div>');
 		//							$('.test-time p').html(data);
 								}
 							});

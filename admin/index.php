@@ -22,7 +22,8 @@ $query = $db->prepare("
 		`user_selected_options`.`ball` as `ball`, 
 		`subjects`.`amount` as `s_amount`, 
 		`user_selected_options`.`amount` as `uso_amount`, 
-		`start_time`,`end_time` 
+		`user_selected_options`.`fix_time` as `fix_time`,
+		`user_selected_options`.`end_time` as `end_time`
 	FROM `user_selected_options` 
 	LEFT JOIN `subjects` ON (`subjects`.`id` = `user_selected_options`.`subject_id`)
 	LEFT JOIN `users` ON (`users`.`id` = `user_selected_options`.`user_id`)
@@ -73,7 +74,7 @@ $test_results = $query->fetchAll();
 						<td><?=$value['sname']?></td>
 						<td><?=$value['ball']?></td>
 						<td><?=$value['uso_amount']."/".$value['s_amount']?></td>
-						<td><?=date('i:s', ($value['end_time'] - $value['start_time']))?></td>
+						<td><?=date('H:i:s', ($value['end_time'] - $value['fix_time']))?></td>
 						<td class="table-row-act"><span class="user-result-delete" data-su="<?=$value['uid']?>-<?=$value['sid']?>"><i class="fa fa-trash"></i></span></td>
 					</tr>
 					<!-- </div> -->

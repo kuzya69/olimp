@@ -41,16 +41,19 @@ if($_POST || isset($_POST)){
 			$ball = ball($current_questions, $true_select_opt);
 			$save_user_log = saveUserLog($db, $selected_options, $subject_id, $ball, $true_select_opt, $_POST['timeLeft']);
 			if($save_user_log > 0){
-				echo $ball." балла(ов)-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+				// echo $ball." балла(ов)-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+				print_r( json_encode([$ball, getTestTime($db, $subject_id), $true_select_opt.'/'.count($current_questions)]) );
 			}else{
 				// echo "Не удалось сохранить результат!";
-				echo "Не удалось сохранить результат!-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
-				fixStartDelete($db, $user_id, $subject_id);
+				// echo "Не удалось сохранить результат!-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+				print_r( json_encode([$ball, getTestTime($db, $subject_id), $true_select_opt.'/'.count($current_questions)]) );
+				// fixStartDelete($db, $user_id, $subject_id);
 			}
 			die();
 		}else{
 			// echo "Не удалось получить данные!";
-			echo "Не удалось получить данные! Возможно, вы даже не попытались пройти тест!. -".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+			// echo "Не удалось получить данные! Возможно, вы даже не попытались пройти тест!. -".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+			print_r( json_encode(["0", getTestTime($db, $subject_id), $true_select_opt.'/'.count($current_questions)]) );
 			die();
 		}
 	}
@@ -98,15 +101,18 @@ if($_POST || isset($_POST)){
 			$ball = ball($current_questions, $true_select_opt);
 			$save_user_log = saveUserLog($db, $selected_options, $subject_id, $ball, $true_select_opt, $_POST['timeLeft']);
 			if($save_user_log > 0){
-				echo $ball." балла(ов)-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+				// echo $ball." балла(ов)-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+				print_r( json_encode([$ball, getTestTime($db, $subject_id), $true_select_opt.'/'.count($current_questions)]) );
 			}else{
 				// echo "Не удалось сохранить результат!";
-				echo "Не удалось сохранить результат!-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+				// echo "Не удалось сохранить результат!-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+				print_r( json_encode([$ball, getTestTime($db, $subject_id), $true_select_opt.'/'.count($current_questions)]) );
 			}
 			die();
 		}else{
 			// echo "Не удалось получить данные!";
-			echo "Не удалось получить данные! Возможно, вы даже не попытались пройти тест!. -".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+			// echo "Не удалось получить данные! Возможно, вы даже не попытались пройти тест!. -".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
+			print_r( json_encode(["0", getTestTime($db, $subject_id), $true_select_opt.'/'.count($current_questions)]) );
 			die();
 		}
 	}

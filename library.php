@@ -225,11 +225,12 @@ function saveUserLog($db, $selected_options, $subject_id, $ball, $true_select_op
 	$time_now = getNowTime();// + (3 * 60 * 60);
 	// $time_future = time() + (3 * 60 * 60) + (30 * 60);
 
-	$query = $db->prepare("UPDATE `user_selected_options` SET `selected` = :s, `ball` = :b, `amount` = :a, `time_left` = :tl WHERE `user_id` = :uid AND `subject_id` = :sid AND `end_time` >= :ntime");
+	$query = $db->prepare("UPDATE `user_selected_options` SET `selected` = :s, `ball` = :b, `amount` = :a, `time_left` = :tl, `fix_time` = :ftime WHERE `user_id` = :uid AND `subject_id` = :sid AND `end_time` >= :ntime");
 	$query->bindValue(':s', (string)trim(strip_tags(htmlspecialchars($answer_string))));
 	$query->bindValue(':b', (int)trim($ball));
 	$query->bindValue(':a', (int)trim($true_select_opt));
 	$query->bindValue(':tl', (string)trim(strip_tags(htmlspecialchars($time_left))));
+	$query->bindValue(':ftime', $time_now);
 	$query->bindValue(':uid', (int)trim($_SESSION['logged_user']['id']));
 	$query->bindValue(':sid', (int)trim($subject_id));
 	$query->bindValue(':ntime', $time_now);
@@ -252,10 +253,11 @@ function fixStartTest($db, $user_id, $subject_id, $test_time=30){
 
 	// print_r(date("H:i:s", $time_future - $time_now));die();
 	$query = $db->prepare("INSERT INTO `user_selected_options` (`user_id`,
-		`subject_id`, `start_time`, `end_time`, `date_create`) VALUES (:uid, :sid, :stime, :etime, :dc)");
+		`subject_id`, `start_time`, `fix_time`, `end_time`, `date_create`) VALUES (:uid, :sid, :stime, :ftime, :etime, :dc)");
 	$query->bindValue(':uid', (int)trim($user_id));
 	$query->bindValue(':sid', (int)trim($subject_id));
 	$query->bindValue(':stime', (int)$time_now); //Y-m-d H:i:s
+	$query->bindValue(':ftime', (int)$time_now);
 	$query->bindValue(':etime', (int)$time_future); //Y-m-d H:i:s + 30 минут
 	$query->bindValue(':dc', date("Y-m-d H:i:s", $time_now));
 	$query->execute();
@@ -284,13 +286,13 @@ function fixStartDelete($db, $user_id, $subject_id){
  * @return date
  */
 function getTestTime($db, $subject_id){
-    $time_now = getNowTime();// + (3 * 60 * 60);
-    $query = $db->prepare("SELECT `start_time` FROM `user_selected_options` WHERE `user_id`=:uid AND `subject_id`=:sid");
+    // $time_now = getNowTime();// + (3 * 60 * 60);
+    $query = $db->prepare("SELECT `start_time`, `fix_time` FROM `user_selected_options` WHERE `user_id`=:uid AND `subject_id`=:sid");
     $query->bindValue(':uid', (int)trim($_SESSION['logged_user']['id']));
     $query->bindValue(':sid', (int)trim($subject_id));
     $query->execute();
     $user_test_time = $query->fetch();
-    return date('H:i:s', $time_now - $user_test_time['start_time']);
+    return date('H:i:s', $user_test_time['fix_time'] - $user_test_time['start_time']);
 }
 
 
@@ -767,7 +769,7 @@ function getNowTime(){
  * @return array возвращает балл, выбранные ответы, время и количество ответов
  */
 function getQuestionsByUser($db, $user_id, $subject_id){
-	$query = $db->prepare("SELECT `selected`, `ball`, `amount`, `start_time`, `end_time`, `time_left` FROM `user_selected_options` WHERE `user_id` = :uid AND `subject_id` = :sid");
+	$query = $db->prepare("SELECT `selected`, `ball`, `amount`, `start_time`, `fix_time`, `end_time`, `time_left` FROM `user_selected_options` WHERE `user_id` = :uid AND `subject_id` = :sid");
 	$query->bindValue(':uid', (int)trim($user_id));
 	$query->bindValue(':sid', (int)trim($subject_id));
 	$query->execute();
