@@ -4,7 +4,7 @@ include_once("aheader.php");
 // echo "админка";
 
 include_once('../db.php');
-
+date_default_timezone_set('UTC');
 
 
 $query = $db->prepare("
@@ -20,10 +20,11 @@ $query = $db->prepare("
 		`subjects`.`id` as `sid`, 
 		`subjects`.`name` as `sname`, 
 		`user_selected_options`.`ball` as `ball`, 
+		`user_selected_options`.`selected` as `selected`, 
 		`subjects`.`amount` as `s_amount`, 
 		`user_selected_options`.`amount` as `uso_amount`, 
-		`user_selected_options`.`fix_time` as `fix_time`,
-		`user_selected_options`.`end_time` as `end_time`
+		`user_selected_options`.`start_time` as `start_time`,
+		`user_selected_options`.`fix_time` as `fix_time`
 	FROM `user_selected_options` 
 	LEFT JOIN `subjects` ON (`subjects`.`id` = `user_selected_options`.`subject_id`)
 	LEFT JOIN `users` ON (`users`.`id` = `user_selected_options`.`user_id`)
@@ -34,9 +35,32 @@ $query = $db->prepare("
 $query->execute();
 
 $test_results = $query->fetchAll();
-
-
 ?>
+
+<div class="modal fade" id="showApelationModal" tabindex="-1" role="dialog" aria-labelledby="showApelationModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="showApelationModalLabel">Апелляция
+			<span class="badge badge-secondary">0</span>
+			<span class="badge badge-primary">0</span>
+			<span class="badge badge-success">0</span>
+			<span class="badge badge-danger">0</span>
+		</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+	  <div class="modal-body">
+		<p>вопросы</p>		
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Записать</button>
+      </div> -->
+    </div>
+  </div>
+</div>
 
 <div class="row">
 	<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
@@ -74,8 +98,25 @@ $test_results = $query->fetchAll();
 						<td><?=$value['sname']?></td>
 						<td><?=$value['ball']?></td>
 						<td><?=$value['uso_amount']."/".$value['s_amount']?></td>
-						<td><?=date('H:i:s', ($value['end_time'] - $value['fix_time']))?></td>
-						<td class="table-row-act"><span class="user-result-delete" data-su="<?=$value['uid']?>-<?=$value['sid']?>"><i class="fa fa-trash"></i></span></td>
+						<td><?=date('H:i:s', $value['fix_time'] - $value['start_time'])?></td>
+						<!-- <td class="table-row-act"><span class="user-result-delete" data-su="<?=$value['uid']?>-<?=$value['sid']?>"><i class="fa fa-trash"></i></span></td> -->
+						<td class="table-row-act">
+							<div class="dropdown">
+								<a class="subject-dropdown-menu" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-cog"></i>
+								</a>
+
+								<div class="dropdown-menu" data-sid="<?=$value['sid']?>">
+									<a class="dropdown-item show-apelation" data-toggle="modal" data-target="#showApelationModal" href="#">Апелляция</a>
+									<!-- <a class="dropdown-item" href="#"> -->
+									<!-- <span class="dropdown-item user-result-delete" data-su="<?=$value['uid']?>-<?=$value['sid']?>"> -->
+										<!-- <i class="fa fa-trash"></i> -->
+									<!-- </span> -->
+									<a class="dropdown-item delete-user-result" href="#" data-su="<?=$value['uid']?>-<?=$value['sid']?>">Удалить</a>
+									<!-- <a class="dropdown-item" href="#"></a> -->
+								</div>
+							</div>
+						</td>
 					</tr>
 					<!-- </div> -->
 				<?php endforeach ?>

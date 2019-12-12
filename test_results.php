@@ -6,7 +6,7 @@ include_once('db.php');
 
 
 
-$query = $db->prepare("SELECT `subjects`.`name`, `user_selected_options`.`ball`, `subjects`.`amount` as `s_amount`, `user_selected_options`.`amount` as `uso_amount`, `user_selected_options`.`fix_time` as `fix_time`,`user_selected_options`.`end_time` as `end_time` FROM `subjects` LEFT JOIN `user_selected_options` ON `subjects`.`id` = `user_selected_options`.`subject_id` WHERE `user_selected_options`.`user_id` = :uid");
+$query = $db->prepare("SELECT `subjects`.`name`, `user_selected_options`.`ball`, `subjects`.`amount` as `s_amount`, `user_selected_options`.`amount` as `uso_amount`, `user_selected_options`.`start_time` as `start_time`,`user_selected_options`.`fix_time` as `fix_time` FROM `subjects` LEFT JOIN `user_selected_options` ON `subjects`.`id` = `user_selected_options`.`subject_id` WHERE `user_selected_options`.`user_id` = :uid");
 
 $query->bindValue(':uid', $_SESSION['logged_user']['id']);
 
@@ -78,7 +78,7 @@ date_default_timezone_set('UTC');
 
 					<td><?=$value['uso_amount']."/".$value['s_amount']?></td>
 
-					<td><?=date('H:i:s', ($value['end_time'] - $value['fix_time']))?></td>
+					<td><?=date('H:i:s', ($value['fix_time'] - $value['start_time']))?></td>
 
 				</tr>
 

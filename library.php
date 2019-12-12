@@ -225,12 +225,12 @@ function saveUserLog($db, $selected_options, $subject_id, $ball, $true_select_op
 	$time_now = getNowTime();// + (3 * 60 * 60);
 	// $time_future = time() + (3 * 60 * 60) + (30 * 60);
 
-	$query = $db->prepare("UPDATE `user_selected_options` SET `selected` = :s, `ball` = :b, `amount` = :a, `time_left` = :tl, `fix_time` = :ftime WHERE `user_id` = :uid AND `subject_id` = :sid AND `end_time` >= :ntime");
+	$query = $db->prepare("UPDATE `user_selected_options` SET `fix_time` = :ftime, `selected` = :s, `ball` = :b, `amount` = :a, `time_left` = :tl WHERE `user_id` = :uid AND `subject_id` = :sid AND `end_time` >= :ntime");
+	$query->bindValue(':ftime', $time_now);
 	$query->bindValue(':s', (string)trim(strip_tags(htmlspecialchars($answer_string))));
 	$query->bindValue(':b', (int)trim($ball));
 	$query->bindValue(':a', (int)trim($true_select_opt));
 	$query->bindValue(':tl', (string)trim(strip_tags(htmlspecialchars($time_left))));
-	$query->bindValue(':ftime', $time_now);
 	$query->bindValue(':uid', (int)trim($_SESSION['logged_user']['id']));
 	$query->bindValue(':sid', (int)trim($subject_id));
 	$query->bindValue(':ntime', $time_now);

@@ -221,7 +221,7 @@
 			// })(jQuery);
 
 			//Удалить результат пользователя
-			$(".user-result-delete").on("click", function(){
+			$(".delete-user-result").on("click", function(){
 				var thisElement = $(this);
 				var dataSu = $(this).data("su").split("-");
 				var ans = confirm("Вы уверены что хотите безвозвратно удалить данные о результатах теста этого пользователя?");
@@ -235,7 +235,7 @@
 						success: function(data){
 							$(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
 							if(data['status'] == 1){
-								thisElement.parent().parent().remove();
+								thisElement.parent().parent().parent().parent().remove();
 							}
 						},
 					});

@@ -43,13 +43,14 @@ if($_POST || isset($_POST)){
 			if($save_user_log > 0){
 				// echo $ball." балла(ов)-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
 				print_r( json_encode([$ball, getTestTime($db, $subject_id), $true_select_opt.'/'.count($current_questions)]) );
+				die();
 			}else{
 				// echo "Не удалось сохранить результат!";
 				// echo "Не удалось сохранить результат!-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
 				print_r( json_encode([$ball, getTestTime($db, $subject_id), $true_select_opt.'/'.count($current_questions)]) );
+				die();
 				// fixStartDelete($db, $user_id, $subject_id);
 			}
-			die();
 		}else{
 			// echo "Не удалось получить данные!";
 			// echo "Не удалось получить данные! Возможно, вы даже не попытались пройти тест!. -".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
@@ -74,11 +75,12 @@ if($_POST || isset($_POST)){
 			$save_user_log = saveUserLog($db, $selected_options, $subject_id, $ball, $true_select_opt, $_POST['timeLeft']);
 			if($save_user_log > 0){
 				echo true;
+				die();
 			}else{
 				// echo "Не удалось сохранить результат!";
 				echo false;
+				die();
 			}
-			die();
 		}else{
 			// echo "Не удалось получить данные!";
 			echo false;
@@ -103,12 +105,13 @@ if($_POST || isset($_POST)){
 			if($save_user_log > 0){
 				// echo $ball." балла(ов)-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
 				print_r( json_encode([$ball, getTestTime($db, $subject_id), $true_select_opt.'/'.count($current_questions)]) );
+				die();
 			}else{
 				// echo "Не удалось сохранить результат!";
 				// echo "Не удалось сохранить результат!-".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
 				print_r( json_encode([$ball, getTestTime($db, $subject_id), $true_select_opt.'/'.count($current_questions)]) );
+				die();
 			}
-			die();
 		}else{
 			// echo "Не удалось получить данные!";
 			// echo "Не удалось получить данные! Возможно, вы даже не попытались пройти тест!. -".getTestTime($db, $subject_id)."-".$true_select_opt.'/'.count($current_questions);
