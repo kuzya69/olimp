@@ -246,7 +246,7 @@ var questions_data;
 					// var url = window.location.href;
 					// console.log(url);
 					// console.log(id);
-					var timeLeft = minElem.html()+":"+secElem.html();
+					var timeLeft = hourElem.html()+":"+minElem.html()+":"+secElem.html();
 					$.ajax({
 						type: "POST",
 						data: {submit: submit, id: id, formData: formData, timeLeft: timeLeft},
@@ -272,7 +272,7 @@ var questions_data;
 				if(submitFlag !== 1){
 					var _formData = $('.form-for-test').serializeArray();
 					var formData = (_formData.length > 0) ? _formData : [];
-					var timeLeft = minElem.html()+":"+secElem.html();
+					var timeLeft = hourElem.html()+":"+minElem.html()+":"+secElem.html();
 					$.ajax({
 						type: "POST",
 						data: {update: "update", id: id, formData: formData, timeLeft: timeLeft},
@@ -285,7 +285,7 @@ var questions_data;
 				if(submitFlag !== 1){
 					var _formData = $('.form-for-test').serializeArray();
 					var formData = (_formData.length > 0) ? _formData : [];
-					var timeLeft = minElem.html()+":"+secElem.html();
+					var timeLeft = hourElem.html()+":"+minElem.html()+":"+secElem.html();
 					$.ajax({
 						type: "POST",
 						data: {update: "update", id: id, formData: formData, timeLeft: timeLeft},
@@ -298,7 +298,7 @@ var questions_data;
 				if(submitFlag !== 1){
 					var _formData = $('.form-for-test').serializeArray();
 					var formData = (_formData.length > 0) ? _formData : [];
-					var timeLeft = minElem.html()+":"+secElem.html();
+					var timeLeft = hourElem.html()+":"+minElem.html()+":"+secElem.html();
 					$.ajax({
 						type: "POST",
 						data: {update: "update", id: id, formData: formData, timeLeft: timeLeft},

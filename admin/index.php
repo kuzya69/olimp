@@ -4,6 +4,7 @@ include_once("aheader.php");
 // echo "админка";
 
 include_once('../db.php');
+// include_once('../library.php');
 date_default_timezone_set('UTC');
 
 
@@ -20,7 +21,6 @@ $query = $db->prepare("
 		`subjects`.`id` as `sid`, 
 		`subjects`.`name` as `sname`, 
 		`user_selected_options`.`ball` as `ball`, 
-		`user_selected_options`.`selected` as `selected`, 
 		`subjects`.`amount` as `s_amount`, 
 		`user_selected_options`.`amount` as `uso_amount`, 
 		`user_selected_options`.`start_time` as `start_time`,
@@ -33,7 +33,6 @@ $query = $db->prepare("
 // $query->bindValue(':uid', $_SESSION['logged_user']['id']);
 
 $query->execute();
-
 $test_results = $query->fetchAll();
 ?>
 
@@ -106,7 +105,7 @@ $test_results = $query->fetchAll();
 								<i class="fa fa-cog"></i>
 								</a>
 
-								<div class="dropdown-menu" data-sid="<?=$value['sid']?>">
+								<div class="dropdown-menu" data-sid="<?=$value['sid']?>" data-uid="<?=$value['uid']?>">
 									<a class="dropdown-item show-apelation" data-toggle="modal" data-target="#showApelationModal" href="#">Апелляция</a>
 									<!-- <a class="dropdown-item" href="#"> -->
 									<!-- <span class="dropdown-item user-result-delete" data-su="<?=$value['uid']?>-<?=$value['sid']?>"> -->

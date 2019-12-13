@@ -210,16 +210,16 @@ function saveUserLog($db, $selected_options, $subject_id, $ball, $true_select_op
 		$answer_string.=$key."-:-".$value.';-;';
 	}unset($key);unset($value);
 	foreach($selected_options[1] as $key=>$value){
-		$answer_string.=$key."-:-";
-		for($i=0; $i<count($value); $i++){
-			if(isset($value[$i])){
-				if($i != (count($value)-1)){
-					$answer_string.=$value[$i].',-,';
+		if(!empty($key) && !empty($value)){
+			$answer_string.=$key."-:-";
+			foreach($value as $v){
+				if($v == end($value)){
+					$answer_string.=$v.';-;';
 				}else{
-					$answer_string.=$value[$i].';-;';
+					$answer_string.=$v.',-,';
 				}
-			}
-		}unset($i);
+			}unset($v);
+		}
 	}unset($key);unset($value);
 	
 	$time_now = getNowTime();// + (3 * 60 * 60);
@@ -777,4 +777,20 @@ function getQuestionsByUser($db, $user_id, $subject_id){
 	return $user_selected_options;
 }
 
+/**
+ * 
+ * @param object $pdo - переменная для соединения с базой данных 
+ * @param array $qid_list - массив состоящий из id вопросов
+ */
+function getQuestionsById($pdo, $qid_list){
+    $in_query = implode(',', array_fill(0, count($qid_list), '?'));
+    $search_query = $pdo->prepare("SELECT * FROM `questions` WHERE `id` IN (".$in_query.")");
+    // $search_query->bindValue('1', 2);
+    foreach($qid_list as $key=>$value){
+        $search_query->bindValue(($key+1), $value);
+    }
+	$search_query->execute();
+	$result = $search_query->fetchAll();
+	return $result;
+}
 ?>

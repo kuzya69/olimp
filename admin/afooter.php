@@ -766,6 +766,28 @@
 					$(this).addClass('question-img');
 				}	
 			});
+
+
+			//Действие над результатами пользователей - апелляция 
+			$("#all-results-table").on('click', '.show-apelation', function(){
+				var thisElem = $(this);
+				var sid = $(this).parent().data('sid');
+				var uid = $(this).parent().data('uid');
+				$.ajax({
+					type: "POST",
+					data: {status: 30, s: sid, u: uid},
+					url: "a_ajax_request.php",
+					dataType : "json",   
+					success: function(data){
+						// $(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+						console.log(data['user_questions']);
+						console.log(data['user_selected_options']);
+						// if(data['status'] == 1){
+							// thisElement.parent().parent().remove();
+						// }
+					},
+				});
+			});
 		</script>
 		<footer>
 			<!-- <div class="footer">

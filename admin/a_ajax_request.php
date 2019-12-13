@@ -338,4 +338,34 @@ if(isset($_POST['status']) && $_POST['status'] == 26){
 	die();
 }
 
+if(isset($_POST['status']) && $_POST['status'] == 30 && isset($_POST['s']) && isset($_POST['u'])){
+	$subject_id = $_POST['s'];
+	$user_id = $_POST['u'];
+	$user_selected_questions_id = [];
+	$user_selected_questions_value = [];
+	$user_selected_questions_origin = getQuestionsByUser($db, $user_id, $subject_id);
+
+	$user_answers_on_questions = explode(";-;", $user_selected_questions_origin[0]['selected']);
+	foreach($user_answers_on_questions as $value){
+		if(!empty($value)){
+			array_push($user_selected_questions_id, explode("-:-", $value)[0]);
+			array_push($user_selected_questions_value, explode("-:-", $value)[1]);
+		}
+	}
+	$_user_selected_questions_value = [];
+	foreach($user_selected_questions_value as $value){
+		// print_r(explode(",-,", $value));
+		array_push($_user_selected_questions_value, (explode(",-,", $value)>0)?explode(",-,", $value):$value);
+		// print_r((is_array(explode(",-,", $value)))?explode(",-,", $value)[0]:$value[0]);
+	}
+	$user_selected_questions = array_combine($user_selected_questions_id, $_user_selected_questions_value);
+	$full_questions = getQuestionsById($db, $user_selected_questions_id);
+
+	// print_r($user_selected_questions);
+
+	$response = ['user_questions'=>$full_questions, 'user_selected_options'=>$user_selected_questions];
+	echo json_encode($response, JSON_UNESCAPED_UNICODE);
+	die();
+}
+
 ?>
