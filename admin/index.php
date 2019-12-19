@@ -50,8 +50,8 @@ $test_results = $query->fetchAll();
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-	  <div class="modal-body">
-		<p>вопросы</p>		
+	  <div class="modal-body apelation-result">
+	  	<!-- <div class="apelation-result"></div>		 -->
       </div>
       <!-- <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
