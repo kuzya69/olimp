@@ -779,13 +779,6 @@
 					url: "a_ajax_request.php",
 					dataType : "json",   
 					success: function(data){
-<<<<<<< HEAD
-						console.log(data);
-						// var data_array = JSON.parse(data);
-						// $(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-						console.log(data['user_questions']);
-						console.log(data['user_selected_options']);
-=======
 						// var data = JSON.parse(data);
 						// $(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
 						// console.log(data['user_questions']);
@@ -848,15 +841,12 @@
 						// 	console.log(key +" "+ value);
 						// });
 
->>>>>>> 16c89ae7cc25940d9ebfe9972362d8b968618f4d
 						// if(data['status'] == 1){
 							// thisElement.parent().parent().remove();
 						// }
 					},
 				});
 			});
-<<<<<<< HEAD
-=======
 
 function in_array(needle, haystack, strict) {
 	var found = false, key, strict = !!strict;
@@ -869,7 +859,6 @@ function in_array(needle, haystack, strict) {
 	return found;
 }
 
->>>>>>> 16c89ae7cc25940d9ebfe9972362d8b968618f4d
 		</script>
 		<footer>
 			<!-- <div class="footer">
