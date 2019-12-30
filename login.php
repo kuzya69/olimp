@@ -8,6 +8,14 @@ if(!empty($_SESSION['logged_user'])){
 	header('Location: index.php');
 }
 
+if(!empty($_SESSION['message_type']) && $_SESSION['message_type'] == 'success'){
+	echo '<div style="color: green;">'.$_SESSION['message'].'</div><hr>';
+}elseif(!empty($_SESSION['message_type']) && $_SESSION['message_type'] == 'error'){
+	echo '<div style="color: red;">'.$_SESSION['message'].'</div><hr>';
+}
+$_SESSION['message_type'] = '';
+$_SESSION['message'] = '';
+
 $data = $_POST;
 
 if(isset($data['login'])){
@@ -16,22 +24,25 @@ if(isset($data['login'])){
 
 	$query = $db->prepare("SELECT * FROM `users` WHERE `username` = :un");
 	$query->bindValue(':un', $data['username']);
-	// $query->bindValue(':estatus', 1);
+	$query->bindValue(':estatus', 1);
 	$query->execute();
 	$q_users = $query->fetch(PDO::FETCH_ASSOC);
 	if(!empty($q_users)){
-		// if($q_users['email_status'] == 0){ //можно убрать!
-		// 	$errors[] = "Подтвердите почту!"; //можно убрать!
+		if($q_users['email_status'] == 0){ //можно убрать!
+			$errors[] = "Подтвердите почту!"; //можно убрать!
 
-		// 	$token = $q_users['token']; //можно убрать!
-		// 	$base_url = "http://www.olimpiada24.ru/"; //можно убрать!
-		// 	$to=(!empty($q_users['email'])?$q_users['email']:"kurbanvim@mail.ru");//"kurbanvim@mail.ru";//mysql_real_escape_string($data['email']);; //можно убрать!
-		// 	$subject="Подтверждение электронной почты"; //можно убрать!
-		// 	$body='Здравствуйте! <br/> <br/> Мы должны убедиться в том, что вы человек. Пожалуйста, <a href="'.$base_url.'activation/'.$token.'">подтвердите адрес</a> вашей электронной почты, и можете начать использовать ваш аккаунт на сайте. <br/> <a href="'.$base_url.'activation/'.$token.'">Подтвердить</a>'; //можно убрать!
-		// 	Send_Mail($to,$subject,$body); //можно убрать!
+			$token = $q_users['token']; //можно убрать!
+			$base_url = "http://www.olimpiada24.ru/"; //можно убрать!
+			$to=(!empty($q_users['email'])?$q_users['email']:"kurbanvim@mail.ru");//"kurbanvim@mail.ru";//mysql_real_escape_string($data['email']);; //можно убрать!
+			$subject="Подтверждение электронной почты"; //можно убрать!
+			$body='Здравствуйте! <br/> <br/> Мы должны убедиться в том, что вы человек. Пожалуйста, <a href="'.$base_url.'activation/'.$token.'">подтвердите адрес</a> вашей электронной почты, и можете начать использовать ваш аккаунт на сайте. <br/> <a href="'.$base_url.'activation/'.$token.'">Подтвердить</a>'; //можно убрать!
+			Send_Mail($to,$subject,$body); //можно убрать!
 
-		// }//можно убрать!
-		// if($q_users['email_status'] == 1){ //можно убрать!
+			$_SESSION['message_type'] = 'success';
+			$_SESSION['message'] = "Вы успешно зарегистрировались! <b>Вам необходимо подтвердить свою почту</b>";
+
+		}//можно убрать!
+		if($q_users['email_status'] == 1){ //можно убрать!
 			if( password_verify($data['password'], $q_users['password'])){
 				$_SESSION['logged_user'] = $q_users;
 				echo '<div style="color: green;">Вы успешно авторизованы!</div><hr>';
@@ -40,7 +51,7 @@ if(isset($data['login'])){
 			}else{
 				$errors[] = "Пароль не верный!";
 			}
-		// } //можно убрать!
+		} //можно убрать!
 	}else{
 		$errors[] = "Пользователь не найден!";
 	}

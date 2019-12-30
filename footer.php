@@ -42,7 +42,7 @@
 						?>
 					</div>
 					<div class="col-12 col-md-6 col-lg-5 text-md-right mt-2 mt-md-0">
-						Если у вас возникли проблемы с веб-сайтом пишите: kurbanvim@mail.ru
+						Если у вас возникли проблемы с веб-сайтом пишите: olimpiada24@inbox.ru
 					</div>
 				</div>
 			<!-- <div class="footer">

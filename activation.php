@@ -2,6 +2,8 @@
 include_once('db.php');
 
 $token = $_GET['code'];
+print_r($_GET);
+echo "<br>";
 
 $query = $db->prepare("SELECT * FROM `users` WHERE `token` = :token AND `email_status` = :es");
 $query->bindValue(':token', (string)trim(strip_tags(htmlspecialchars($token))));
@@ -10,6 +12,7 @@ $query->execute();
 $q_users = $query->fetchAll();
 
 print_r($q_users);
+echo "<br>";
 if(!empty($q_users)){
 	$query = $db->prepare("UPDATE `users` SET `email_status` = :es WHERE `token` = :token");
 	$query->bindValue(':token', (string)trim(strip_tags(htmlspecialchars($token))));
