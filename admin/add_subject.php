@@ -118,7 +118,7 @@ $test_results = getSubjects($db, $user_information);
 	<div class="row">
 		<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
 			<div id="table-subjects-information" class="table-responsive mCustomScrollbar" data-mcs-axis="" data-mcs-theme="">
-				<table id="all-subjects-table" class="table table-dark tablesort">
+				<table id="all-subjects-table" class="table table-dark tablesorter">
 					<thead>
 						<tr>
 							<th scope="col" class="filter-match" data-placeholder="Введите номер">№</th>

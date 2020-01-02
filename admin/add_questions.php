@@ -218,7 +218,7 @@ $subjects = getSubjects($db, []);
 	<div class="row">
 		<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
 			<div id="table-questions-information" class="table-responsive mCustomScrollbar" data-mcs-axis="" data-mcs-theme="">
-				<table id="questions-table-by-subject" class="table table-dark tablesort">
+				<table id="questions-table-by-subject" class="table table-dark tablesorter">
 					<thead>
 						<tr>
 							<th scope="col" data-placeholder="Введите номер">№</th>

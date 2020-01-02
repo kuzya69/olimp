@@ -14,8 +14,6 @@
 		</div> -->
 		<!-- <script src="lib/jquery-ui-1.12.1/external/jquery/jquery.js"></script> -->
 		<script src="../lib/jquery_3.3.1.min.js"></script>
-		<script src="scripts/tablesorter.js"></script>
-		<script src="scripts/tablesorter-widget-filter.js"></script>
 		<!-- <script src="scripts/tablesorter-parser-input-select.js"></script> -->
 
 		<!-- <script src="lib/bootstrap-4.3.1-dist/js/bootstrap.bundle.min.js"></script> -->
@@ -28,8 +26,11 @@
 		<!-- <script src="../scripts/script_two.js"></script> -->
 		<!-- <script src="../scripts/script_tabs.js"></script> -->
 		<!-- <script src="../scripts/script_test.js"></script> -->
-		
+		<script src="scripts/tablesorter.min.js"></script>
+		<script src="scripts/tablesorter.widgets.min.js"></script>
+		<!-- <script src="scripts/tablesorter-widget-filter.js"></script> -->
 		<script src="scripts/ascript.js"></script>
+		<script src="scripts/custom-table-script.js"></script>
 		<footer>
 			<!-- <div class="footer">
 				<div class="f_block">

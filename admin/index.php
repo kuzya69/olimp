@@ -65,7 +65,7 @@ $test_results = $query->fetchAll();
 	<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
 		<div class="res-table-message"></div>
 		<div id="table-user-result" class="table-responsive mCustomScrollbar" data-mcs-axis="" data-mcs-theme="">
-			<table id="all-results-table" class="table table-dark tablesort">
+			<table id="all-results-table" class="table table-dark tablesorter">
 				<thead>
 					<tr>
 						<th scope="col" class="" data-placeholder="Введите номер">№</th>

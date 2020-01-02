@@ -2,6 +2,7 @@
 session_start();
 $array_script_name = explode("/", $_SERVER['SCRIPT_NAME']);
 $current_page = array_pop($array_script_name);
+// print_r($_SESSION['logged_user']);die();
 if(empty($_SESSION['logged_user']) || $_SESSION['logged_user']['role'] != 9):
 	header("HTTP/1.1 301 Moved Permanently");
 	header('Location: ../index.php');
