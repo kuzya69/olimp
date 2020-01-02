@@ -262,6 +262,20 @@ text-align: center;
     border: 1px solid #454545;
     border-bottom: 1px;
 }
-.apelation-true-option{
-    background-color: #baec95;
+.apelation-option.fuserselect {
+    background-color: #ff6565;
+    border: 3px solid #ff6565;
+    color: #fbfbfb;
+    font-size: 1.1em;
+    /* box-shadow: 0px 1px 3px #454545; */
+}
+.apelation-true-option {
+    background-color: #c2e9a5;
+}
+.apelation-true-option.tuserselect {
+    background-color: #66ec00;
+    border: 3px solid #66ec00;
+    color: #1f1f1f;
+    font-size: 1.1em;
+    /* box-shadow: 0px 1px 3px #454545; */
 }

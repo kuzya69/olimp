@@ -41,10 +41,10 @@ $test_results = $query->fetchAll();
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="showApelationModalLabel">Апелляция
-			<span class="badge badge-secondary">0</span>
+			<!-- <span class="badge badge-secondary">0</span>
 			<span class="badge badge-primary">0</span>
 			<span class="badge badge-success">0</span>
-			<span class="badge badge-danger">0</span>
+			<span class="badge badge-danger">0</span> -->
 		</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>

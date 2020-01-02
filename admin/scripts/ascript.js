@@ -720,7 +720,7 @@ $("#all-results-table").on('click', '.show-apelation', function(){
             var questions_string = '';
             var amount_user_questions = Object.keys(data['user_questions']).length;
             $.each(data['user_questions'], function (index, array_quest){
-                console.log(data['user_selected_options'][array_quest['id']]);
+                // console.log(data['user_selected_options'][array_quest['id']]);
                 // if(index === 0){
                 // 	questions_string += '<div class="test-question tq-visible" data-id="'+array_quest['id']+'" data-num="'+(index+1)+'">';
                 // }else{
@@ -747,9 +747,17 @@ $("#all-results-table").on('click', '.show-apelation', function(){
                         // console.log(answer_value[i] +" - "+ array_quest['option_'+(i+1)]);
                         if(array_quest['option_'+(i+1)] !== null && array_quest['option_'+(i+1)] !== ""){
                             if(in_array((i+1), answer_value)){
-                                questions_string+='<div class="apelation-option apelation-true-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                if(array_quest['option_'+(i+1)] == data['user_selected_options'][array_quest['id']]){
+                                    questions_string+='<div class="apelation-option apelation-true-option tuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                }else{
+                                    questions_string+='<div class="apelation-option apelation-true-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                }
                             }else{
-                                questions_string+='<div class="apelation-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                if(array_quest['option_'+(i+1)] == data['user_selected_options'][array_quest['id']]){
+                                    questions_string+='<div class="apelation-option fuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                }else{
+                                    questions_string+='<div class="apelation-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                }
                             }
                         }
                     }
@@ -757,9 +765,17 @@ $("#all-results-table").on('click', '.show-apelation', function(){
                     for(var i = 0; i <= 5; i++){
                         // console.log(answer_value +" - "+ array_quest['option_'+(i+1)]);
                         if(answer_value == (i+1)){
-                            questions_string+='<div class="apelation-option apelation-true-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                            if(array_quest['option_'+(i+1)] == data['user_selected_options'][array_quest['id']]){
+                                questions_string+='<div class="apelation-option apelation-true-option tuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
+                            }else{
+                                questions_string+='<div class="apelation-option apelation-true-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                            }
                         }else{
-                            questions_string+='<div class="apelation-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                            if(array_quest['option_'+(i+1)] == data['user_selected_options'][array_quest['id']]){
+                                questions_string+='<div class="apelation-option fuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
+                            }else{
+                                questions_string+='<div class="apelation-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                            }
                         }
                     }
                 }
