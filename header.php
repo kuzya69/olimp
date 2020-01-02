@@ -4,7 +4,9 @@ $array_script_name = explode("/", $_SERVER['SCRIPT_NAME']);
 $current_page = array_pop($array_script_name);
 
 if(empty($_SESSION['logged_user'])):
+	header("HTTP/1.1 301 Moved Permanently");
 	header('Location: index.php');
+	exit();
 endif;
 
 ?>
@@ -29,13 +31,13 @@ endif;
 				<span class="navbar-toggler-icon"></span>
 			</button>
                     
-                        <div class="ml-auto navbar-toggler mr-1">
-                            <?php if(!empty($_SESSION['logged_user'])):?>
-                                <span>Здравствуйте <?=$_SESSION['logged_user']['username']?>!</span>
-                            <?php else:?>
-                                <span></span>
-                            <?php endif;?>
-                        </div>
+			<div class="ml-auto navbar-toggler mr-1">
+				<?php if(!empty($_SESSION['logged_user'])):?>
+					<span>Привет <?=$_SESSION['logged_user']['username']?>!</span>
+				<?php else:?>
+					<span></span>
+				<?php endif;?>
+			</div>
 
 			<div class="collapse navbar-collapse" id="navbarTogglernNvigation">
 				<?php if(!empty($_SESSION['logged_user'])):?>
@@ -70,11 +72,11 @@ endif;
 					<a class="navbar-brand nav-link login-button" href="login.php">Войти</a>
 					<a class="navbar-brand nav-link signup-button" href="signup.php">Регистрация</a>
 				<?php else: ?>
-                                        <?php if(!empty($_SESSION['logged_user'])):?>
-                                            <span class="mr-1 d-none d-lg-block d-xl-block">Здравствуйте <?=$_SESSION['logged_user']['username']?>!</span>
-                                        <?php else:?>
-                                            <span class="d-none d-lg-block d-xl-block"></span>
-                                        <?php endif;?>
+					<?php if(!empty($_SESSION['logged_user'])):?>
+						<span class="mr-1 d-none d-lg-block d-xl-block">Привет <?=$_SESSION['logged_user']['username']?>!</span>
+					<?php else:?>
+						<span class="d-none d-lg-block d-xl-block"></span>
+					<?php endif;?>
 					<a class="navbar-brand nav-link logout-button" href="logout.php">Выйти</a>
 				<?php endif; ?>
 			</div>

@@ -12,18 +12,18 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] == 'u'){
     
     //путь к файлам шаблона
     $images_dir = IMAGES_DIR.DIRECTORY_SEPARATOR.$subject_id;
-    // print_r($_FILES);die();
+    // print_r($_FILES);exit();
     // Проверяем установлен ли массив файлов и массив с переданными данными
     if(isset($_FILES) && isset($_FILES['question-edit-image'])) {
-    //    print_r($_FILES['question-edit-image']['error']);die();
+    //    print_r($_FILES['question-edit-image']['error']);exit();
         if (0 < $_FILES['question-edit-image']['error'] && (1 == $_FILES['question-edit-image']['error'] || 2 == $_FILES['question-edit-image']['error'])){
-            echo 'error_file_maxsize';die();
+            echo 'error_file_maxsize';exit();
         }
         if (0 < $_FILES['question-edit-image']['error'] && 4 == $_FILES['question-edit-image']['error']){
-            echo 'error_file_check';die();
+            echo 'error_file_check';exit();
         }
         if (0 < $_FILES['question-edit-image']['error']){
-            echo 'error';die();
+            echo 'error';exit();
         }
         
         //Переданный массив сохраняем в переменной
@@ -32,7 +32,7 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] == 'u'){
         // Проверяем размер файла и если он превышает заданный размер
         // завершаем выполнение скрипта и выводим ошибку
         if ($image['size'] > 5000000) {
-            die('error');
+            exit('error');
         }
      
         // Достаем формат изображения
@@ -81,15 +81,15 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] == 'u'){
     
     // Проверяем установлен ли массив файлов и массив с переданными данными
     if(isset($_FILES) && isset($_FILES['question-create-image'])) {
-    //    print_r($_FILES['question-create-image']['error']);die();
+    //    print_r($_FILES['question-create-image']['error']);exit();
         if (0 < $_FILES['question-create-image']['error'] && (1 == $_FILES['question-create-image']['error'] || 2 == $_FILES['question-create-image']['error'])){
-            echo 'error_file_maxsize';die();
+            echo 'error_file_maxsize';exit();
         }
         if (0 < $_FILES['question-create-image']['error'] && 4 == $_FILES['question-create-image']['error']){
-            echo 'error_file_check';die();
+            echo 'error_file_check';exit();
         }
         if (0 < $_FILES['question-create-image']['error']){
-            echo 'error';die();
+            echo 'error';exit();
         }
         
         //Переданный массив сохраняем в переменной
@@ -98,7 +98,7 @@ if(isset($_REQUEST['type']) && $_REQUEST['type'] == 'u'){
         // Проверяем размер файла и если он превышает заданный размер
         // завершаем выполнение скрипта и выводим ошибку
         if ($image['size'] > 5000000) {
-            die('error');
+            exit('error');
         }
      
         // Достаем формат изображения

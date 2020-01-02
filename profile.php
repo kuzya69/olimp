@@ -4,6 +4,7 @@ include_once('db.php');
 include_once('library.php');
 
 header('Content-Type: text/html; charset=utf-8');
+
 if(isset($_POST['profile'])){
 	if(!empty($_SESSION['logged_user'])){
 		$query = $db->prepare("SELECT * FROM `users` WHERE `id` = :uid");
@@ -25,7 +26,7 @@ if(isset($_POST['profile'])){
 	date_default_timezone_set('UTC');
 	$time_now = time() + (3 * 60 * 60);
 
-	// print_r($data["trainingdirection_type"][0]);die();
+	// print_r($data["trainingdirection_type"][0]);exit();
 	$update_flag = 0;
 	$query = $db->prepare("UPDATE `users` 
 	SET 
@@ -88,7 +89,8 @@ if(isset($_POST['profile'])){
 
 	$_SESSION['logged_user'] = $q_users;
 	if($update_flag > 0){
-		echo '<div style="color: green;">Данные обновлены!</div><hr>';
+		// echo '<div style="color: green;">Данные обновлены!</div><hr>';
+		setAlertMessage("Данные обновлены!", "success");
 	}
 }else{
 	//echo '<div style="color: red;">Данные не получены!</div><hr>';
@@ -111,7 +113,7 @@ if(isset($_POST['profile'])){
 		}
 	}
 }
-
+printAlertMessage('all');
 // print_r($data);
 
 ?>
@@ -126,8 +128,8 @@ if(isset($_POST['profile'])){
 	<form action="profile.php" method="POST"  class="form-profile">
 	<h1 class="h3 mb-3 font-weight-normal">Мой профиль</h1>
 
-	<label for="inputLogin" class="sr-only">Ваш логин</label>
-	<input type="text" id="inputLogin" class="form-control" placeholder="логин" autofocus="" readonly name="username" value="<?php echo @$data['username'];?>">
+	<label for="inputUsername" class="sr-only">Ваш логин</label>
+	<input type="text" id="inputUsername" class="form-control" placeholder="логин" autofocus="" readonly name="username" value="<?php echo @$data['username'];?>">
 
 	<label for="inputEmail" class="sr-only">Ваш e-mail</label>
 	<input type="email" id="inputEmail" class="form-control" placeholder="e-mail" autofocus="" name="email" value="<?php echo @$data['email'];?>">

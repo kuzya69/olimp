@@ -40,7 +40,7 @@ if(!empty($_GET) && !empty($_GET['id'])){
 		}else{
 			echo "У вас нет доступа к олимпиаде!";
 			include_once('footer.php');
-			die();
+			exit();
 			// header("HTTP/1.1 301 Moved Permanently");
 			// header('Location: index.php');
 		}
@@ -79,7 +79,7 @@ if(!empty($_GET) && !empty($_GET['id'])){
     //    echo $subject_time_hour.":";
     //    echo $subject_time_min.":";
     //    echo $subject_time_sec;
-		// die();
+		// exit();
 		date_default_timezone_set('UTC');
 		$time = time() + (3 * 60 * 60);
 		$current_date = date('Y-m-d', $time);
@@ -97,17 +97,20 @@ if(!empty($_GET) && !empty($_GET['id'])){
 		$date_end = $e_date->getTimestamp();
 
 		if($c_date > $date_end || $c_date < $date_start){
+			header("HTTP/1.1 301 Moved Permanently");
 			header('Location: index.php');
+			exit();
 		}
 
 		//Проверка на то проходил ли пользователь уже тест 
 		if(!empty($user_selected_options_info)){
 
 			foreach ($user_selected_options_info as $key => $value) {
-				// print_r($value);die();
+				// print_r($value);exit();
 				if ($subject_id==$value['subject_id']) {
 					header("HTTP/1.1 301 Moved Permanently");
 					header('Location: index.php');
+					exit();
 				}
 			}
 		}
@@ -121,7 +124,7 @@ if(!empty($_GET) && !empty($_GET['id'])){
 }else{
 	echo "Не выбрана тематика!"; 
 	include_once('footer.php');
-	die();
+	exit();
 }
 // $arr = mixArray($db);
 // $current_questions = array_splice($arr, 1);

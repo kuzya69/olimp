@@ -40,6 +40,12 @@ function Send_Mail($to,$subject,$body)
 	$mail->MsgHTML($body);
 	// $address = $to;
 	$mail->AddAddress($to);
-	$mail->Send(); 
+	// $mail->Send(); 
+
+	try{
+		$mail->Send();
+	} catch(Exception $e){
+		echo "Error: ". $e;
+	}
 }
 ?>

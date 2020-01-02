@@ -13,7 +13,7 @@ $date = new DateTime($current_date);
 $c_date = $date->getTimestamp();
 
 // var_dump($c_date)
-// ;die();
+// ;exit();
 // if(empty($_SESSION['logged_user'])){
 // 	echo "Вы не авторизованы!";
 // 	echo '<a href="login.php">Войти</a>';
@@ -22,6 +22,8 @@ $c_date = $date->getTimestamp();
 // 	echo "Вы авторизованы!";
 // }
 // print_r($_SESSION['logged_user']);
+// print_r($_SESSION);
+printAlertMessage('all');
 ?>
 <br>
 <!-- <nav class="nav">
@@ -61,7 +63,7 @@ $c_date = $date->getTimestamp();
 	<div class="row">
 		<?php //if(!empty($_SESSION['logged_user']) && checkFillingUserInformation($_SESSION['logged_user']) == 0):?>
 			<!-- <p>нужно заполнить профиль</p> -->
-			<!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+			<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 				<div class="card my-card text-white bg-dark mb-3">
 					<div class="card-header my-card-header my-card-header-yellow">
 						<div class="my-card-header-1">
@@ -81,7 +83,7 @@ $c_date = $date->getTimestamp();
 						<a href="profile.php" class="card-link">Профиль</a>
 					</div>
 				</div>
-			</div> -->
+			</div>
 		<?php //else:?>
 			<!-- <p>профиль польность заполнен</p> -->
 			<!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3">
@@ -112,7 +114,7 @@ $c_date = $date->getTimestamp();
 			if($count_subjects == 3):
 			?>
 			
-			<!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+			<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 				<div class="card my-card text-white bg-dark mb-3">
 					<div class="card-header my-card-header my-card-header-blue">
 						<div class="my-card-header-1">
@@ -132,7 +134,7 @@ $c_date = $date->getTimestamp();
 						<a href="http://dstu.ru/fakultety/fakultet-kompjuternykh-tekhnologii-vychislitelnoi-tekhniki-i-ehnergetiki/kafedra-programmnogo-obespechenija-vychislitelnoi-tekhniki-i-avtomatizirovannykh-sistem/" class="card-link">Перейти...</a>
 					</div>
 				</div>
-			</div> -->
+			</div>
 			
 			<?php 
 			endif;

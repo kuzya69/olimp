@@ -215,7 +215,7 @@
 
 		setup : function( table, c ) {
 			// if no thead or tbody, or tablesorter is already present, quit
-			if ( !table || !table.tHead || table.tBodies.length === 0 || table.hasInitialized === true ) {
+			if ( !table || !table.tHead || table.tBoexits.length === 0 || table.hasInitialized === true ) {
 				if ( ts.debug(c, 'core') ) {
 					if ( table.hasInitialized ) {
 						console.warn( 'Stopping initialization. Tablesorter has already been initialized' );
@@ -273,7 +273,7 @@
 			c.$headers = $table.find( c.selectorHeaders );
 
 			c.$table.children().children( 'tr' ).attr( 'role', 'row' );
-			c.$tbodies = $table.children( 'tbody:not(.' + c.cssInfoBlock + ')' ).attr({
+			c.$tboexits = $table.children( 'tbody:not(.' + c.cssInfoBlock + ')' ).attr({
 				'aria-live' : 'polite',
 				'aria-relevant' : 'all'
 			});
@@ -417,10 +417,10 @@
 					callback( this );
 				}
 			})
-			// $tbodies variable is used by the tbody sorting widget
-			.bind( 'updateCache' + namespace, function( e, callback, $tbodies ) {
+			// $tboexits variable is used by the tbody sorting widget
+			.bind( 'updateCache' + namespace, function( e, callback, $tboexits ) {
 				e.stopPropagation();
-				ts.updateCache( this.config, callback, $tbodies );
+				ts.updateCache( this.config, callback, $tboexits );
 			})
 			.bind( 'applyWidgetId' + namespace, function( e, id ) {
 				e.stopPropagation();
@@ -660,16 +660,16 @@
 		██▀▀▀  ██▀▀██ ██▀██     ▀█▄ ██▀▀   ██▀██     ▀█▄
 		██     ██  ██ ██  ██ █████▀ ██████ ██  ██ █████▀
 		*/
-		setupParsers : function( c, $tbodies ) {
+		setupParsers : function( c, $tboexits ) {
 			var rows, list, span, max, colIndex, indx, header, configHeaders,
 				noParser, parser, extractor, time, tbody, len,
 				table = c.table,
 				tbodyIndex = 0,
 				debug = ts.debug(c, 'core'),
 				debugOutput = {};
-			// update table bodies in case we start with an empty table
-			c.$tbodies = c.$table.children( 'tbody:not(.' + c.cssInfoBlock + ')' );
-			tbody = typeof $tbodies === 'undefined' ? c.$tbodies : $tbodies;
+			// update table boexits in case we start with an empty table
+			c.$tboexits = c.$table.children( 'tbody:not(.' + c.cssInfoBlock + ')' );
+			tbody = typeof $tboexits === 'undefined' ? c.$tboexits : $tboexits;
 			len = tbody.length;
 			if ( len === 0 ) {
 				return debug ? console.warn( 'Warning: *Empty table!* Not building a parser cache' ) : '';
@@ -875,7 +875,7 @@
 		██  ▄▄ ██▀▀██ ██  ▄▄ ██▀▀██ ██▀▀
 		▀████▀ ██  ██ ▀████▀ ██  ██ ██████
 		*/
-		buildCache : function( c, callback, $tbodies ) {
+		buildCache : function( c, callback, $tboexits ) {
 			var cache, val, txt, rowIndex, colIndex, tbodyIndex, $tbody, $row,
 				cols, $cells, cell, cacheTime, totalRows, rowData, prevRowData,
 				colMax, span, cacheIndex, hasParser, max, len, index,
@@ -883,8 +883,8 @@
 				parsers = c.parsers,
 				debug = ts.debug(c, 'core');
 			// update tbody variable
-			c.$tbodies = c.$table.children( 'tbody:not(.' + c.cssInfoBlock + ')' );
-			$tbody = typeof $tbodies === 'undefined' ? c.$tbodies : $tbodies,
+			c.$tboexits = c.$table.children( 'tbody:not(.' + c.cssInfoBlock + ')' );
+			$tbody = typeof $tboexits === 'undefined' ? c.$tboexits : $tboexits,
 			c.cache = {};
 			c.totalRows = 0;
 			// if no parsers found, return - it's an empty table.
@@ -1043,7 +1043,7 @@
 					console.warn( 'No cache found - aborting getColumnText function!' );
 				}
 			} else {
-				tbodyLen = c.$tbodies.length;
+				tbodyLen = c.$tboexits.length;
 				for ( tbodyIndex = 0; tbodyIndex < tbodyLen; tbodyIndex++ ) {
 					cache = c.cache[ tbodyIndex ].normalized;
 					rowLen = cache.length;
@@ -1343,17 +1343,17 @@
 			c.$table.find( c.selectorRemove ).remove();
 			// get position from the dom
 			var tmp, indx, row, icell, cache, len,
-				$tbodies = c.$tbodies,
+				$tboexits = c.$tboexits,
 				$cell = $( cell ),
 				// update cache - format: function( s, table, cell, cellIndex )
 				// no closest in jQuery v1.2.6
-				tbodyIndex = $tbodies.index( ts.getClosest( $cell, 'tbody' ) ),
+				tbodyIndex = $tboexits.index( ts.getClosest( $cell, 'tbody' ) ),
 				tbcache = c.cache[ tbodyIndex ],
 				$row = ts.getClosest( $cell, 'tr' );
 			cell = $cell[ 0 ]; // in case cell is a jQuery object
 			// tbody may not exist if update is initialized while tbody is removed for processing
-			if ( $tbodies.length && tbodyIndex >= 0 ) {
-				row = $tbodies.eq( tbodyIndex ).find( 'tr' ).not( '.' + c.cssChildRow ).index( $row );
+			if ( $tboexits.length && tbodyIndex >= 0 ) {
+				row = $tboexits.eq( tbodyIndex ).find( 'tr' ).not( '.' + c.cssChildRow ).index( $row );
 				cache = tbcache.normalized[ row ];
 				len = $row[ 0 ].cells.length;
 				if ( len !== c.columns ) {
@@ -1399,11 +1399,11 @@
 			var txt, val, tbodyIndex, rowIndex, rows, cellIndex, len, order,
 				cacheIndex, rowData, cells, cell, span,
 				// allow passing a row string if only one non-info tbody exists in the table
-				valid = typeof $row === 'string' && c.$tbodies.length === 1 && /<tr/.test( $row || '' ),
+				valid = typeof $row === 'string' && c.$tboexits.length === 1 && /<tr/.test( $row || '' ),
 				table = c.table;
 			if ( valid ) {
 				$row = $( $row );
-				c.$tbodies.append( $row );
+				c.$tboexits.append( $row );
 			} else if (
 				!$row ||
 				// row is a jQuery object?
@@ -1424,7 +1424,7 @@
 				ts.commonUpdate( c, resort, callback );
 			} else {
 				rows = $row.filter( 'tr' ).attr( 'role', 'row' ).length;
-				tbodyIndex = c.$tbodies.index( $row.parents( 'tbody' ).filter( ':first' ) );
+				tbodyIndex = c.$tboexits.index( $row.parents( 'tbody' ).filter( ':first' ) );
 				// fixes adding rows to an empty table - see issue #179
 				if ( !( c.parsers && c.parsers.length ) ) {
 					ts.setupParsers( c );
@@ -1469,13 +1469,13 @@
 			}
 		},
 
-		updateCache : function( c, callback, $tbodies ) {
+		updateCache : function( c, callback, $tboexits ) {
 			// rebuild parsers
 			if ( !( c.parsers && c.parsers.length ) ) {
-				ts.setupParsers( c, $tbodies );
+				ts.setupParsers( c, $tboexits );
 			}
 			// rebuild the cache map
-			ts.buildCache( c, callback, $tbodies );
+			ts.buildCache( c, callback, $tboexits );
 		},
 
 		// init flag (true) used by pager plugin to prevent widget application
@@ -1483,7 +1483,7 @@
 		appendCache : function( c, init ) {
 			var parsed, totalRows, $tbody, $curTbody, rowIndex, tbodyIndex, appendTime,
 				table = c.table,
-				$tbodies = c.$tbodies,
+				$tboexits = c.$tboexits,
 				rows = [],
 				cache = c.cache;
 			// empty table - fixes #206/#346
@@ -1495,8 +1495,8 @@
 			if ( ts.debug(c, 'core') ) {
 				appendTime = new Date();
 			}
-			for ( tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
-				$tbody = $tbodies.eq( tbodyIndex );
+			for ( tbodyIndex = 0; tbodyIndex < $tboexits.length; tbodyIndex++ ) {
+				$tbody = $tboexits.eq( tbodyIndex );
 				if ( $tbody.length ) {
 					// detach tbody for manipulation
 					$curTbody = ts.processTbody( table, $tbody, true );
@@ -1704,7 +1704,7 @@
 				textSorter = c.textSorter || '',
 				sortList = c.sortList,
 				sortLen = sortList.length,
-				len = c.$tbodies.length;
+				len = c.$tboexits.length;
 			if ( c.serverSideSorting || ts.isEmptyObject( c.cache ) ) {
 				// empty table - fixes #206/#346
 				return;
@@ -2364,7 +2364,7 @@
 		// automatically add a colgroup with col elements set to a percentage width
 		fixColumnWidth : function( table ) {
 			table = $( table )[ 0 ];
-			var overallWidth, percent, $tbodies, len, index,
+			var overallWidth, percent, $tboexits, len, index,
 				c = table.config,
 				$colgroup = c.$table.children( 'colgroup' );
 			// remove plugin-added colgroup, in case we need to refresh the widths
@@ -2375,10 +2375,10 @@
 				$colgroup = $( '<colgroup class="' + ts.css.colgroup + '">' );
 				overallWidth = c.$table.width();
 				// only add col for visible columns - fixes #371
-				$tbodies = c.$tbodies.find( 'tr:first' ).children( ':visible' );
-				len = $tbodies.length;
+				$tboexits = c.$tboexits.find( 'tr:first' ).children( ':visible' );
+				len = $tboexits.length;
 				for ( index = 0; index < len; index++ ) {
-					percent = parseInt( ( $tbodies.eq( index ).width() / overallWidth ) * 1000, 10 ) / 10 + '%';
+					percent = parseInt( ( $tboexits.eq( index ).width() / overallWidth ) * 1000, 10 ) / 10 + '%';
 					$colgroup.append( $( '<col>' ).css( 'width', percent ) );
 				}
 				c.$table.prepend( $colgroup );
@@ -2480,7 +2480,7 @@
 		},
 
 		clearTableBody : function( table ) {
-			$( table )[ 0 ].config.$tbodies.children().detach();
+			$( table )[ 0 ].config.$tboexits.children().detach();
 		},
 
 		// used when replacing accented characters during sorting
@@ -2881,11 +2881,11 @@
 		format : function( table, c, wo ) {
 			var $visibleRows, $row, count, isEven, tbodyIndex, rowIndex, len,
 				child = new RegExp( c.cssChildRow, 'i' ),
-				$tbodies = c.$tbodies.add( $( c.namespace + '_extra_table' ).children( 'tbody:not(.' + c.cssInfoBlock + ')' ) );
-			for ( tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
+				$tboexits = c.$tboexits.add( $( c.namespace + '_extra_table' ).children( 'tbody:not(.' + c.cssInfoBlock + ')' ) );
+			for ( tbodyIndex = 0; tbodyIndex < $tboexits.length; tbodyIndex++ ) {
 				// loop through the visible rows
 				count = 0;
-				$visibleRows = $tbodies.eq( tbodyIndex ).children( 'tr:visible' ).not( c.selectorRemove );
+				$visibleRows = $tboexits.eq( tbodyIndex ).children( 'tr:visible' ).not( c.selectorRemove );
 				len = $visibleRows.length;
 				for ( rowIndex = 0; rowIndex < len; rowIndex++ ) {
 					$row = $visibleRows.eq( rowIndex );
@@ -2901,10 +2901,10 @@
 		remove : function( table, c, wo, refreshing ) {
 			if ( refreshing ) { return; }
 			var tbodyIndex, $tbody,
-				$tbodies = c.$tbodies,
+				$tboexits = c.$tboexits,
 				toRemove = ( wo.zebra || [ 'even', 'odd' ] ).join( ' ' );
-			for ( tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
-				$tbody = ts.processTbody( table, $tbodies.eq( tbodyIndex ), true ); // remove tbody
+			for ( tbodyIndex = 0; tbodyIndex < $tboexits.length; tbodyIndex++ ) {
+				$tbody = ts.processTbody( table, $tboexits.eq( tbodyIndex ), true ); // remove tbody
 				$tbody.children().removeClass( toRemove );
 				ts.processTbody( table, $tbody, false ); // restore tbody
 			}

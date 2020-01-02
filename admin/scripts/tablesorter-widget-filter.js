@@ -133,7 +133,7 @@
 			table        : 'table table-bordered table-striped',
 			caption      : 'caption',
 			// header class names
-			header       : 'bootstrap-header', // give the header a gradient background (theme.bootstrap_2.css)
+			header       : 'bootstrap-header', // give the header a graexitnt background (theme.bootstrap_2.css)
 			sortNone     : '',
 			sortAsc      : '',
 			sortDesc     : '',
@@ -201,7 +201,7 @@
 				if (hasOldTheme) {
 					wo.zebra[0] = $.trim( ' ' + wo.zebra[0].replace(' ' + oldtheme.even, '') );
 					wo.zebra[1] = $.trim( ' ' + wo.zebra[1].replace(' ' + oldtheme.odd, '') );
-					c.$tbodies.children().removeClass( [ oldtheme.even, oldtheme.odd ].join(' ') );
+					c.$tboexits.children().removeClass( [ oldtheme.even, oldtheme.odd ].join(' ') );
 				}
 				// update zebra stripes
 				if (themes.even) { wo.zebra[0] += ' ' + themes.even; }
@@ -334,7 +334,7 @@
 		format: function(table, c, wo) {
 			var $tbody, tbodyIndex, $rows, rows, $row, $cells, remove, indx,
 			$table = c.$table,
-			$tbodies = c.$tbodies,
+			$tboexits = c.$tboexits,
 			sortList = c.sortList,
 			len = sortList.length,
 			// removed c.widgetColumns support
@@ -342,8 +342,8 @@
 			last = css.length - 1;
 			remove = css.join(' ');
 			// check if there is a sort (on initialization there may not be one)
-			for (tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
-				$tbody = ts.processTbody(table, $tbodies.eq(tbodyIndex), true); // detach tbody
+			for (tbodyIndex = 0; tbodyIndex < $tboexits.length; tbodyIndex++ ) {
+				$tbody = ts.processTbody(table, $tboexits.eq(tbodyIndex), true); // detach tbody
 				$rows = $tbody.children('tr');
 				// loop through the visible rows
 				$rows.each(function() {
@@ -383,12 +383,12 @@
 		},
 		remove: function(table, c, wo) {
 			var tbodyIndex, $tbody,
-				$tbodies = c.$tbodies,
+				$tboexits = c.$tboexits,
 				remove = (wo.columns || [ 'primary', 'secondary', 'tertiary' ]).join(' ');
 			c.$headers.removeClass(remove);
 			c.$table.children('tfoot').children('tr').children('th, td').removeClass(remove);
-			for (tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
-				$tbody = ts.processTbody(table, $tbodies.eq(tbodyIndex), true); // remove tbody
+			for (tbodyIndex = 0; tbodyIndex < $tboexits.length; tbodyIndex++ ) {
+				$tbody = ts.processTbody(table, $tboexits.eq(tbodyIndex), true); // remove tbody
 				$tbody.children('tr').each(function() {
 					$(this).children().removeClass(remove);
 				});
@@ -470,7 +470,7 @@
 		remove: function( table, c, wo, refreshing ) {
 			var tbodyIndex, $tbody,
 				$table = c.$table,
-				$tbodies = c.$tbodies,
+				$tboexits = c.$tboexits,
 				events = (
 					'addRows updateCell update updateRows updateComplete appendCache filterReset ' +
 					'filterAndSortReset filterFomatterUpdate filterEnd search stickyHeadersInit '
@@ -483,8 +483,8 @@
 				.find( '.' + tscss.filterRow ).remove();
 			wo.filter_initialized = false;
 			if ( refreshing ) { return; }
-			for ( tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
-				$tbody = ts.processTbody( table, $tbodies.eq( tbodyIndex ), true ); // remove tbody
+			for ( tbodyIndex = 0; tbodyIndex < $tboexits.length; tbodyIndex++ ) {
+				$tbody = ts.processTbody( table, $tboexits.eq( tbodyIndex ), true ); // remove tbody
 				$tbody.children().removeClass( wo.filter_filteredRow ).show();
 				ts.processTbody( table, $tbody, false ); // restore tbody
 			}
@@ -1778,8 +1778,8 @@
 			c.totalRows = 0;
 			currentFilters = ( storedFilters || [] );
 
-			for ( tbodyIndex = 0; tbodyIndex < c.$tbodies.length; tbodyIndex++ ) {
-				$tbody = ts.processTbody( table, c.$tbodies.eq( tbodyIndex ), true );
+			for ( tbodyIndex = 0; tbodyIndex < c.$tboexits.length; tbodyIndex++ ) {
+				$tbody = ts.processTbody( table, c.$tboexits.eq( tbodyIndex ), true );
 				// skip child rows & widget added ( removable ) rows - fixes #448 thanks to @hempel!
 				// $rows = $tbody.children( 'tr' ).not( c.selectorRemove );
 				columnIndex = c.columns;
@@ -2100,7 +2100,7 @@
 				c = table.config,
 				wo = c.widgetOptions,
 				arry = [];
-			for ( tbodyIndex = 0; tbodyIndex < c.$tbodies.length; tbodyIndex++ ) {
+			for ( tbodyIndex = 0; tbodyIndex < c.$tboexits.length; tbodyIndex++ ) {
 				cache = c.cache[tbodyIndex];
 				len = c.cache[tbodyIndex].normalized.length;
 				// loop through the rows

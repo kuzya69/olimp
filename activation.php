@@ -1,5 +1,6 @@
 <?php
 include_once('db.php');
+include_once('library.php');
 
 $token = $_GET['code'];
 print_r($_GET);
@@ -20,9 +21,13 @@ if(!empty($q_users)){
 	$query->execute();
 	$cs_q = $query->rowCount();
 	if($cs_q > 0){
-		echo "Аккаунт успешно активирован";
+		// echo "Аккаунт успешно активирован";
+		// $_SESSION['message_type'] = 'success';
+		// $_SESSION['message'] = "Аккаунт успешно активирован!";
+		setAlertMessage("Аккаунт успешно активирован!", "success");
 		header("HTTP/1.1 301 Moved Permanently");
 		header('Location: ../login.php');
+		exit();
 	}else{
 		echo "Возможно этот аккаунт уже был активирован или не верный код активации!";	
 	}

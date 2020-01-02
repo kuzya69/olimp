@@ -2,6 +2,8 @@
 include_once('start_header.php');
 include_once('db.php');
 include_once('smtp/Send_Mail.php');
+include_once('library.php');
+
 
 header('Content-Type: text/html; charset=utf-8');
 
@@ -20,30 +22,45 @@ $data = $_POST;
 
 // echo "Регистрация временно закрыта!"; 
 // include_once('footer.php'); 
-// die();
+// exit();
 
 if(isset($data['signup'])){
-	$errors = array();
-	if(trim($data['login']) == ''){
-		$errors[] = 'Введите логин!';
+	// $errors = array();
+	$errors = 0;
+	if(trim($data['username']) == ''){
+		// $errors[] = 'Введите логин!';
+		$errors++;
+		setAlertMessage("Введите логин!", "danger");
 	}
 	if(trim($data['email']) == ''){
-		$errors[] = 'Введите email!';
+		// $errors[] = 'Введите email!';
+		$errors++;
+		setAlertMessage("Введите email!", "danger");
 	}
 	if($data['password'] == ''){
-		$errors[] = 'Введите пароль!';
+		// $errors[] = 'Введите пароль!';
+		$errors++;
+		setAlertMessage("Введите пароль!", "danger");
 	}
 	if($data['repassword'] == ''){
-		$errors[] = 'Введите повторно пароль!';
+		// $errors[] = 'Введите повторно пароль!';
+		$errors++;
+		setAlertMessage("Введите повторно пароль!", "danger");
 	}
 	if($data['repassword'] != $data['password']){
-		$errors[] = 'Введенные пароли не совпадают!';
+		// $errors[] = 'Введенные пароли не совпадают!';
+		$errors++;
+		setAlertMessage("Введенные пароли не совпадают!", "danger");
 	}
 	if($data['lastname'] == ''){
-		$errors[] = 'Введите фамилию!';
+		// $errors[] = 'Введите фамилию!';
+		$errors++;
+		setAlertMessage("Введите фамилию!", "danger");
 	}
 	if($data['firstname'] == ''){
-		$errors[] = 'Введите имя!';
+		// $errors[] = 'Введите имя!';
+		$errors++;
+		setAlertMessage("Введите имя!", "danger");
 	}
 	// if($data['middlename'] == ''){
 	// 	$errors[] = 'Введите отчество!';
@@ -71,11 +88,13 @@ if(isset($data['signup'])){
 	// }
 
 	$query = $db->prepare("SELECT `username` FROM `users` WHERE `username` = :un");
-	$query->bindValue(':un', $data['login']);
+	$query->bindValue(':un', $data['username']);
 	$query->execute();
 	$q_users = $query->fetchAll();
 	if(count($q_users) > 0){
-		$errors[] = 'Пользователь с таким логином существует!';
+		// $errors[] = 'Пользователь с таким логином существует!';
+		$errors++;
+		setAlertMessage("Пользователь с таким логином существует!", "danger");
 	}else{
 		$query = $db->prepare("SELECT `email` FROM `users` WHERE `email` = :e");
 		$query->bindValue(':e', $data['email']);
@@ -83,7 +102,9 @@ if(isset($data['signup'])){
 		$q_users = $query->fetchAll();
 		if(count($q_users) > 0){
 			// print_r($q_users);
-			$errors[] = 'Пользователь с таким емаилом существует!';
+			// $errors[] = 'Пользователь с таким емаилом существует!';
+			$errors++;
+			setAlertMessage("Пользователь с таким емаилом существует!", "danger");
 		}
 	}
 	unset($query);
@@ -104,7 +125,7 @@ if(isset($data['signup'])){
 			-- `middlename`,
 			-- `phone`,
 			-- `datebirth`,
-			`institution`,
+			-- `institution`,
 			-- `сity`,
 			-- `course`,
 			-- `groupnumber`,
@@ -122,14 +143,14 @@ if(isset($data['signup'])){
 			-- :mn,
 			-- :phone,
 			-- :dbirdth,
-			:ins,
+			-- :ins,
 			-- :city,
 			-- :course,
 			-- :gn,
 			-- :td,
 			:dcreate
 		)");
-		$query->bindValue(':un', (string)trim(strip_tags(htmlspecialchars($data['login']))));
+		$query->bindValue(':un', (string)trim(strip_tags(htmlspecialchars($data['username']))));
 		$query->bindValue(':e', (string)trim(strip_tags(htmlspecialchars($data['email']))));
 		$query->bindValue(':e_st', 0);
 		$query->bindValue(':token', (string)$token);
@@ -139,7 +160,7 @@ if(isset($data['signup'])){
 		// $query->bindValue(':mn', (string)trim(strip_tags(htmlspecialchars($data['middlename']))));
 		// $query->bindValue(':phone', (string)trim(strip_tags(htmlspecialchars($data['phone']))));
 		// $query->bindValue(':dbirdth', trim($data['datebirth'])); //исправить проверку
-		$query->bindValue(':ins', (string)trim(strip_tags(htmlspecialchars($data['institution']))));
+		// $query->bindValue(':ins', (string)trim(strip_tags(htmlspecialchars($data['institution']))));
 		// $query->bindValue(':city', (string)trim(strip_tags(htmlspecialchars($data['сity']))));
 		// $query->bindValue(':course', (int)trim($data['course']));
 		// $query->bindValue(':gn', (string)trim(strip_tags(htmlspecialchars($data['groupnumber']))));
@@ -153,28 +174,33 @@ if(isset($data['signup'])){
 		$subject="Подтверждение электронной почты";
 		// $body = "ok";
 		$body='Здравствуйте! <br/> <br/> Мы должны убедиться в том, что вы человек. Пожалуйста, <a href="'.$base_url.'activation/'.$token.'">подтвердите адрес</a> вашей электронной почты, и можете начать использовать ваш аккаунт на сайте. <br/> <a href="'.$base_url.'activation/'.$token.'">Подтвердить</a>';
-
+		$headers = "From: support@olimpiada24.ru";
 		Send_Mail($to,$subject,$body);
+		// mail($to,$subject,$body,$headers);
 
 		// echo '<div style="color: green;">Вы успешно зарегистрировались! <b>Необходимо подтвердить свою почту</b></div><hr>';
-		$_SESSION['message_type'] = 'success';
-		$_SESSION['message'] = "Вы успешно зарегистрировались! <b>Вам необходимо подтвердить свою почту</b>";
+		// $_SESSION['message_type'] = 'success';
+		// $_SESSION['message'] = "Вы успешно зарегистрировались! <b>Вам необходимо подтвердить свою почту</b>";
+		setAlertMessage("Вы успешно зарегистрировались! <b>Вам необходимо подтвердить свою почту</b>", "success");
 		// echo '<div style="color: green;">Вы успешно зарегистрировались!</div><hr>';
 		
 		header("HTTP/1.1 301 Moved Permanently");
 		header('Location: login.php');
+		exit();
 	}else{
-		echo '<div style="color: red;">'.array_shift($errors).'</div><hr>';
+		// echo '<div style="color: red;">'.array_shift($errors).'</div><hr>';
+		printAlertMessage("danger");
 	}
 }
+// printAlertMessage("all");
 ?>
 
 <section>
 	<form action="signup.php" method="POST"  class="form-signup">
 		<h1 class="h3 mb-3 font-weight-normal">Форма регистрации</h1>
 
-		<label for="inputLogin" class="sr-only">Ваш логин</label>
-		<input type="text" id="inputLogin" class="form-control" placeholder="логин" required="" autofocus="" name="login" value="<?php echo @$data['login'];?>">
+		<label for="inputUsername" class="sr-only">Ваш логин</label>
+		<input type="text" id="inputUsername" class="form-control" placeholder="логин" required="" autofocus="" name="username" value="<?php echo @$data['username'];?>">
 
 		<label for="inputEmail" class="sr-only">Ваш e-mail</label>
 		<input type="email" id="inputEmail" class="form-control" placeholder="e-mail" required="" autofocus="" name="email" value="<?php echo @$data['email'];?>">
@@ -224,7 +250,7 @@ if(isset($data['signup'])){
 		<!--
 		<p>
 			<p><strong>Ваш логин</strong></p>
-			<input type="text" name="login" value="<?//php echo @$data['login'];?>">
+			<input type="text" name="username" value="<?//php echo @$data['username'];?>">
 		</p>
 		<p>
 			<p><strong>Ваш e-mail</strong></p>

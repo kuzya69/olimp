@@ -24,11 +24,13 @@ $current_page = array_pop($array_script_name);
 			</button>
                     
                         
-						<?php if(!empty($_SESSION['logged_user'])):?>							<div class="ml-auto navbar-toggler mr-1">
-								<span>Здравствуйте <?=$_SESSION['logged_user']['username']?>!</span>							</div>
-						<?php else:?>
-							<span></span>
-						<?php endif;?>
+			<?php if(!empty($_SESSION['logged_user'])):?>							
+				<div class="ml-auto navbar-toggler mr-1">
+					<span>Привет <?=$_SESSION['logged_user']['username']?>!</span>							
+				</div>
+			<?php else:?>
+				<span></span>
+			<?php endif;?>
                         
 			<div class="collapse navbar-collapse" id="navbarTogglernNvigation">
 				<?php if(!empty($_SESSION['logged_user'])):?>
@@ -64,11 +66,11 @@ $current_page = array_pop($array_script_name);
 					<a class="navbar-brand nav-link signup-button" href="login.php">Войти</a>
 					<a class="navbar-brand nav-link login-button" href="signup.php">Регистрация</a>
 				<?php else: ?>
-                                        <?php if(!empty($_SESSION['logged_user'])):?>
-                                            <span class="mr-1 d-none d-lg-block d-xl-block">Здравствуйте <?=$_SESSION['logged_user']['username']?>!</span>
-                                        <?php else:?>
-                                            <span class="d-none d-lg-block d-xl-block"></span>
-                                        <?php endif;?>
+					<?php if(!empty($_SESSION['logged_user'])):?>
+						<span class="mr-1 d-none d-lg-block d-xl-block">Привет <?=$_SESSION['logged_user']['username']?>!</span>
+					<?php else:?>
+						<span class="d-none d-lg-block d-xl-block"></span>
+					<?php endif;?>
 					<a class="navbar-brand nav-link logout-button" href="logout.php">Выйти</a>
 				<?php endif; ?>
 			</div>

@@ -106,7 +106,7 @@ function selectedOptions($db, $form_date){
 	}unset($key);unset($value);
 	// print_r($answerArrayMore);echo "<br>";
 	// print_r($answerArrayOne);
-	// die();
+	// exit();
 
 
 
@@ -251,7 +251,7 @@ function fixStartTest($db, $user_id, $subject_id, $test_time=30){
 	$time_now = getNowTime();// + (3 * 60 * 60);
 	$time_future = $time_now  + ($test_time * 60 + 10); //+ (3 * 60 * 60)
 
-	// print_r(date("H:i:s", $time_future - $time_now));die();
+	// print_r(date("H:i:s", $time_future - $time_now));exit();
 	$query = $db->prepare("INSERT INTO `user_selected_options` (`user_id`,
 		`subject_id`, `start_time`, `fix_time`, `end_time`, `date_create`) VALUES (:uid, :sid, :stime, :ftime, :etime, :dc)");
 	$query->bindValue(':uid', (int)trim($user_id));
@@ -720,7 +720,7 @@ function getMaxQuestionId($db){
 	$query->bindValue(':ts', (string) "u0689399_tests_platform");
 	$query->execute();
 	$max_question_id = $query->fetch();
-	// print_r($max_question_id);die();
+	// print_r($max_question_id);exit();
 	// return $max_question_id['id']+1;
 	return $max_question_id['Auto_increment'];
 }
@@ -778,7 +778,7 @@ function getQuestionsByUser($db, $user_id, $subject_id){
 }
 
 /**
- * 
+ * Получение вопросов по массиву id-шников
  * @param object $pdo - переменная для соединения с базой данных 
  * @param array $qid_list - массив состоящий из id вопросов
  */
@@ -792,5 +792,56 @@ function getQuestionsById($pdo, $qid_list){
 	$search_query->execute();
 	$result = $search_query->fetchAll();
 	return $result;
+}
+
+/**
+ * 
+ */
+function setAlertMessage($text, $type='other'){
+	if((!empty($type) && $type) && (!empty($text) && $text)){
+		if(array_key_exists('message', $_SESSION)){
+			if(array_key_exists($type, $_SESSION['message'])){
+				array_push($_SESSION['message'][$type], $text);	
+			}else{
+				$_SESSION['message'][$type] = [0 => $text];
+			}
+		}else{
+			$_SESSION['message'] = [$type => [0 => $text]];
+		}
+	}
+}
+/**
+ * 
+ */
+function printAlertMessage($type='all'){
+	if((isset($_SESSION['message']) && $_SESSION['message']) && !empty($_SESSION['message'][$type]) && !empty($type) && is_string($type)){
+		foreach($_SESSION['message'][$type] as $value){
+			if($type == 'success'){
+				echo '<div class="alert alert-success alert-dismissible fade show" role="alert">'.$value.'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+			}elseif($type == 'danger'){
+				echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">'.$value.'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+			}elseif($type == 'warning'){
+				echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">'.$value.'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+			}else{
+				echo '<div class="alert alert-primary alert-dismissible fade show" role="alert">'.$value.'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+			}
+		}
+		unset($_SESSION['message'][$type]);
+	}elseif((isset($_SESSION['message']) && $_SESSION['message']) && (empty($type) || $type == 'all')){
+		foreach($_SESSION['message'] as $key=>$value){
+			foreach($value as $message_item){
+				if($key == 'success'){
+					echo '<div class="alert alert-success alert-dismissible fade show" role="alert">'.$message_item.'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+				}elseif($key == 'danger'){
+					echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">'.$message_item.'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+				}elseif($key == 'warning'){
+					echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">'.$message_item.'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+				}else{
+					echo '<div class="alert alert-primary alert-dismissible fade show" role="alert">'.$message_item.'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>';
+				}
+			}
+		}
+		unset($_SESSION['message']);
+	}
 }
 ?>

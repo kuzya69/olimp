@@ -16,7 +16,7 @@ if((isset($_POST['status']) && $_POST['status'] == 0) && isset($_POST['u']) && i
 	}
 
 	echo json_encode($result, JSON_UNESCAPED_UNICODE);
-	die();
+	exit();
 }
 
 
@@ -29,7 +29,7 @@ if((isset($_POST['status']) && $_POST['status'] == 11) && isset($_POST['s'])){
 	// $subject_info += ['message' => ""];
 
 	echo json_encode($subject_info, JSON_UNESCAPED_UNICODE);
- 	die();
+ 	exit();
 }
 
 if((isset($_POST['status']) && $_POST['status'] == 10) && isset($_POST['s']) && isset($_POST['d'])){
@@ -46,7 +46,7 @@ if((isset($_POST['status']) && $_POST['status'] == 10) && isset($_POST['s']) && 
 		$update_status +=['message' => "Не удалось выполнить операцию"];
 	}
 	echo json_encode($update_status, JSON_UNESCAPED_UNICODE);
- 	die();
+ 	exit();
 }
 
 if((isset($_POST['status']) && $_POST['status'] == 12) && isset($_POST['s']) && isset($_POST['fd'])){
@@ -64,7 +64,7 @@ if((isset($_POST['status']) && $_POST['status'] == 12) && isset($_POST['s']) && 
 		$response += ['status' => 0, 'message' => "Не удалось обновить данные"];
 	}
 	echo json_encode($response, JSON_UNESCAPED_UNICODE);
-	die();
+	exit();
 }
 
 if((isset($_POST['status']) && $_POST['status'] == 13) && isset($_POST['fd'])){
@@ -81,7 +81,7 @@ if((isset($_POST['status']) && $_POST['status'] == 13) && isset($_POST['fd'])){
 		$response += ['status' => 0, 'message' => "Не удалось сохранить данные"];
 	}
 	echo json_encode($response, JSON_UNESCAPED_UNICODE);
-	die();
+	exit();
 }
 
 if((isset($_POST['status']) && $_POST['status'] == 21) && isset($_POST['s'])){
@@ -90,7 +90,7 @@ if((isset($_POST['status']) && $_POST['status'] == 21) && isset($_POST['s'])){
 	$questions_by_subject = getQuestionsBySubject($db, $sid, $user_information);
 
 	echo json_encode($questions_by_subject, JSON_UNESCAPED_UNICODE);
-	die();
+	exit();
 }
 
 if((isset($_POST['status']) && $_POST['status'] == 22) && isset($_POST['q'])){
@@ -99,7 +99,7 @@ if((isset($_POST['status']) && $_POST['status'] == 22) && isset($_POST['q'])){
 	$question_info = getQuestionInfo($db, $qid, $user_information);
 
 	echo json_encode($question_info, JSON_UNESCAPED_UNICODE);
-	die();
+	exit();
 }
 
 if((isset($_POST['status']) && $_POST['status'] == 23) && isset($_POST['fd']) && isset($_POST['q']) && isset($_POST['s'])){
@@ -111,7 +111,7 @@ if((isset($_POST['status']) && $_POST['status'] == 23) && isset($_POST['fd']) &&
 	$answers = '';
 	$_data = [];
 	$data = [];
-	// print_r($form_data);die();
+	// print_r($form_data);exit();
 	// echo count($form_data);
 	$i = 0;
 	foreach($form_data as $value){
@@ -172,12 +172,12 @@ if((isset($_POST['status']) && $_POST['status'] == 23) && isset($_POST['fd']) &&
 	$data['option_5'] = $_data['option_5'];
 	$data['option_6'] = $_data['option_6'];
 	$response = [];
-	// print_r($data);die();
+	// print_r($data);exit();
 	// echo"<br>";
 	// print_r($image);
 	// echo"<br>";
 	$create_question_data = createNewQuestion($db, $qid, $sid, $data);
-	// die();
+	// exit();
 	// foreach($form_data as $key=>$value){
 	// 	$data[$value['name']] = $value['value'];
 	// }
@@ -188,13 +188,13 @@ if((isset($_POST['status']) && $_POST['status'] == 23) && isset($_POST['fd']) &&
 		$response += ['status' => 0, 'message' => "Не удалось сохранить данные"];
 	}
 	echo json_encode($response, JSON_UNESCAPED_UNICODE);
-	die();
+	exit();
 }
 
 // print_r($_REQUEST);
 if((isset($_POST['status']) && $_POST['status'] == 24) && isset($_POST['fd']) && isset($_POST['q']) && isset($_POST['s'])){
 	// echo "ok";
-	// print_r($_POST['fd']);die();
+	// print_r($_POST['fd']);exit();
 	$sid = $_POST['s'];
 	$qid = $_POST['q'];
 	$selected_img = $_POST['si'];
@@ -270,7 +270,7 @@ if((isset($_POST['status']) && $_POST['status'] == 24) && isset($_POST['fd']) &&
 	// echo"<br>";
 	$update_question_data = updateQuestionData($db, $qid, $sid, $data);
 	
-	// die();
+	// exit();
 	// foreach($form_data as $key=>$value){
 	// 	$data[$value['name']] = $value['value'];
 	// }
@@ -281,7 +281,7 @@ if((isset($_POST['status']) && $_POST['status'] == 24) && isset($_POST['fd']) &&
 		$response += ['status' => 0, 'message' => "Не удалось обновить данные"];
 	}
 	echo json_encode($response, JSON_UNESCAPED_UNICODE);
-	die();
+	exit();
 }
 
 if((isset($_POST['status']) && $_POST['status'] == 25) && isset($_POST['q']) && isset($_POST['s'])){
@@ -315,7 +315,7 @@ if((isset($_POST['status']) && $_POST['status'] == 25) && isset($_POST['q']) && 
 	}
 
 	echo json_encode($response, JSON_UNESCAPED_UNICODE);
-	die();
+	exit();
 	// if(unlink('..'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.$subject_id.DIRECTORY_SEPARATOR.$subject_id.'_'.$question_id.'.jpg')){
 	// 	// echo "file delete";
 	// 	if(deleteQuestionData($db, $question_id) > 0){
@@ -332,10 +332,10 @@ if((isset($_POST['status']) && $_POST['status'] == 25) && isset($_POST['q']) && 
 if(isset($_POST['status']) && $_POST['status'] == 26){
 	// print_r(getMaxQuestionId($db));
 	$response = getMaxQuestionId($db);
-	// die();
+	// exit();
 
 	echo json_encode($response, JSON_UNESCAPED_UNICODE);
-	die();
+	exit();
 }
 
 if(isset($_POST['status']) && $_POST['status'] == 30 && isset($_POST['s']) && isset($_POST['u'])){
@@ -365,7 +365,7 @@ if(isset($_POST['status']) && $_POST['status'] == 30 && isset($_POST['s']) && is
 
 	$response = ['user_questions'=>$full_questions, 'user_selected_options'=>$user_selected_questions];
 	echo json_encode($response, JSON_UNESCAPED_UNICODE);
-	die();
+	exit();
 }
 
 ?>
