@@ -39,7 +39,7 @@ if(isset($data['login'])){
 				setAlertMessage("Подтвердите почту!", "warning");
 
 				$token = $q_users['token']; //можно убрать!
-				$base_url = "http://f4521d83.ngrok.io/test/"; //можно убрать!
+				$base_url = "http://751c1245.ngrok.io/test/"; //можно убрать!
 				// $base_url = "http://www.olimpiada24.ru/"; //можно убрать!
 				// $to=(!empty($q_users['email'])?$q_users['email']:"kurbanvim@mail.ru");//"kurbanvim@mail.ru";//mysql_real_escape_string($data['email']);; //можно убрать!
 				$to=trim(strip_tags($q_users['email']));//"kurbanvim@mail.ru";//mysql_real_escape_string($data['email']);; //можно убрать!
@@ -50,7 +50,7 @@ if(isset($data['login'])){
 				// $message = "The mail message was sent with the following mail setting:\r\nSMTP = aspmx.l.google.com\r\nsmtp_port = 25\r\nsendmail_from = YourMail@address.com";
 				$headers = "From: support@olimpiada24.ru";
 				Send_Mail($to,$subject,$body); //можно убрать!
-				// mail($to,$subject,$body, $headers);
+				mail($to,$subject,$body, $headers);
 				// $_SESSION['message_type'] = 'success';
 				// $_SESSION['message'] = "Вы успешно зарегистрировались! <b>Вам необходимо подтвердить свою почту</b>";
 				setAlertMessage("Вы успешно зарегистрировались! <b>Вам необходимо подтвердить свою почту</b>", "success");

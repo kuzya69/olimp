@@ -201,25 +201,52 @@ $(".subject-edit").on('click', function(){
 //Действие над предметом - клонирование 
 $(".subject-clone").on('click', function(){
     var sid = $(this).parent().data('sid');
+    var table = $('#all-subjects-table tbody');
+    var lastSubjectNumber = table.find("tr").last().find("th").text();
     $.ajax({
         type: "POST",
         data: {status: 14, s: sid},
         url: "a_ajax_request.php",
         dataType : "json",   
         success: function(data){
-            // console.log(data);
-            // $(".res-table-message").append('<div class="alert alert-warning alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
-            document.getElementById('inputEditName').value = data['name'];
-            document.getElementById('inputEditDescription').value = data['description'];
-            document.getElementById('inputEditTime').value = data['time'];
-            document.getElementById('inputEditAmount').value = data['amount'];
-            document.getElementById('inputEditUprefix').value = data['uprefix'];
-            document.getElementById('inputEditDateStart').value = data['date_start'];
-            document.getElementById('inputEditDateEnd').value = data['date_end'];
-            $('#edit-subject-submit').data('id', sid);
-            // if(data['status'] == 1){
-                // thisElement.parent().parent().remove();
-            // }
+            var subject_data = data['result'];
+            if(data['status'] == 1){
+                $(".res-table-message").append('<div class="alert alert-success alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+                var subject_row = "";
+                if(subject_data['display'] == 0){
+                    subject_row +="<tr class = 'subject_unvis'>";
+                }else{
+                    subject_row +="<tr>";
+                }
+                subject_row +=
+                    "<th scope='row'>"+(++lastSubjectNumber)+"</th>"+
+                    "<td>"+subject_data['name']+"</td>"+
+                    "<td>"+subject_data['time']+"</td>"+
+                    "<td>"+subject_data['amount']+"</td>"+
+                    "<td>"+subject_data['uprefix']+"</td>"+
+                    "<td>"+subject_data['date_start']+"</td>"+
+                    "<td>"+subject_data['date_end']+"</td>"+
+                    "<td class='table-row-act'>"+
+                        "<div class='dropdown'>"+
+                            "<a class='subject-dropdown-menu' href='#' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>"+
+                            "<i class='fa fa-cog'></i>"+
+                            "</a>"+
+                            "<div class='dropdown-menu' data-sid='"+subject_data['id']+"'>"+
+                                "<a class='dropdown-item subject-edit' data-toggle='modal' data-target='#editSubjectModal' href='#'>Редактировать</a>"+
+                                "<a class='dropdown-item subject-clone' href='#'>Склонировать</a>";
+                                if(subject_data['display'] == 0){
+                                    subject_row+="<a class='dropdown-item subject-delete' data-vis=1 href='#'>Показать</a>";
+                                }else{
+                                    subject_row+="<a class='dropdown-item subject-delete' data-vis=0 href='#'>Скрыть</a>";
+                                }
+                            subject_row+="</div>"+
+                        "</div>"+
+                    "</td>"+
+                "</tr>";
+                table.append(subject_row);
+            }else{
+                $(".res-table-message").append('<div class="alert alert-danger alert-dismissible fade show" role="alert">'+data['message']+'<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            }
         },
     });
 });
@@ -729,7 +756,7 @@ $("#all-results-table").on('click', '.show-apelation', function(){
                 var answer_value = (array_quest['answers']).split(',');
 
                 if(array_quest['question_img'] != null && !!array_quest['question_img']){
-                    questions_string+='<img class="apelation-img" src="../../'+array_quest['question_img']+'">'+
+                    questions_string+='<img class="apelation-img" src="../'+array_quest['question_img']+'">'+
                     '<p class="apelation-question-middle">'+array_quest['question']+'</p>';
                 }else{
                     questions_string+='<p class="apelation-question-first">'+array_quest['question']+'</p>';
@@ -742,18 +769,21 @@ $("#all-results-table").on('click', '.show-apelation', function(){
                 // 	}
                 // }else{
                 amount_answer_value = answer_value.length;
-                if(amount_answer_value >= 1){
+                console.log("answer value: " + amount_answer_value);
+                if(amount_answer_value > 1){
+                    console.log("amount_answer_value: "+amount_answer_value);
                     for(var i = 0; i <= 5; i++){
                         // console.log(answer_value[i] +" - "+ array_quest['option_'+(i+1)]);
                         if(array_quest['option_'+(i+1)] !== null && array_quest['option_'+(i+1)] !== ""){
                             if(in_array((i+1), answer_value)){
-                                if(array_quest['option_'+(i+1)] == data['user_selected_options'][array_quest['id']]){
+                                console.log(array_quest['option_'+(i+1)] +" - "+ data['user_selected_options'][array_quest['id']]);
+                                if(in_array(array_quest['option_'+(i+1)], data['user_selected_options'][array_quest['id']])){
                                     questions_string+='<div class="apelation-option apelation-true-option tuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
                                 }else{
                                     questions_string+='<div class="apelation-option apelation-true-option">'+array_quest['option_'+(i+1)]+'</label></div>';
                                 }
                             }else{
-                                if(array_quest['option_'+(i+1)] == data['user_selected_options'][array_quest['id']]){
+                                if(in_array(array_quest['option_'+(i+1)], data['user_selected_options'][array_quest['id']])){
                                     questions_string+='<div class="apelation-option fuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
                                 }else{
                                     questions_string+='<div class="apelation-option">'+array_quest['option_'+(i+1)]+'</label></div>';
@@ -761,20 +791,23 @@ $("#all-results-table").on('click', '.show-apelation', function(){
                             }
                         }
                     }
-                }else{
+                }else if(amount_answer_value == 1){
+                    console.log("amount_answer_value: "+amount_answer_value);
                     for(var i = 0; i <= 5; i++){
                         // console.log(answer_value +" - "+ array_quest['option_'+(i+1)]);
-                        if(answer_value == (i+1)){
-                            if(array_quest['option_'+(i+1)] == data['user_selected_options'][array_quest['id']]){
-                                questions_string+='<div class="apelation-option apelation-true-option tuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
+                        if(array_quest['option_'+(i+1)] !== null && array_quest['option_'+(i+1)] !== ""){
+                            if(answer_value[0] == (i+1)){
+                                if(array_quest['option_'+(answer_value[0])] == data['user_selected_options'][array_quest['id']]){
+                                    questions_string+='<div class="apelation-option apelation-true-option tuserselect">'+array_quest['option_'+(answer_value[0])]+'</label></div>';
+                                }else{
+                                    questions_string+='<div class="apelation-option apelation-true-option">'+array_quest['option_'+(answer_value[0])]+'</label></div>';
+                                }
                             }else{
-                                questions_string+='<div class="apelation-option apelation-true-option">'+array_quest['option_'+(i+1)]+'</label></div>';
-                            }
-                        }else{
-                            if(array_quest['option_'+(i+1)] == data['user_selected_options'][array_quest['id']]){
-                                questions_string+='<div class="apelation-option fuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
-                            }else{
-                                questions_string+='<div class="apelation-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                if(array_quest['option_'+(i+1)] == data['user_selected_options'][array_quest['id']]){
+                                    questions_string+='<div class="apelation-option fuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                }else{
+                                    questions_string+='<div class="apelation-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                }
                             }
                         }
                     }

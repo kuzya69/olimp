@@ -5,105 +5,13 @@ include_once('library.php');
 
 header('Content-Type: text/html; charset=utf-8');
 
-if(isset($_POST['profile'])){
-	if(!empty($_SESSION['logged_user'])){
-		$query = $db->prepare("SELECT * FROM `users` WHERE `id` = :uid");
-		$query->bindValue(':uid', (int)trim($_SESSION['logged_user']['id']));
-		$query->execute();
-		$users_info = $query->fetch();
-	}else{
-		$users_info = null;
-	}
-
-	$data = $_POST;
-	if(empty($data['profile'])){
-		if(!empty($users_info)){
-			$data = $users_info;
-		}else{
-			$data = [];
-		}
-	}
-	date_default_timezone_set('UTC');
-	$time_now = time() + (3 * 60 * 60);
-
-	// print_r($data["trainingdirection_type"][0]);exit();
-	$update_flag = 0;
-	$query = $db->prepare("UPDATE `users` 
-	SET 
-		`username` = :un, 
-		`email` = :e, 
-		-- `password` = :p, 
-		`lastname` = :ln, 
-		`firstname` = :fn, 
-		`middlename` = :mn,
-		`phone` = :phone,
-		`datebirth` = :dbirdth,
-		`institution` = :ins,
-		`сity` = :city,
-		`course`= :course,
-		`groupnumber`= :gn,
-		`trainingdirection_type` = :tdt,
-		`trainingdirection` = :td,
-		`leveloftraining` = :lot
-	WHERE `username` = :sun");
-
-	// $query->bindValue(':un', (string)trim(strip_tags(htmlspecialchars($data['username'])))); // username не readonly
-	$query->bindValue(':un', (string)trim(strip_tags(htmlspecialchars($users_info['username'])))); //пока username readonly
-	$query->bindValue(':e', (string)trim(strip_tags(htmlspecialchars($data['email']))));
-	// $query->bindValue(':p', password_hash($data['password'], PASSWORD_DEFAULT));
-	$query->bindValue(':ln', (string)trim(strip_tags(htmlspecialchars($data['lastname']))));
-	$query->bindValue(':fn', (string)trim(strip_tags(htmlspecialchars($data['firstname']))));
-	$query->bindValue(':mn', (string)trim(strip_tags(htmlspecialchars($data['middlename']))));
-	$query->bindValue(':phone', (string)trim(strip_tags(htmlspecialchars($data['phone']))));
-	$query->bindValue(':dbirdth', trim($data['datebirth'])); //исправить проверку
-	$query->bindValue(':ins', (string)trim(strip_tags(htmlspecialchars($data['institution']))));
-	$query->bindValue(':city', (string)trim(strip_tags(htmlspecialchars($data['сity']))));
-	$query->bindValue(':course', (int)trim($data['course']));
-	$query->bindValue(':gn', (string)trim(strip_tags(htmlspecialchars($data['groupnumber']))));
-	$query->bindValue(':tdt', (int)trim($data["trainingdirection_type"][0]));
-	$query->bindValue(':td', (string)trim(strip_tags(htmlspecialchars($data['trainingdirection']))));
-	$query->bindValue(':lot', (string)trim($data["leveloftraining"][0]));
-	$query->bindValue(':sun', (string)trim($_SESSION['logged_user']['username']));
-	$query->execute();
-	$update_flag = $query->rowCount();
-	unset($query);
-
-	//Сохраниение пароля так как стоит readonly, закоментировано
-	// if(!empty($data['password']) && $data['password'] == $data['repassword']){
-	// 	$query = $db->prepare("UPDATE `users` 
-	// 	SET 
-	// 		`password` = :p 
-	// 	WHERE `username` = :sun");
-	// 	$query->bindValue(':p', password_hash($data['password'], PASSWORD_DEFAULT));
-	// 	$query->bindValue(':sun', (string)trim($_SESSION['logged_user']['username']));
-	// 	$query->execute();
-	// 	$update_flag = $query->rowCount();
-	// 	unset($query);
-	// }
-
-	$query = $db->prepare("SELECT * FROM `users` WHERE `username` = :un");
-	$query->bindValue(':un', $data['username']);
-	$query->execute();
-	$q_users = $query->fetch(PDO::FETCH_ASSOC);
-	unset($query);
-
-	$_SESSION['logged_user'] = $q_users;
-	if($update_flag > 0){
-		// echo '<div style="color: green;">Данные обновлены!</div><hr>';
-		setAlertMessage("Данные обновлены!", "success");
-	}
+if(!empty($_SESSION['logged_user'])){
+	$users_info = getUserById($db, $_SESSION['logged_user']);
 }else{
-	//echo '<div style="color: red;">Данные не получены!</div><hr>';
+	$users_info = null;
+}
 
-	if(!empty($_SESSION['logged_user'])){
-		$query = $db->prepare("SELECT * FROM `users` WHERE `id` = :uid");
-		$query->bindValue(':uid', (int)trim($_SESSION['logged_user']['id']));
-		$query->execute();
-		$users_info = $query->fetch();
-	}else{
-		$users_info = null;
-	}
-
+if(isset($_POST['profile'])){
 	$data = $_POST;
 	if(empty($data['profile'])){
 		if(!empty($users_info)){
@@ -111,10 +19,58 @@ if(isset($_POST['profile'])){
 		}else{
 			$data = [];
 		}
+	}
+	$errors = 0;
+	$update_flag = 0;
+
+	if($data['username'] != $users_info['username']){
+		$table_user_data_by_username = getUserByUsername($db, $data['username']);
+		if(count($table_user_data_by_username) > 0){
+			$errors++;
+			setAlertMessage("Пользователь с таким логином существует!", "danger");
+		}
+	}
+
+	if($data['email'] != $users_info['email']){
+		$table_user_data_by_email = getUserByEmail($db, $data['email']);
+		if(count($table_user_data_by_email) > 0){
+			$errors++;
+			setAlertMessage("Пользователь с таким емаилом существует!", "danger");
+		}
+	}
+
+	if($data['password'] != $data['repassword']){
+		$errors++;
+		setAlertMessage("Введенные пароли не совпадают!", "danger");
+	}
+
+	if(empty($errors)){
+		$update_flag = updateUserData($db, $data, $_SESSION['logged_user']);
+		//Сохраниение пароля так как стоит readonly, закоментировано
+		$update_pass_flag = updateUserPassword($db, $data, $_SESSION['logged_user']);
+		$table_user_data = getUserByUsername($db, $data['username'], PDO::FETCH_ASSOC);
+		// echo "username: ".$data['username'];
+		// print_r($table_user_data);die();
+		$_SESSION['logged_user'] = $table_user_data[0];
+		if($update_flag > 0){
+			setAlertMessage("Данные обновлены!", "success");
+		}else{
+			if($update_pass_flag > 0){
+				setAlertMessage("Данные обновлены!", "success");
+			}else{
+				setAlertMessage("Данные небыли обновлены!", "danger");	
+			}
+		}
+	}
+
+}else{
+	if(!empty($users_info)){
+		$data = (!empty($_SESSION['logged_user']))?getUserById($db, $_SESSION['logged_user']):null;
+	}else{
+		$data = [];
 	}
 }
 printAlertMessage('all');
-// print_r($data);
 
 ?>
 <section>
@@ -129,16 +85,16 @@ printAlertMessage('all');
 	<h1 class="h3 mb-3 font-weight-normal">Мой профиль</h1>
 
 	<label for="inputUsername" class="sr-only">Ваш логин</label>
-	<input type="text" id="inputUsername" class="form-control" placeholder="логин" autofocus="" readonly name="username" value="<?php echo @$data['username'];?>">
+	<input type="text" id="inputUsername" class="form-control" placeholder="логин" autofocus="" name="username" value="<?php echo @$data['username'];?>">
 
 	<label for="inputEmail" class="sr-only">Ваш e-mail</label>
 	<input type="email" id="inputEmail" class="form-control" placeholder="e-mail" autofocus="" name="email" value="<?php echo @$data['email'];?>">
 
 	<label for="inputPassword" class="sr-only">Ваш пароль</label>
-	<input type="password" id="inputPassword" class="form-control" placeholder="пароль" readonly name="password">
+	<input type="password" id="inputPassword" class="form-control" placeholder="пароль" name="password">
 
 	<label for="inputRepassword" class="sr-only">Повтарите пароль</label>
-	<input type="password" id="inputRepassword" class="form-control" placeholder="повтор пароля" readonly name="repassword">
+	<input type="password" id="inputRepassword" class="form-control" placeholder="повтор пароля" name="repassword">
 
 	<label for="inputLastName" class="sr-only">Фамилия</label>
 	<input type="text" id="inputLastName" class="form-control" placeholder="фамилия" name="lastname" value="<?php echo @$data['lastname'];?>">

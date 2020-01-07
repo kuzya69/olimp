@@ -79,16 +79,16 @@ function trueSlectedOptions($db, $selected_options, $type=true){
 /**
  * Возвращает выбранные ответы пользователя
  * @param  object $db объект базы данных
- * @param  array $form_date данные с формы
+ * @param  array $form_data данные с формы
  * @return array     массив[0] с одним прпавильным ответом, массив[1] с одним или более правильным ответом. Ключи внутренних массивов id вопроса в таблице
  */
-function selectedOptions($db, $form_date){
+function selectedOptions($db, $form_data){
 	$answerArrayOne = [];
 	$answerArrayMore = [];
 	// $ansString = '';
 	// $ansArray = [];
 	// $tempAnsArr = [];
-	foreach($form_date as $key=>$value){
+	foreach($form_data as $key=>$value){
 		// print_r($value);echo "<br>";
 		$option = explode('-', $value['name']);
 		// print_r($option);echo "<br>";
@@ -376,6 +376,24 @@ function getSubjectInfo($db, $subject_id, $user_information=[]){
 }
 
 /**
+ * Возвращает информацию о предмете по его имени
+ * 
+ */
+function getSubjectInfoByName($db, $subject_name, $user_information=[]){
+	if(!empty($user_information) && $user_information["role"] == 9){
+	    $query = $db->prepare("SELECT * FROM `subjects` WHERE `name` = :sname");
+	    $query->bindValue(':sname', $subject_name);
+	}else{
+	    $query = $db->prepare("SELECT * FROM `subjects` WHERE `name` = :sname AND `display` = :dis");
+	    $query->bindValue(':sname', $subject_name);
+	    $query->bindValue(':dis', 1);
+	}
+    $query->execute();
+    $subject = $query->fetch();
+    return $subject;
+}
+
+/**
  * Меняет вимимость предмета
  * @param  object $db объект базы данных
  * @param  int $subject_id номер предмета
@@ -385,6 +403,17 @@ function getSubjectInfo($db, $subject_id, $user_information=[]){
 function updateSubjectStatus($db, $subject_id, $display){
 	$query = $db->prepare("UPDATE `subjects` SET `display` = :dis WHERE `id` = :sid");
 	$query->bindValue(':dis', (int)trim($display));
+	$query->bindValue(':sid', (int)trim($subject_id));
+	$query->execute();
+	return $query->rowCount();
+}
+
+/**
+ * Удаляет полностью предмет
+ * 
+ */
+function deleteSubject($db, $subject_id){ 
+	$query = $db->prepare("DELETE FROM `subjects` WHERE `id` = :sid");
 	$query->bindValue(':sid', (int)trim($subject_id));
 	$query->execute();
 	return $query->rowCount();
@@ -412,9 +441,9 @@ function saveSubjectData($db, $data){
 	$query->bindValue(':dis', 1);
 	$query->bindValue(':ds', (string)trim(strip_tags($data['date_start'])));
 	$query->bindValue(':de', (string)trim(strip_tags($data['date_end'])));
-	$query->execute();
-	return $query->rowCount();
+	return $query->execute();
 }
+
 
 /**
  * Обновляет поля предмета
@@ -811,6 +840,7 @@ function setAlertMessage($text, $type='other'){
 	}
 }
 /**
+ * Вывод сообщения на экран
  * 
  */
 function printAlertMessage($type='all'){
@@ -843,5 +873,197 @@ function printAlertMessage($type='all'){
 		}
 		unset($_SESSION['message']);
 	}
+}
+
+/**
+ * Получить пользователя по его логину
+ * 
+ */
+function getUserByUsername($db, $username, $fetch_style=null){
+	$query = $db->prepare("SELECT * FROM `users` WHERE `username` = :un");
+	$query->bindValue(':un', (string)trim(strip_tags(htmlspecialchars($username))));
+	$query->execute();
+	if(!empty($fetch_style)){
+		return $query->fetchAll($fetch_style);
+	}
+	return $query->fetchAll();
+}
+
+/**
+ * Получить пользоваетля по его id
+ * 
+ */
+function getUserById($db, $session_user_data){
+	$query = $db->prepare("SELECT * FROM `users` WHERE `id` = :uid");
+	$query->bindValue(':uid', (int)trim($session_user_data['id']));
+	$query->execute();
+	return $query->fetch();
+}
+
+/**
+ * Получить пользователя по его email
+ */
+function getUserByEmail($db, $email){
+	$query = $db->prepare("SELECT * FROM `users` WHERE `email` = :e");
+	$query->bindValue(':e', (string)trim(strip_tags(htmlspecialchars($email))));
+	$query->execute();
+	return $query->fetchAll();
+}
+
+/**
+ * Добавить пользователя в таблицу
+ * 
+ */
+function insertNewUser($db, $data){
+	$token = md5($data['username'].$data['email'].md5($data['firstname'].$data['password']).$data['lastname'].time());
+	$query = $db->prepare(
+		"INSERT INTO `users` 
+		(
+			`username`, 
+			`email`, 
+			`email_status`, 
+			`token`, 
+			`password`, 
+			`lastname`, 
+			`firstname`, 
+			-- `middlename`,
+			-- `phone`,
+			-- `datebirth`,
+			-- `institution`,
+			-- `сity`,
+			-- `course`,
+			-- `groupnumber`,
+			-- `trainingdirection`,
+			`date_create`
+		) VALUES 
+		(
+			:un, 
+			:e,
+			:e_st,
+			:token,
+			:p, 
+			:ln,
+			:fn,
+			-- :mn,
+			-- :phone,
+			-- :dbirdth,
+			-- :ins,
+			-- :city,
+			-- :course,
+			-- :gn,
+			-- :td,
+			:dcreate
+		)"
+	);
+	$query->bindValue(':un', (string)trim(strip_tags(htmlspecialchars($data['username']))));
+	$query->bindValue(':e', (string)trim(strip_tags(htmlspecialchars($data['email']))));
+	$query->bindValue(':e_st', 0);
+	$query->bindValue(':token', (string)$token);
+	$query->bindValue(':p', password_hash($data['password'], PASSWORD_DEFAULT));
+	$query->bindValue(':ln', (string)trim(strip_tags(htmlspecialchars($data['lastname']))));
+	$query->bindValue(':fn', (string)trim(strip_tags(htmlspecialchars($data['firstname']))));
+	// $query->bindValue(':mn', (string)trim(strip_tags(htmlspecialchars($data['middlename']))));
+	// $query->bindValue(':phone', (string)trim(strip_tags(htmlspecialchars($data['phone']))));
+	// $query->bindValue(':dbirdth', trim($data['datebirth'])); //исправить проверку
+	// $query->bindValue(':ins', (string)trim(strip_tags(htmlspecialchars($data['institution']))));
+	// $query->bindValue(':city', (string)trim(strip_tags(htmlspecialchars($data['сity']))));
+	// $query->bindValue(':course', (int)trim($data['course']));
+	// $query->bindValue(':gn', (string)trim(strip_tags(htmlspecialchars($data['groupnumber']))));
+	// $query->bindValue(':td', (string)trim(strip_tags(htmlspecialchars($data['trainingdirection']))));
+	$query->bindValue(':dcreate', date("Y-m-d H:i:s", getNowTime()));
+	$query->execute();
+	return $query->rowCount();
+}
+
+/**
+ * Обновляет данные пользователя
+ */
+function updateUserData($db, $data, $session_user_data){
+	$query = $db->prepare("UPDATE `users` 
+	SET 
+		`username` = :un, 
+		`email` = :e, 
+		-- `password` = :p, 
+		`lastname` = :ln, 
+		`firstname` = :fn, 
+		`middlename` = :mn,
+		`phone` = :phone,
+		`datebirth` = :dbirdth,
+		`institution` = :ins,
+		`сity` = :city,
+		`course`= :course,
+		`groupnumber`= :gn,
+		`trainingdirection_type` = :tdt,
+		`trainingdirection` = :td,
+		`leveloftraining` = :lot
+	WHERE `username` = :sun");
+
+	$query->bindValue(':un', (string)trim(strip_tags(htmlspecialchars($data['username'])))); // username не readonly
+	// $query->bindValue(':un', (string)trim(strip_tags(htmlspecialchars($users_info['username'])))); //пока username readonly
+	$query->bindValue(':e', (string)trim(strip_tags(htmlspecialchars($data['email']))));
+	// $query->bindValue(':p', password_hash($data['password'], PASSWORD_DEFAULT));
+	$query->bindValue(':ln', (string)trim(strip_tags(htmlspecialchars($data['lastname']))));
+	$query->bindValue(':fn', (string)trim(strip_tags(htmlspecialchars($data['firstname']))));
+	$query->bindValue(':mn', (string)trim(strip_tags(htmlspecialchars($data['middlename']))));
+	$query->bindValue(':phone', (string)trim(strip_tags(htmlspecialchars($data['phone']))));
+	$query->bindValue(':dbirdth', trim($data['datebirth'])); //исправить проверку
+	$query->bindValue(':ins', (string)trim(strip_tags(htmlspecialchars($data['institution']))));
+	$query->bindValue(':city', (string)trim(strip_tags(htmlspecialchars($data['сity']))));
+	$query->bindValue(':course', (int)trim($data['course']));
+	$query->bindValue(':gn', (string)trim(strip_tags(htmlspecialchars($data['groupnumber']))));
+	$query->bindValue(':tdt', (int)trim($data["trainingdirection_type"][0]));
+	$query->bindValue(':td', (string)trim(strip_tags(htmlspecialchars($data['trainingdirection']))));
+	$query->bindValue(':lot', (string)trim($data["leveloftraining"][0]));
+	$query->bindValue(':sun', (string)trim($session_user_data['username']));
+	$query->execute();
+	return $query->rowCount();
+}
+
+/**
+ * Обновляет пороль пользователя
+ * 
+ */
+function updateUserPassword($db, $data, $session_user_data){
+	if(!empty($data['password']) && $data['password'] == $data['repassword']){
+		$query = $db->prepare("UPDATE `users` SET `password` = :p WHERE `username` = :sun");
+		$query->bindValue(':p', password_hash($data['password'], PASSWORD_DEFAULT));
+		$query->bindValue(':sun', (string)trim($session_user_data['username']));
+		$query->execute();
+		return $query->rowCount();
+	}
+	return -1;
+}
+
+/**
+ * Записывает нескольлких строк в указанную таблицу
+ * 
+ */
+function pdoMultiInsert($tableName, $data, $pdoObject){
+    //Will contain SQL snippets.
+    $rowsSQL = array();
+    //Will contain the values that we need to bind.
+    $toBind = array();
+    //Get a list of column names to use in the SQL statement.
+    $columnNames = array_keys($data[0]);
+    //Loop through our $data array.
+    foreach($data as $arrayIndex => $row){
+        $params = array();
+        foreach($row as $columnName => $columnValue){
+            $param = ":" . $columnName . $arrayIndex;
+            $params[] = $param;
+            $toBind[$param] = $columnValue; 
+        }
+        $rowsSQL[] = "(" . implode(", ", $params) . ")";
+    }
+    //Construct our SQL statement
+    $sql = "INSERT INTO `$tableName` (" . implode(", ", $columnNames) . ") VALUES " . implode(", ", $rowsSQL);
+    //Prepare our PDO statement.
+    $pdoStatement = $pdoObject->prepare($sql);
+    //Bind our values.
+    foreach($toBind as $param => $val){
+        $pdoStatement->bindValue($param, $val);
+    }
+    //Execute our statement (i.e. insert the data).
+    return $pdoStatement->execute();
 }
 ?>

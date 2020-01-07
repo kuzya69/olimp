@@ -87,19 +87,13 @@ if(isset($data['signup'])){
 	// 	$errors[] = 'Укажите направление подготовки!';
 	// }
 
-	$query = $db->prepare("SELECT `username` FROM `users` WHERE `username` = :un");
-	$query->bindValue(':un', $data['username']);
-	$query->execute();
-	$q_users = $query->fetchAll();
+	$q_users = getUserByUsername($db, $data['username'])['username'];
 	if(count($q_users) > 0){
 		// $errors[] = 'Пользователь с таким логином существует!';
 		$errors++;
 		setAlertMessage("Пользователь с таким логином существует!", "danger");
 	}else{
-		$query = $db->prepare("SELECT `email` FROM `users` WHERE `email` = :e");
-		$query->bindValue(':e', $data['email']);
-		$query->execute();
-		$q_users = $query->fetchAll();
+		$q_users = getUserByEmail($db, $data['email'])['email'];
 		if(count($q_users) > 0){
 			// print_r($q_users);
 			// $errors[] = 'Пользователь с таким емаилом существует!';
@@ -107,76 +101,19 @@ if(isset($data['signup'])){
 			setAlertMessage("Пользователь с таким емаилом существует!", "danger");
 		}
 	}
-	unset($query);
 	
 	if(empty($errors)){
-		$token = md5($data['username'].$data['email'].md5($data['firstname'].$data['password']).$data['lastname'].time());
-		date_default_timezone_set('UTC');
-		$time_now = time() + (3 * 60 * 60);
-		$query = $db->prepare("INSERT INTO `users` 
-		(
-			`username`, 
-			`email`, 
-			`email_status`, 
-			`token`, 
-			`password`, 
-			`lastname`, 
-			`firstname`, 
-			-- `middlename`,
-			-- `phone`,
-			-- `datebirth`,
-			-- `institution`,
-			-- `сity`,
-			-- `course`,
-			-- `groupnumber`,
-			-- `trainingdirection`,
-			`date_create`
-		) VALUES 
-		(
-			:un, 
-			:e,
-			:e_st,
-			:token,
-			:p, 
-			:ln,
-			:fn,
-			-- :mn,
-			-- :phone,
-			-- :dbirdth,
-			-- :ins,
-			-- :city,
-			-- :course,
-			-- :gn,
-			-- :td,
-			:dcreate
-		)");
-		$query->bindValue(':un', (string)trim(strip_tags(htmlspecialchars($data['username']))));
-		$query->bindValue(':e', (string)trim(strip_tags(htmlspecialchars($data['email']))));
-		$query->bindValue(':e_st', 0);
-		$query->bindValue(':token', (string)$token);
-		$query->bindValue(':p', password_hash($data['password'], PASSWORD_DEFAULT));
-		$query->bindValue(':ln', (string)trim(strip_tags(htmlspecialchars($data['lastname']))));
-		$query->bindValue(':fn', (string)trim(strip_tags(htmlspecialchars($data['firstname']))));
-		// $query->bindValue(':mn', (string)trim(strip_tags(htmlspecialchars($data['middlename']))));
-		// $query->bindValue(':phone', (string)trim(strip_tags(htmlspecialchars($data['phone']))));
-		// $query->bindValue(':dbirdth', trim($data['datebirth'])); //исправить проверку
-		// $query->bindValue(':ins', (string)trim(strip_tags(htmlspecialchars($data['institution']))));
-		// $query->bindValue(':city', (string)trim(strip_tags(htmlspecialchars($data['сity']))));
-		// $query->bindValue(':course', (int)trim($data['course']));
-		// $query->bindValue(':gn', (string)trim(strip_tags(htmlspecialchars($data['groupnumber']))));
-		// $query->bindValue(':td', (string)trim(strip_tags(htmlspecialchars($data['trainingdirection']))));
-		$query->bindValue(':dcreate', date("Y-m-d H:i:s", $time_now));
-		$query->execute();
-		unset($query);
-
-		$base_url = "http://www.olimpiada24.ru/";
+		insertNewUser($db, $data);
+		
+		$base_url = "http://751c1245.ngrok.io/test/";
+		// $base_url = "http://www.olimpiada24.ru/";
 		$to=trim(strip_tags($data['email']));//"kurbanvim@mail.ru";//
 		$subject="Подтверждение электронной почты";
 		// $body = "ok";
 		$body='Здравствуйте! <br/> <br/> Мы должны убедиться в том, что вы человек. Пожалуйста, <a href="'.$base_url.'activation/'.$token.'">подтвердите адрес</a> вашей электронной почты, и можете начать использовать ваш аккаунт на сайте. <br/> <a href="'.$base_url.'activation/'.$token.'">Подтвердить</a>';
 		$headers = "From: support@olimpiada24.ru";
 		Send_Mail($to,$subject,$body);
-		// mail($to,$subject,$body,$headers);
+		mail($to,$subject,$body,$headers);
 
 		// echo '<div style="color: green;">Вы успешно зарегистрировались! <b>Необходимо подтвердить свою почту</b></div><hr>';
 		// $_SESSION['message_type'] = 'success';

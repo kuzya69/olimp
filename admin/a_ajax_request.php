@@ -84,6 +84,41 @@ if((isset($_POST['status']) && $_POST['status'] == 13) && isset($_POST['fd'])){
 	exit();
 }
 
+if((isset($_POST['status']) && $_POST['status'] == 14) && isset($_POST['s'])){
+	$subject_id = $_POST['s'];
+	$user_information = (!empty($_SESSION['logged_user']))?$_SESSION['logged_user']:[];
+	$response = [];
+	$subject_data = getSubjectInfo($db, $subject_id, $user_information);
+	$subject_name = $subject_data['name']."_".time();
+	$subject_data['name'] = $subject_name;
+	unset($subject_data['id']);
+	unset($subject_data['sort']);
+	$save_subject_data = saveSubjectData($db, $subject_data);
+	$subject_data_by_name = getSubjectInfoByName($db, $subject_name, $user_information);
+	if($save_subject_data == 1){
+		$questions_by_subject = getQuestionsBySubject($db, $subject_id, $user_information);
+		if(!empty($questions_by_subject)){
+			for($i = 0; $i < count($questions_by_subject); $i++){
+				unset($questions_by_subject[$i]['id']);
+				$questions_by_subject[$i]['subject_id'] = $subject_data_by_name['id'];
+			}
+			$save_questions_to_subject = pdoMultiInsert("questions", $questions_by_subject, $db);
+		}else{
+			$save_questions_to_subject = 0;
+			deleteSubject($db, $subject_data_by_name['id']);
+		}
+	}else{
+		$save_questions_to_subject = 0;
+	}
+	if(!empty($save_questions_to_subject)){
+		$response += ['status' => 1, 'message' => "Данные успешно склонированы", "result" => $subject_data_by_name];
+	}else{
+		$response += ['status' => 0, 'message' => "Не удалось склонировать данные", "result" => []];
+	}
+	echo json_encode($response, JSON_UNESCAPED_UNICODE);
+	exit();
+}
+
 if((isset($_POST['status']) && $_POST['status'] == 21) && isset($_POST['s'])){
 	$sid = $_POST['s'];
 	$user_information = (!empty($_SESSION['logged_user']))?$_SESSION['logged_user']:[];
