@@ -56,7 +56,7 @@ $(function() {
             // 7: { sorter: "input", filter: "parsed" },
             // 8: { sorter: "input", filter: "parsed" },
             // 9: { sorter: "input", filter: "parsed" },
-            11: { sorter: false, filter: false }
+            12: { sorter: false, filter: false }
         },
         widgets: [ "columns", "filter", "zebra" ],
     

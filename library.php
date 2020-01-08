@@ -812,7 +812,8 @@ function getQuestionsByUser($db, $user_id, $subject_id){
  * @param array $qid_list - массив состоящий из id вопросов
  */
 function getQuestionsById($pdo, $qid_list){
-    $in_query = implode(',', array_fill(0, count($qid_list), '?'));
+	$in_query = implode(',', array_fill(0, count($qid_list), '?'));
+	// print_r($qid_list);die();
     $search_query = $pdo->prepare("SELECT * FROM `questions` WHERE `id` IN (".$in_query.")");
     // $search_query->bindValue('1', 2);
     foreach($qid_list as $key=>$value){

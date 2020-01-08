@@ -61,7 +61,7 @@ printAlertMessage('all');
 	<!-- </div> -->
 	<br>
 	<div class="row">
-		<?php //if(!empty($_SESSION['logged_user']) && checkFillingUserInformation($_SESSION['logged_user']) == 0):?>
+		<?php if(!empty($_SESSION['logged_user']) && checkFillingUserInformation($_SESSION['logged_user']) == 0):?>
 			<!-- <p>нужно заполнить профиль</p> -->
 			<div class="col-12 col-sm-6 col-md-4 col-lg-3">
 				<div class="card my-card text-white bg-dark mb-3">
@@ -84,7 +84,7 @@ printAlertMessage('all');
 					</div>
 				</div>
 			</div>
-		<?php //else:?>
+		<?php else:?>
 			<!-- <p>профиль польность заполнен</p> -->
 			<!-- <div class="col-12 col-sm-6 col-md-4 col-lg-3">
 				<div class="card my-card text-white bg-dark mb-3">
@@ -105,7 +105,7 @@ printAlertMessage('all');
 					</div>
 				</div>
 			</div> -->
-		<?php //endif;?>
+		<?php endif;?>
 		<?php $count_subjects = -1; ?>
 		<?php foreach($q_subjects as $key=>$value){ ?>
 			<?php

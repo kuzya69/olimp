@@ -24,7 +24,8 @@ $query = $db->prepare("
 		`subjects`.`amount` as `s_amount`, 
 		`user_selected_options`.`amount` as `uso_amount`, 
 		`user_selected_options`.`start_time` as `start_time`,
-		`user_selected_options`.`fix_time` as `fix_time`
+		`user_selected_options`.`fix_time` as `fix_time`,
+		`user_selected_options`.`date_create` as `date_create`
 	FROM `user_selected_options` 
 	LEFT JOIN `subjects` ON (`subjects`.`id` = `user_selected_options`.`subject_id`)
 	LEFT JOIN `users` ON (`users`.`id` = `user_selected_options`.`user_id`)
@@ -79,6 +80,7 @@ $test_results = $query->fetchAll();
 						<th scope="col" class="filter-select" data-placeholder="Выберите балл">Балл</th>
 						<th scope="col" class="" data-placeholder="Введите количество">Верно</th>
 						<th scope="col" class="" data-placeholder="Введите время">Пройден за</th>
+						<th scope="col" class="filter-select" data-placeholder="Выберите дату">Дата прохождения</th>
 						<th scope="col" class="" data-placeholder="">Удалить</th>
 					</tr>
 				</thead>
@@ -98,6 +100,7 @@ $test_results = $query->fetchAll();
 						<td><?=$value['ball']?></td>
 						<td><?=$value['uso_amount']."/".$value['s_amount']?></td>
 						<td><?=date('H:i:s', $value['fix_time'] - $value['start_time'])?></td>
+						<td><?=date('Y-m-d', $value['fix_time'])?></td>
 						<!-- <td class="table-row-act"><span class="user-result-delete" data-su="<?=$value['uid']?>-<?=$value['sid']?>"><i class="fa fa-trash"></i></span></td> -->
 						<td class="table-row-act">
 							<div class="dropdown">

@@ -393,8 +393,14 @@ if(isset($_POST['status']) && $_POST['status'] == 30 && isset($_POST['s']) && is
 		array_push($_user_selected_questions_value, (explode(",-,", $value)>0)?explode(",-,", $value):$value);
 		// print_r((is_array(explode(",-,", $value)))?explode(",-,", $value)[0]:$value[0]);
 	}
-	$user_selected_questions = array_combine($user_selected_questions_id, $_user_selected_questions_value);
-	$full_questions = getQuestionsById($db, $user_selected_questions_id);
+	// print_r($user_selected_questions_id);die();
+	if(is_array($user_selected_questions_id) && !empty($user_selected_questions_id)){
+		$user_selected_questions = array_combine($user_selected_questions_id, $_user_selected_questions_value);
+		$full_questions = getQuestionsById($db, $user_selected_questions_id);
+	}else{
+		$user_selected_questions = [];
+		$full_questions = [];
+	}
 
 	// print_r($user_selected_questions);
 

@@ -746,76 +746,81 @@ $("#all-results-table").on('click', '.show-apelation', function(){
             // 	console.log(value['question']+ " " +value['option_1']+ " " +value['option_2']+ " " +value['option_3']+ " " +value['option_4']+ " " +value['option_5']+ " " +value['option_6']);
             var questions_string = '';
             var amount_user_questions = Object.keys(data['user_questions']).length;
-            $.each(data['user_questions'], function (index, array_quest){
-                // console.log(data['user_selected_options'][array_quest['id']]);
-                // if(index === 0){
-                // 	questions_string += '<div class="test-question tq-visible" data-id="'+array_quest['id']+'" data-num="'+(index+1)+'">';
-                // }else{
-                    questions_string += '<div class="apelation-question" data-id="'+array_quest['id']+'" data-num="'+(index+1)+'">';
-                // }
-                var answer_value = (array_quest['answers']).split(',');
-
-                if(array_quest['question_img'] != null && !!array_quest['question_img']){
-                    questions_string+='<img class="apelation-img" src="../'+array_quest['question_img']+'">'+
-                    '<p class="apelation-question-middle">'+array_quest['question']+'</p>';
-                }else{
-                    questions_string+='<p class="apelation-question-first">'+array_quest['question']+'</p>';
-                }
-                // if(array_quest['answers'] === 'more'){
-                // 	for(var i = 0; i <= 5; i++){
-                // 		if(array_quest['option_'+(i+1)] !== null && array_quest['option_'+(i+1)] !== ""){
-                // 			questions_string+='<div class="inputGroup my-checkbox-style">'+array_quest['option_'+(i+1)]+'</div>';
-                // 		}
-                // 	}
-                // }else{
-                amount_answer_value = answer_value.length;
-                console.log("answer value: " + amount_answer_value);
-                if(amount_answer_value > 1){
-                    console.log("amount_answer_value: "+amount_answer_value);
-                    for(var i = 0; i <= 5; i++){
-                        // console.log(answer_value[i] +" - "+ array_quest['option_'+(i+1)]);
-                        if(array_quest['option_'+(i+1)] !== null && array_quest['option_'+(i+1)] !== ""){
-                            if(in_array((i+1), answer_value)){
-                                console.log(array_quest['option_'+(i+1)] +" - "+ data['user_selected_options'][array_quest['id']]);
-                                if(in_array(array_quest['option_'+(i+1)], data['user_selected_options'][array_quest['id']])){
-                                    questions_string+='<div class="apelation-option apelation-true-option tuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
+            console.log(amount_user_questions);
+            if(amount_user_questions > 0){
+                $.each(data['user_questions'], function (index, array_quest){
+                    // console.log(data['user_selected_options'][array_quest['id']]);
+                    // if(index === 0){
+                    // 	questions_string += '<div class="test-question tq-visible" data-id="'+array_quest['id']+'" data-num="'+(index+1)+'">';
+                    // }else{
+                        questions_string += '<div class="apelation-question" data-id="'+array_quest['id']+'" data-num="'+(index+1)+'">';
+                    // }
+                    var answer_value = (array_quest['answers']).split(',');
+    
+                    if(array_quest['question_img'] != null && !!array_quest['question_img']){
+                        questions_string+='<img class="apelation-img" src="../'+array_quest['question_img']+'">'+
+                        '<p class="apelation-question-middle">'+array_quest['question']+'</p>';
+                    }else{
+                        questions_string+='<p class="apelation-question-first">'+array_quest['question']+'</p>';
+                    }
+                    // if(array_quest['answers'] === 'more'){
+                    // 	for(var i = 0; i <= 5; i++){
+                    // 		if(array_quest['option_'+(i+1)] !== null && array_quest['option_'+(i+1)] !== ""){
+                    // 			questions_string+='<div class="inputGroup my-checkbox-style">'+array_quest['option_'+(i+1)]+'</div>';
+                    // 		}
+                    // 	}
+                    // }else{
+                    amount_answer_value = answer_value.length;
+                    // console.log("answer value: " + amount_answer_value);
+                    if(amount_answer_value > 1){
+                        // console.log("amount_answer_value: "+amount_answer_value);
+                        for(var i = 0; i <= 5; i++){
+                            // console.log(answer_value[i] +" - "+ array_quest['option_'+(i+1)]);
+                            if(array_quest['option_'+(i+1)] !== null && array_quest['option_'+(i+1)] !== ""){
+                                if(in_array((i+1), answer_value)){
+                                    // console.log(array_quest['option_'+(i+1)] +" - "+ data['user_selected_options'][array_quest['id']]);
+                                    if(in_array(array_quest['option_'+(i+1)], data['user_selected_options'][array_quest['id']])){
+                                        questions_string+='<div class="apelation-option apelation-true-option tuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                    }else{
+                                        questions_string+='<div class="apelation-option apelation-true-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                    }
                                 }else{
-                                    questions_string+='<div class="apelation-option apelation-true-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                    if(in_array(array_quest['option_'+(i+1)], data['user_selected_options'][array_quest['id']])){
+                                        questions_string+='<div class="apelation-option fuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                    }else{
+                                        questions_string+='<div class="apelation-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                    }
                                 }
-                            }else{
-                                if(in_array(array_quest['option_'+(i+1)], data['user_selected_options'][array_quest['id']])){
-                                    questions_string+='<div class="apelation-option fuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
+                            }
+                        }
+                    }else if(amount_answer_value == 1){
+                        // console.log("amount_answer_value: "+amount_answer_value);
+                        for(var i = 0; i <= 5; i++){
+                            // console.log(answer_value +" - "+ array_quest['option_'+(i+1)]);
+                            if(array_quest['option_'+(i+1)] !== null && array_quest['option_'+(i+1)] !== ""){
+                                if(answer_value[0] == (i+1)){
+                                    if(array_quest['option_'+(answer_value[0])] == data['user_selected_options'][array_quest['id']]){
+                                        questions_string+='<div class="apelation-option apelation-true-option tuserselect">'+array_quest['option_'+(answer_value[0])]+'</label></div>';
+                                    }else{
+                                        questions_string+='<div class="apelation-option apelation-true-option">'+array_quest['option_'+(answer_value[0])]+'</label></div>';
+                                    }
                                 }else{
-                                    questions_string+='<div class="apelation-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                    if(array_quest['option_'+(i+1)] == data['user_selected_options'][array_quest['id']]){
+                                        questions_string+='<div class="apelation-option fuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                    }else{
+                                        questions_string+='<div class="apelation-option">'+array_quest['option_'+(i+1)]+'</label></div>';
+                                    }
                                 }
                             }
                         }
                     }
-                }else if(amount_answer_value == 1){
-                    console.log("amount_answer_value: "+amount_answer_value);
-                    for(var i = 0; i <= 5; i++){
-                        // console.log(answer_value +" - "+ array_quest['option_'+(i+1)]);
-                        if(array_quest['option_'+(i+1)] !== null && array_quest['option_'+(i+1)] !== ""){
-                            if(answer_value[0] == (i+1)){
-                                if(array_quest['option_'+(answer_value[0])] == data['user_selected_options'][array_quest['id']]){
-                                    questions_string+='<div class="apelation-option apelation-true-option tuserselect">'+array_quest['option_'+(answer_value[0])]+'</label></div>';
-                                }else{
-                                    questions_string+='<div class="apelation-option apelation-true-option">'+array_quest['option_'+(answer_value[0])]+'</label></div>';
-                                }
-                            }else{
-                                if(array_quest['option_'+(i+1)] == data['user_selected_options'][array_quest['id']]){
-                                    questions_string+='<div class="apelation-option fuserselect">'+array_quest['option_'+(i+1)]+'</label></div>';
-                                }else{
-                                    questions_string+='<div class="apelation-option">'+array_quest['option_'+(i+1)]+'</label></div>';
-                                }
-                            }
-                        }
-                    }
-                }
-                // }
-                questions_string += '</div>';
-            });
-            $(".apelation-result").html(questions_string);
+                    // }
+                    questions_string += '</div>';
+                });
+                $(".apelation-result").html(questions_string);
+            }else{
+                $(".apelation-result").html('<div class="no_result">НЕТ ОТВЕТОВ!</div>');
+            }
             // $.each(data['user_selected_options'], function(key, value){
             // 	console.log(key +" "+ value);
             // });
