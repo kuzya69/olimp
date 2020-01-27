@@ -33,15 +33,15 @@ $c_date = $date->getTimestamp();
 <section class="slider">
 	<div class="slider-wrapper-main">
 		<div class="slider-wrapper-images">
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150/0000FF/FFFFFF" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150/FF0000/000000" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150/FFFF00/000000" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150/000000/FFFFFF" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150/FFFFFF/000000" alt="pic1"></span>
 			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
-			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
-			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
-			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
-			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
-			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
-			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
-			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
-			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150/5EAF00/000000" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150/9C27B0/FFFFFF" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150/795548/FFFFFF" alt="pic1"></span>
 		</div>
 	</div>
 </section>
