@@ -14,6 +14,7 @@ $current_page = array_pop($array_script_name);
 	<link rel="stylesheet" href="lib/bootstrap-4.3.1-dist/css/bootstrap-reboot.min.css">
 	<link rel="stylesheet" href="lib/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="style/style.css">
+	<link rel="stylesheet" href="style/slider_style.css">
 	<link rel="stylesheet" href="style/tabs_style.css">
 </head>
 <body>

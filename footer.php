@@ -20,6 +20,7 @@
 		<!-- <script src="lib/jquery-ui-1.12.1/jquery-ui.min.js"></script> -->
 		<script src="scripts/script_one.js"></script>
 		<script src="scripts/script_two.js"></script>
+		<script src="scripts/slider.js"></script>
 		<script src="scripts/script_tabs.js"></script>
 		<script src="scripts/script_test.js"></script>
 		

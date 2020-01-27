@@ -19,6 +19,7 @@ endif;
 	<link rel="stylesheet" href="lib/bootstrap-4.3.1-dist/css/bootstrap-reboot.min.css">
 	<link rel="stylesheet" href="lib/bootstrap-4.3.1-dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="style/questions_style.css">
+	<link rel="stylesheet" href="style/slider_style.css">
 	<link rel="stylesheet" href="style/style.css">
 	
 </head>

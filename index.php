@@ -30,6 +30,21 @@ $c_date = $date->getTimestamp();
 		<li><a href="tests.php">Тесты</a></li>
 	</ul>
 </nav> -->
+<section class="slider">
+	<div class="slider-wrapper-main">
+		<div class="slider-wrapper-images">
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
+			<span class="slider-item"><img src="https://via.placeholder.com/200x150" alt="pic1"></span>
+		</div>
+	</div>
+</section>
 <section class="_index-section">
 	<!-- <h1>Электронный Учебно-Методический Комплекс</h1> -->
 	<!-- <p>по дисциплине:"Операционные системы"</p> -->

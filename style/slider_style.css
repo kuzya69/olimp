@@ -1,0 +1,17 @@
+
+.slider {
+    background-color: #ff7979;
+}
+.slider-wrapper-main{
+    width: 1110px;
+    overflow: hidden;
+}
+.slider-wrapper-images {
+    position: relative;
+    height: 150px;
+    width: 1845px;
+}
+.slider-item {
+    float: left;
+    margin-right: 5px;
+}
